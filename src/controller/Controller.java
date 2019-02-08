@@ -75,6 +75,12 @@ public class Controller {
 	}
 	
 	public IQueue <VODaylyStatistic> getDailyStatistics () {
+	
+	
+	
+		
+		
+		
 		// TODO
 		return null;
 	}
