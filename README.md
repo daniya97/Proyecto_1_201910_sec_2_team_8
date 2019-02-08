@@ -1,1 +1,2 @@
-Sebastian Puerto\n201318518
+Sebastian Puerto: 201318518
+Daniel Yamin: 201534064
