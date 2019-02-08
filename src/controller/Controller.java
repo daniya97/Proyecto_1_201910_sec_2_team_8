@@ -1,9 +1,14 @@
 package controller;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 
-import model.data_structures.IQueue;
-import model.data_structures.IStack;
+import com.opencsv.CSVReader;
+
+import model.data_structures.Queue;
+import model.data_structures.Stack;
 import model.vo.VODaylyStatistic;
 import model.vo.VOMovingViolations;
 import view.MovingViolationsManagerView;
@@ -15,12 +20,12 @@ public class Controller {
 	/**
 	 * Cola donde se van a cargar los datos de los archivos
 	 */
-	private IQueue<VOMovingViolations> movingViolationsQueue;
+	private Queue<VOMovingViolations> movingViolationsQueue;
 	
 	/**
 	 * Pila donde se van a cargar los datos de los archivos
 	 */
-	private IStack<VOMovingViolations> movingViolationsStack;
+	private Stack<VOMovingViolations> movingViolationsStack;
 
 
 	public Controller() {
@@ -71,7 +76,40 @@ public class Controller {
 	
 
 	public void loadMovingViolations() {
-		// TODO
+		CSVReader readerJan = null;
+		CSVReader readerFeb = null;
+		try {
+			readerJan = new CSVReader(new FileReader("data/Moving_Violations_Issued_in_January_2018_ordered.csv"));
+			readerFeb = new CSVReader(new FileReader("data/Moving_Violations_Issued_in_January_2018_ordered.csv"));
+			
+			movingViolationsStack = new Stack<VOMovingViolations>();
+			movingViolationsQueue = new Queue<VOMovingViolations>();
+			
+			VOMovingViolations infraccion;
+			System.out.println(readerJan.readNext()[0]); // Handle header
+			System.out.println(readerFeb.readNext()[0]); // Handle header
+			
+		    for (String[] row : readerJan) {
+		    	infraccion = new VOMovingViolations(row);
+		    	movingViolationsQueue.enqueue(infraccion);
+		    	movingViolationsStack.push(infraccion);
+		    	//System.out.println("Se ha annadido la fila identificada por " + row[0] + "\n"); // TEST
+		    }
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally{
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
 	}
 	
 	public IQueue <VODaylyStatistic> getDailyStatistics () {
