@@ -7,7 +7,7 @@ public class VOMovingViolations {
 
 
 	/**
-	 * Atributos de la infracción
+	 * Atributos de la infracciï¿½n
 	 */
 	private String iD;
 	private String location;
@@ -16,10 +16,11 @@ public class VOMovingViolations {
 	private String ticketIssueDate;
 	private String violationCode;
 	private String violationDesc;
+	private int fineAmount;
 	
 	
 	/**
-	 * Constructor. Recibe los argumentos de la infracción a través del archivo CSV
+	 * Constructor. Recibe los argumentos de la infracciï¿½n a travï¿½s del archivo CSV
 	 */
 	public VOMovingViolations(String[] linea){
 	
@@ -31,6 +32,7 @@ public class VOMovingViolations {
 		ticketIssueDate = linea[13];
 		violationCode = linea[14];
 		violationDesc = linea[15];
+		fineAmount = Integer.parseInt(linea[8]);
 		
 	}
 	
@@ -47,7 +49,7 @@ public class VOMovingViolations {
 	
 	
 	/**
-	 * @return location - Dirección en formato de texto.
+	 * @return location - Direcciï¿½n en formato de texto.
 	 */
 	public String getLocation() {
 		// TODO Auto-generated method stub
@@ -63,7 +65,7 @@ public class VOMovingViolations {
 	}
 	
 	/**
-	 * @return totalPaid - Cuanto dinero efectivamente pagó el que recibió la infracción en USD.
+	 * @return totalPaid - Cuanto dinero efectivamente pagï¿½ el que recibiï¿½ la infracciï¿½n en USD.
 	 */
 	public int getTotalPaid() {
 		// TODO Auto-generated method stub
@@ -79,7 +81,7 @@ public class VOMovingViolations {
 	}
 		
 	/**
-	 * @return description - Descripción textual de la infracciÃ³n.
+	 * @return description - Descripciï¿½n textual de la infracciÃ³n.
 	 */
 	public String  getViolationDescription() {
 		// TODO Auto-generated method stub
@@ -89,5 +91,9 @@ public class VOMovingViolations {
 	public String  getViolationCode() {
 		// TODO Auto-generated method stub
 		return violationCode;
+	}
+	
+	public int getFineAmount() {
+		return fineAmount;
 	}
 }
