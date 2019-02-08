@@ -36,23 +36,30 @@ public class Queue<T> implements IQueue<T> {
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void enqueue(T t) {
-		// TODO Auto-generated method stub
-		
+		Nodo<T> nuevo = new Nodo<>(t);
+		nuevo.cambiarSiguiente(first);
+		first = nuevo;
 		size++;
-		
 	}
 
 	@Override
 	public T dequeue() {
 		// TODO Auto-generated method stub
+		if (size == 0) return null;
+		Nodo<T> penultimoViejo = first;
 		
+		while(penultimoViejo.darSiguiente().darSiguiente() != null) {
+			penultimoViejo = penultimoViejo.darSiguiente();
+		}
+		
+		Nodo<T> ultimoViejo = penultimoViejo.darSiguiente();
+		penultimoViejo.cambiarSiguiente(null);
 		size--;
-		return null;
+		return ultimoViejo.darObjeto();
 	}
 }
