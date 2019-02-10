@@ -84,7 +84,6 @@ public class Queue<T> implements IQueue<T> {
 	public T dequeue() {
 		
 		
-		
 		if (size == 0) return null;
 		if(size == 1){
 			size --;

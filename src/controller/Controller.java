@@ -13,6 +13,7 @@ import com.opencsv.CSVReader;
 
 import model.data_structures.IQueue;
 import model.data_structures.IStack;
+import model.data_structures.Nodo;
 import model.data_structures.Queue;
 import model.data_structures.Stack;
 import model.vo.VODaylyStatistic;
@@ -86,24 +87,41 @@ public class Controller {
 		CSVReader readerFeb = null;
 		try {
 			readerJan = new CSVReader(new FileReader("data/Moving_Violations_Issued_in_January_2018_ordered.csv"));
-			readerFeb = new CSVReader(new FileReader("data/Moving_Violations_Issued_in_January_2018_ordered.csv"));
-
+			readerFeb = new CSVReader(new FileReader("data/Moving_Violations_Issued_in_February_2018_ordered.csv"));
+			
+			
+			
 			movingViolationsStack = new Stack<VOMovingViolations>();
 			movingViolationsQueue = new Queue<VOMovingViolations>();
 
 			VOMovingViolations infraccion;
-			System.out.println(readerJan.readNext()[0]); // Handle header
-			System.out.println(readerFeb.readNext()[0]); // Handle header
-
+			//System.out.println(readerJan.readNext()[0]); // Handle header
+			//System.out.println(readerFeb.readNext()[0]); // Handle header
+			boolean primeraFila = true;
+			boolean primeraFila2 = true;
+			
+			
 			for (String[] row : readerJan) {
+				
+				if(primeraFila){
+					primeraFila = false;
+				}
+				else{
 				infraccion = new VOMovingViolations(row);
 				movingViolationsQueue.enqueue(infraccion);
 				movingViolationsStack.push(infraccion);
+				}
 			}
 			for (String[] row : readerFeb) {
+				
+				if(primeraFila2){
+					primeraFila2 = false;
+				}
+				else{
 				infraccion = new VOMovingViolations(row);
 				movingViolationsQueue.enqueue(infraccion);
 				movingViolationsStack.push(infraccion);
+				}
 			}
 
 		} catch (FileNotFoundException e) {
@@ -130,46 +148,52 @@ public class Controller {
 	}
 
 	public IQueue <VODaylyStatistic> getDailyStatistics () {
-
 		
-
-		String auxiliar = null;
+		
+		// Guarda la cola que se mandará como respuesta
 		Queue<VODaylyStatistic> respuesta = new Queue();
 		
-		System.out.println(movingViolationsQueue.size());
-		System.out.println(movingViolationsStack.size());
+		// Para recorrer toda la cola, coge el primer nodo
+		Nodo<VOMovingViolations> actual = movingViolationsQueue.getFirst();
 		
+		// Se coge el primer día en la lista
+		String dia = actual.darObjeto().getTicketIssueDate();
+		String auxiliar2 = dia.substring(0,10);
 		
-		for (VOMovingViolations actual:movingViolationsQueue) {
+		// Cola auxiliar para agrupar infracciones por fecha
+		Queue<VOMovingViolations> enviar = new Queue();
+	
+		
+		while(actual!=null)
+		{
+			
+			String dia2 = actual.darObjeto().getTicketIssueDate();
+			String auxiliar3 = dia2.substring(0,10);
 
-			String dia = actual.getTicketIssueDate();
-			Queue<VOMovingViolations> enviar = new Queue();
-
-
-			if(!dia.equals(auxiliar)){
-				for(VOMovingViolations infraccion:movingViolationsQueue){
-					if(infraccion.getTicketIssueDate().equals(dia)){
-						enviar.enqueue(infraccion);
-						auxiliar = dia;
-					}
+			//Si se repite la fecha se encola el elemento actual
+				if(auxiliar2.equals(auxiliar3)){
+					enviar.enqueue(actual.darObjeto());
+					actual = actual.darSiguiente();
 				}
-				
-				VODaylyStatistic estadisticas = new VODaylyStatistic(enviar, dia);
-				respuesta.enqueue(estadisticas);
+				else
+				{
+					
+					// Si no se repita, se hace una DaylyStatistic con los elementos encontrados y se revisa el siguiente dia
+					VODaylyStatistic agregar = new VODaylyStatistic(enviar, auxiliar2);
+					respuesta.enqueue(agregar);
+					enviar = new Queue();
+					dia = actual.darObjeto().getTicketIssueDate();
+					auxiliar2 = dia.substring(0,10);
+				}				
+			
 			}
-
+	
 		
-			return respuesta;
+		// Para los últimos elementos de la cola
+		VODaylyStatistic agregar = new VODaylyStatistic(enviar, auxiliar2);
+		respuesta.enqueue(agregar);
+		return respuesta;
 
-		}
-
-
-
-
-
-
-		// TODO
-		return null;
 	}
 
 	public IStack <VOMovingViolations> nLastAccidents(int n) {
