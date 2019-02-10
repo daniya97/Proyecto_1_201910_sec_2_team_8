@@ -151,6 +151,25 @@ class TestStack {
 	 */
 	@Test
 	void testPop() {
-		fail();
+		for (int i = 0; i <= 2; i++) {
+			if 		(i == 0) {
+				setUpEscenario0();
+				pila.pop();
+				assertTrue(pila.size() == 0, "La pila deberia seguir de tamano 0.");
+			}
+			else if (i == 1) {
+				setUpEscenario1();
+				String dato = pila.pop();
+				assertTrue(pila.isEmpty(), "La pila deberia deberia estar vacia.");
+				assertTrue(dato.equals("Elemento 1"), "El elemento eliminado no es el esperado.");
+			}
+			else if (i == 2) {
+				setUpEscenario2();
+				String dato = pila.pop();
+				assertTrue(pila.size() == 1, "La pila deberia deberia tener 1 elementos.");
+				assertTrue(dato.equals("Elemento 2"), "El elemento eliminado no es el esperado.");
+			}
+			
+		}
 	}
 }

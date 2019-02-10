@@ -82,6 +82,7 @@ public class Stack <T> implements IStack {
 		}
 		else
 		{
+			size -= 1; // Sebastian: faltaba reducir el tamano al eliminar
 			Nodo<T> auxiliar = first;
 			first = first.darSiguiente();
 			return auxiliar.darObjeto();
