@@ -13,8 +13,8 @@ public class Queue<T> implements IQueue<T> {
 	/*
 	 * Variables
 	 */
-	Nodo<T> first;
-	int size;
+	private Nodo<T> first;
+	private int size;
 	
 	/*
 	 * Constructor
@@ -45,34 +45,75 @@ public class Queue<T> implements IQueue<T> {
 
 	@Override
 	public boolean isEmpty() {
-		return size == 0;
+		
+		//Daniel: Este método estaba incompleto
+		boolean respuesta = true;
+		if(size>0)
+		{
+			respuesta = false;
+		}
+		
+		return respuesta;
+		
 	}
 
 	@Override
 	public int size() {
-		return 0;
+		return size;
 	}
 
 	@Override
 	public void enqueue(T t) {
+		
+		
 		Nodo<T> nuevo = new Nodo<>(t);
-		nuevo.cambiarSiguiente(first);
-		first = nuevo;
-		size++;
+		//Daniel: Tener en cuenta el caso en el que la lista este vacía
+		if(size == 0){
+			first = nuevo;
+		}
+		else{
+			nuevo.cambiarSiguiente(first);
+			first = nuevo;
+		}
+		
+		size=size +1;
+
 	}
 
 	@Override
 	public T dequeue() {
+		
+		
+		
 		if (size == 0) return null;
+		if(size == 1){
+			size --;
+			Nodo<T> auxiliar = first;
+			first = null;
+			return auxiliar.darObjeto();
+		}
+		
+		//Daniel: Toca considerar el caso en el que sólo haya un elemento
+		
+		
 		Nodo<T> penultimoViejo = first;
+
 		
 		while(penultimoViejo.darSiguiente().darSiguiente() != null) {
 			penultimoViejo = penultimoViejo.darSiguiente();
 		}
+		
+		
 		
 		Nodo<T> ultimoViejo = penultimoViejo.darSiguiente();
 		penultimoViejo.cambiarSiguiente(null);
 		size--;
 		return ultimoViejo.darObjeto();
 	}
+	
+	
+	public Nodo<T> getFirst(){
+		return first;
+	}
+	
 }

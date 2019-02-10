@@ -26,18 +26,31 @@ public VODaylyStatistic(Queue<VOMovingViolations> cola, String fecha){
 			contador ++;
 		}
 	
-	
+		suma = suma + actual.getFineAmount();
+		
 	}
 	
 	numeroAccidentes = contador;
-	
-	
+	totalFineAmt = suma;
 	
 	
 }
 
 public String darDia(){
 	return dia;
+}
+
+public int darNumeroAccidentes(){
+	return numeroAccidentes;
+}
+
+public int numeroInfracciones(){
+	return numeroInfracciones;
+}
+
+
+public int totalFineAmount(){
+	return totalFineAmt;
 }
 
 
