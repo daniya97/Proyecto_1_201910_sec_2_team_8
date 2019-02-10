@@ -22,12 +22,12 @@ public class Controller {
 	/**
 	 * Cola donde se van a cargar los datos de los archivos
 	 */
-	private Queue<VOMovingViolations> movingViolationsQueue;
+	private IQueue<VOMovingViolations> movingViolationsQueue;
 	
 	/**
 	 * Pila donde se van a cargar los datos de los archivos
 	 */
-	private Stack<VOMovingViolations> movingViolationsStack;
+	private IStack<VOMovingViolations> movingViolationsStack;
 
 
 	public Controller() {
