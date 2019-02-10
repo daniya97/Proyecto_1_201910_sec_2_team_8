@@ -17,8 +17,22 @@ public class Stack <T> implements IStack {
 	
 	@Override
 	public Iterator iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		// Sebastian: implemente el metodo retornando el objeto creado abajo
+		return new Iterator<T>() {
+
+			private Nodo<T> current = first;
+			
+			@Override
+			public boolean hasNext() {
+				return current.darSiguiente() == null;
+			}
+
+			@Override
+			public T next() {
+				current = current.darSiguiente();
+				return current.darObjeto();
+			}
+		};
 	}
 
 	@Override
