@@ -31,13 +31,14 @@ public class Queue<T> implements IQueue<T> {
 			
 			@Override
 			public boolean hasNext() {
-				return current.darSiguiente() == null;
+				return current != null;
 			}
 
 			@Override
 			public T next() {
+				T dato = current.darObjeto();
 				current = current.darSiguiente();
-				return current.darObjeto();
+				return dato;
 			}
 		};
 	}

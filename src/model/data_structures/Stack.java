@@ -24,13 +24,14 @@ public class Stack <T> implements IStack {
 			
 			@Override
 			public boolean hasNext() {
-				return current.darSiguiente() == null;
+				return current != null;
 			}
 
 			@Override
 			public T next() {
+				T dato = current.darObjeto();
 				current = current.darSiguiente();
-				return current.darObjeto();
+				return dato;
 			}
 		};
 	}

@@ -6,6 +6,8 @@ package model.data_structures;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Iterator;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -58,7 +60,18 @@ class TestStack {
 	 */
 	@Test
 	void testIterator() {
-		fail();
+		setUpEscenario2();
+		
+		int i = 0;
+		//for(String dato : pila.iterator()) {
+		Iterator<String> iterador = pila.iterator();
+		String dato;
+		while (iterador.hasNext()) {
+			dato = iterador.next();
+			assertTrue(dato.equals("Elemento " + (2-i)), "El elemento siguiente no es identificado correctamente");
+			i += 1;
+		}
+		assertTrue(i == 2, "El iterador deberia identificar y devolver 2 elementos");
 	}
 	
 	/**
