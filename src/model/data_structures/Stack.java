@@ -2,7 +2,7 @@ package model.data_structures;
 
 import java.util.Iterator;
 
-public class Stack <T> implements IStack {
+public class Stack <T> implements IStack { // Sebastian: creo que es necesario agregar <I> luego de Stack
 
 	
 	private Nodo<T> first;
@@ -39,7 +39,7 @@ public class Stack <T> implements IStack {
 	@Override
 	public boolean isEmpty() {
 		// Alternativa: return size == 0;
-		if (first == null){ // Tuve que cambiar el .equals(null) por == null para que pasara el test
+		if (first == null){ // Sebastian: Tuve que cambiar el .equals(null) por == null para que pasara el test
 			return true;
 		}
 		else
