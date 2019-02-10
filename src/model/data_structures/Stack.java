@@ -6,7 +6,7 @@ public class Stack <T> implements IStack {
 
 	
 	private Nodo<T> first;
-	int size;
+	private int size; // Sebastian: size no habia sido declarada private
 	
 	
 	public Stack(){

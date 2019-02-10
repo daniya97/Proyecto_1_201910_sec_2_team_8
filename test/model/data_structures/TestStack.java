@@ -112,7 +112,7 @@ class TestStack {
 			}
 			else if (i == 2) {
 				setUpEscenario2();
-				assertTrue(pila.size == 2, "La pila deberia NO deberia vacia.");
+				assertTrue(pila.size() == 2, "La pila deberia NO deberia vacia.");
 			}
 			
 		}
@@ -123,7 +123,18 @@ class TestStack {
 	 */
 	@Test
 	void testPush() {
-		fail();
+		for (int i = 0; i <= 1; i++) {
+			if 		(i == 0) {
+				setUpEscenario0();
+				
+				assertTrue(pila.size() == 0, "La pila deberia estar vacia.");
+			}
+			else if (i == 1) {
+				setUpEscenario2();
+				assertTrue(pila.size == 2, "La pila deberia NO deberia vacia.");
+			}
+			
+		}
 	}
 	
 	/**
