@@ -101,7 +101,21 @@ class TestStack {
 	 */
 	@Test
 	void testSize() {
-		fail();
+		for (int i = 0; i <= 2; i++) {
+			if 		(i == 0) {
+				setUpEscenario0();
+				assertTrue(pila.size() == 0, "La pila deberia estar vacia.");
+			}
+			else if (i == 1) {
+				setUpEscenario1();
+				assertTrue(pila.size() == 1, "La pila deberia NO deberia vacia.");
+			}
+			else if (i == 2) {
+				setUpEscenario2();
+				assertTrue(pila.size == 2, "La pila deberia NO deberia vacia.");
+			}
+			
+		}
 	}
 	
 	/**
