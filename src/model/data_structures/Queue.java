@@ -25,8 +25,21 @@ public class Queue<T> implements IQueue<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Iterator<T>() {
+
+			private Nodo<T> current = first;
+			
+			@Override
+			public boolean hasNext() {
+				return current.darSiguiente() == null;
+			}
+
+			@Override
+			public T next() {
+				current = current.darSiguiente();
+				return current.darObjeto();
+			}
+		};
 	}
 
 	@Override
@@ -49,7 +62,6 @@ public class Queue<T> implements IQueue<T> {
 
 	@Override
 	public T dequeue() {
-		// TODO Auto-generated method stub
 		if (size == 0) return null;
 		Nodo<T> penultimoViejo = first;
 		
