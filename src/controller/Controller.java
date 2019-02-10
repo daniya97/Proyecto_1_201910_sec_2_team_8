@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 import com.opencsv.CSVReader;
 
+import model.data_structures.IQueue;
+import model.data_structures.IStack;
 import model.data_structures.Queue;
 import model.data_structures.Stack;
 import model.vo.VODaylyStatistic;
@@ -93,7 +95,11 @@ public class Controller {
 		    	infraccion = new VOMovingViolations(row);
 		    	movingViolationsQueue.enqueue(infraccion);
 		    	movingViolationsStack.push(infraccion);
-		    	//System.out.println("Se ha annadido la fila identificada por " + row[0] + "\n"); // TEST
+		    }
+		    for (String[] row : readerFeb) {
+		    	infraccion = new VOMovingViolations(row);
+		    	movingViolationsQueue.enqueue(infraccion);
+		    	movingViolationsStack.push(infraccion);
 		    }
 			
 		} catch (FileNotFoundException e) {
@@ -101,9 +107,16 @@ public class Controller {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally{
-			if (reader != null) {
+			if (readerJan != null) {
 				try {
-					reader.close();
+					readerJan.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (readerFeb != null) {
+				try {
+					readerFeb.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
