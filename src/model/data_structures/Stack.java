@@ -11,6 +11,7 @@ public class Stack <T> implements IStack {
 	
 	public Stack(){
 		size = 0;
+		first = null;
 	}
 	
 	
@@ -22,7 +23,8 @@ public class Stack <T> implements IStack {
 
 	@Override
 	public boolean isEmpty() {
-		if (first.equals(null)){
+		// Alternativa: return size == 0;
+		if (first == null){ // Tuve que cambiar el .equals(null) por == null para que pasara el test
 			return true;
 		}
 		else
