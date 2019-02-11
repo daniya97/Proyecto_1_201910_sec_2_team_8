@@ -2,7 +2,7 @@ package model.data_structures;
 
 import java.util.Iterator;
 
-public class Stack <T> implements IStack { // Sebastian: creo que es necesario agregar <I> luego de Stack
+public class Stack <T> implements IStack<T> { // Sebastian: creo que es necesario agregar <I> luego de Stack. Edit: al corregir push, si se vuelve necesario
 
 	
 	private Nodo<T> first;
@@ -55,7 +55,7 @@ public class Stack <T> implements IStack { // Sebastian: creo que es necesario a
 	}
 
 	@Override
-	public void push(Object t) {
+	public void push(T t) {  // Sebastian: como estaba era posible agregar cualquier Object, a pesar de que solo queremos agregar objetos de tipo T
 		
 		Nodo<T> nuevo = new Nodo(t);
 		

@@ -12,7 +12,7 @@ public class VOMovingViolations {
 	private String iD;
 	private String location;
 	private int totalPaid;
-	private String accidentIndicator;
+	private boolean accidentIndicator;
 	private String ticketIssueDate;
 	private String violationCode;
 	private String violationDesc;
@@ -28,7 +28,9 @@ public class VOMovingViolations {
 		iD = linea[0];
 		location = linea[2];
 		totalPaid = Integer.parseInt(linea[9]);
-		accidentIndicator = linea[12];
+		if 		(linea[12].equalsIgnoreCase("Yes")) accidentIndicator = true;
+		else if (linea[12].equalsIgnoreCase("No"))	accidentIndicator = false;
+		else throw new IllegalArgumentException("El indicador de accidente no tiene un valor reconocible.");
 		ticketIssueDate = linea[13];
 		violationCode = linea[14];
 		violationDesc = linea[15];
@@ -75,7 +77,7 @@ public class VOMovingViolations {
 	/**
 	 * @return accidentIndicator - Si hubo un accidente o no.
 	 */
-	public String  getAccidentIndicator() {
+	public boolean getAccidentIndicator() {
 		// TODO Auto-generated method stub
 		return accidentIndicator;
 	}

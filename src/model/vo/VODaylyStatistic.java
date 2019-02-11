@@ -22,7 +22,7 @@ public VODaylyStatistic(Queue<VOMovingViolations> cola, String fecha){
 	int contador = 0;
 	int suma = 0;
 	for (VOMovingViolations actual:cola) {
-		if(actual.getAccidentIndicator().equals("Yes")){
+		if(actual.getAccidentIndicator()){
 			contador ++;
 		}
 	

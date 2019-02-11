@@ -45,16 +45,7 @@ public class Queue<T> implements IQueue<T> {
 
 	@Override
 	public boolean isEmpty() {
-		
-		//Daniel: Este método estaba incompleto
-		boolean respuesta = true;
-		if(size>0)
-		{
-			respuesta = false;
-		}
-		
-		return respuesta;
-		
+		return size == 0;
 	}
 
 	@Override
@@ -67,7 +58,7 @@ public class Queue<T> implements IQueue<T> {
 		
 		
 		Nodo<T> nuevo = new Nodo<>(t);
-		//Daniel: Tener en cuenta el caso en el que la lista este vacía
+		//Daniel: Tener en cuenta el caso en el que la lista este vacï¿½a
 		if(size == 0){
 			first = nuevo;
 		}
@@ -92,7 +83,7 @@ public class Queue<T> implements IQueue<T> {
 			return auxiliar.darObjeto();
 		}
 		
-		//Daniel: Toca considerar el caso en el que sólo haya un elemento
+		//Daniel: Toca considerar el caso en el que sï¿½lo haya un elemento
 		
 		
 		Nodo<T> penultimoViejo = first;

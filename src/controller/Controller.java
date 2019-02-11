@@ -3,6 +3,7 @@ package controller;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import java.io.FileNotFoundException;
@@ -126,8 +127,6 @@ public class Controller {
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		} finally{
 			if (readerJan != null) {
 				try {
@@ -150,13 +149,13 @@ public class Controller {
 	public IQueue <VODaylyStatistic> getDailyStatistics () {
 		
 		
-		// Guarda la cola que se mandará como respuesta
+		// Guarda la cola que se mandarï¿½ como respuesta
 		Queue<VODaylyStatistic> respuesta = new Queue();
 		
 		// Para recorrer toda la cola, coge el primer nodo
 		Nodo<VOMovingViolations> actual = movingViolationsQueue.getFirst();
 		
-		// Se coge el primer día en la lista
+		// Se coge el primer dï¿½a en la lista
 		String dia = actual.darObjeto().getTicketIssueDate();
 		String auxiliar2 = dia.substring(0,10);
 		
@@ -189,15 +188,35 @@ public class Controller {
 			}
 	
 		
-		// Para los últimos elementos de la cola
+		// Para los ï¿½ltimos elementos de la cola
 		VODaylyStatistic agregar = new VODaylyStatistic(enviar, auxiliar2);
 		respuesta.enqueue(agregar);
 		return respuesta;
 
 	}
 
+	// Returns a stack
 	public IStack <VOMovingViolations> nLastAccidents(int n) {
-		// TODO
-		return null;
+		// Como en la pila se agregaron primero las infracciones de enero y luego las de febrero
+		// las cuales ademas estaban ordenadas descendentemente por fecha de la infraccion, basta
+		// mirar los primeros elementos que salen de la cola hasta que se tengan n de ellos que
+		// cumplan la condicion
+		
+		//if (n >= movingViolationsStack.size()) throw new IllegalArgumentException("No es posible buscar un numero tan alto de accidentes");
+		
+		Iterator<VOMovingViolations> iterador = movingViolationsStack.iterator();
+		IStack<VOMovingViolations> respuesta = new Stack<>();
+		VOMovingViolations currentV;
+		
+		// Si no hay suficientes, retorna el maximo
+		while (iterador.hasNext() && n > 0) {
+			currentV = iterador.next();
+			if (currentV.getAccidentIndicator()) {
+				respuesta.push(currentV);
+				n -= 1;
+			}
+		}
+		
+		return respuesta;
 	}
 }
