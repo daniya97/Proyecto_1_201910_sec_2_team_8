@@ -38,8 +38,8 @@ public class TestQueue extends TestCase{
 	 */
 	public void testQueue() {
 		setUpEscenario0();
-		assertEquals("La cola debería estar vacía", true,cola.isEmpty());
-		assertEquals("La cola debería estar vacía",0,cola.size());
+		assertEquals("La cola deberï¿½a estar vacï¿½a", true,cola.isEmpty());
+		assertEquals("La cola deberï¿½a estar vacï¿½a",0,cola.size());
 		assertEquals("Al quitar un elemento de la cola, debe retornar null",null, cola.dequeue());
 	}
 	
@@ -51,7 +51,7 @@ public class TestQueue extends TestCase{
 		for (int i = 0; i <= 2; i++) {
 			if 		(i == 0) {
 				setUpEscenario0();
-				assertEquals("La cola debería estar vacía",true,cola.isEmpty());
+				assertEquals("La cola deberï¿½a estar vacï¿½a",true,cola.isEmpty());
 			}
 			else if (i == 1) {
 				setUpEscenario1();
@@ -72,15 +72,15 @@ public class TestQueue extends TestCase{
 		for (int i = 0; i <= 2; i++) {
 			if 		(i == 0) {
 				setUpEscenario0();
-				assertEquals("La cola debería tener tamaño 0", 0,cola.size());
+				assertEquals("La cola deberï¿½a tener tamaï¿½o 0", 0,cola.size());
 			}
 			else if (i == 1) {
 				setUpEscenario1();
-				assertEquals("La cola debería tener tamaño 1", 1,cola.size());
+				assertEquals("La cola deberï¿½a tener tamaï¿½o 1", 1,cola.size());
 			}
 			else if (i == 2) {
 				setUpEscenario2();
-				assertEquals("La cola debería tener tamaño 2", 2,cola.size());
+				assertEquals("La cola deberï¿½a tener tamaï¿½o 2", 2,cola.size());
 			}
 			
 		}
@@ -94,18 +94,18 @@ public class TestQueue extends TestCase{
 			if 		(i == 0) {
 				setUpEscenario0();
 				cola.enqueue("Nuevo Elemento");
-				assertEquals("La cola debería tener tamaño 1", 1,cola.size());
-				assertEquals("El primer elemento debería ser Nuevo Elemento","Nuevo Elemento",cola.getFirst().darObjeto());
+				assertEquals("La cola deberï¿½a tener tamaï¿½o 1", 1,cola.size());
+				assertEquals("El primer elemento deberï¿½a ser Nuevo Elemento","Nuevo Elemento",cola.iterator().next());
 
 			}
 			else if (i == 1) {
 				setUpEscenario2();
 				cola.enqueue("Nuevo Elemento");
 				Iterator<String> it = cola.iterator();
-				assertEquals("Debería tener elementos sobre los cuales iterar",true,it.hasNext());
+				assertEquals("Deberï¿½a tener elementos sobre los cuales iterar",true,it.hasNext());
 				String dato = it.next();
-				assertEquals("El primer elemento debería ser el recien anadido","Nuevo Elemento",cola.getFirst().darObjeto());
-				assertEquals("La cola debería tener tamaño 3", 3,cola.size());
+				assertEquals("El primer elemento deberï¿½a ser el recien anadido","Nuevo Elemento",cola.iterator().next());
+				assertEquals("La cola deberï¿½a tener tamaï¿½o 3", 3,cola.size());
 			}
 			
 		}
@@ -119,13 +119,13 @@ public class TestQueue extends TestCase{
 //			if 		(i == 0) {
 //				setUpEscenario0();
 //				assertEquals("La pila deberia seguir de tamano 0.",0,cola.size());
-//				assertEquals("Debería retornar null",null,cola.dequeue());
+//				assertEquals("Deberï¿½a retornar null",null,cola.dequeue());
 //				
 //			}
 			if (i == 1) {
 				setUpEscenario1();
 				String dato = cola.dequeue();
-				assertEquals("La cola debería estar vacía",true,cola.isEmpty());
+				assertEquals("La cola deberï¿½a estar vacï¿½a",true,cola.isEmpty());
 				assertEquals("El elemento eliminado no es el esperado.","Elemento 1",dato);
 			}
 		
