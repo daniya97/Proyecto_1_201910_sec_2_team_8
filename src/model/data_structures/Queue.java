@@ -101,9 +101,4 @@ public class Queue<T> implements IQueue<T> {
 		return ultimoViejo.darObjeto();
 	}
 	
-	
-	public Nodo<T> getFirst(){
-		return first;
-	}
-	
 }

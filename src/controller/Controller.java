@@ -150,29 +150,29 @@ public class Controller {
 		
 		
 		// Guarda la cola que se mandar� como respuesta
-		Queue<VODaylyStatistic> respuesta = new Queue();
+		Queue<VODaylyStatistic> respuesta = new Queue<>();
 		
 		// Para recorrer toda la cola, coge el primer nodo
-		Nodo<VOMovingViolations> actual = movingViolationsQueue.getFirst();
+		Iterator<VOMovingViolations> iterador = movingViolationsQueue.iterator();
+		VOMovingViolations actual = iterador.next();
 		
 		// Se coge el primer d�a en la lista
-		String dia = actual.darObjeto().getTicketIssueDate();
+		String dia = actual.getTicketIssueDate();
 		String auxiliar2 = dia.substring(0,10);
 		
 		// Cola auxiliar para agrupar infracciones por fecha
-		Queue<VOMovingViolations> enviar = new Queue();
+		Queue<VOMovingViolations> enviar = new Queue<>();
 	
 		
-		while(actual!=null)
+		while(iterador.hasNext())
 		{
-			
-			String dia2 = actual.darObjeto().getTicketIssueDate();
+			String dia2 = actual.getTicketIssueDate();
 			String auxiliar3 = dia2.substring(0,10);
 
 			//Si se repite la fecha se encola el elemento actual
 				if(auxiliar2.equals(auxiliar3)){
-					enviar.enqueue(actual.darObjeto());
-					actual = actual.darSiguiente();
+					enviar.enqueue(actual);
+					actual = iterador.next();
 				}
 				else
 				{
@@ -180,8 +180,8 @@ public class Controller {
 					// Si no se repita, se hace una DaylyStatistic con los elementos encontrados y se revisa el siguiente dia
 					VODaylyStatistic agregar = new VODaylyStatistic(enviar, auxiliar2);
 					respuesta.enqueue(agregar);
-					enviar = new Queue();
-					dia = actual.darObjeto().getTicketIssueDate();
+					enviar = new Queue<>();
+					dia = actual.getTicketIssueDate();
 					auxiliar2 = dia.substring(0,10);
 				}				
 			

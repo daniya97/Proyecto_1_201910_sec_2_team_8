@@ -26,6 +26,4 @@ public interface IQueue<T> extends Iterable<T>{
 	 */
 	public T dequeue();
 	
-	public Nodo<T> getFirst();
-	
 }
