@@ -36,9 +36,9 @@ public class MovingViolationsManagerView
 		System.out.println("Se encontraron "+ violations.size() + " elementos");
 		for (VOMovingViolations violation : violations) 
 		{
-			System.out.println(violation.objectId() + " " 
-								+ violation.getTicketIssueDate() + " " 
-								+ violation.getLocation()+ " " 
+			System.out.println(violation.objectId() + "\t" 
+								+ violation.getTicketIssueDate() + "\t" 
+								+ violation.getLocation()+ "\t" 
 								+ violation.getViolationDescription());
 		}
 	}

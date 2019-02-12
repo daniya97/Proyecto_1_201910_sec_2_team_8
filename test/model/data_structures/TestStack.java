@@ -4,7 +4,6 @@
 package model.data_structures;
 
 import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Iterator;
 
@@ -50,9 +49,9 @@ class TestStack {
 	@Test
 	void testStack() {
 		setUpEscenario0();
-		assertTrue(pila.isEmpty(), "La pila deberia estar vacia.");
-		assertTrue(pila.size() == 0, "La pila deberia tener tamano 0.");
-		assertTrue(pila.pop() == null, "La pila, al hacer pop, deberia retornal null");
+		assertTrue("La pila deberia estar vacia.", pila.isEmpty());
+		assertTrue("La pila deberia tener tamano 0.", pila.size() == 0);
+		assertTrue("La pila, al hacer pop, deberia retornal null", pila.pop() == null);
 	}
 	
 	/**
@@ -68,10 +67,10 @@ class TestStack {
 		String dato;
 		while (iterador.hasNext()) {
 			dato = iterador.next();
-			assertTrue(dato.equals("Elemento " + (2-i)), "El elemento siguiente no es identificado correctamente");
+			assertTrue("El elemento siguiente no es identificado correctamente", dato.equals("Elemento " + (2-i)));
 			i += 1;
 		}
-		assertTrue(i == 2, "El iterador deberia identificar y devolver 2 elementos");
+		assertTrue("El iterador deberia identificar y devolver 2 elementos", i == 2);
 	}
 	
 	/**
@@ -82,15 +81,15 @@ class TestStack {
 		for (int i = 0; i <= 2; i++) {
 			if 		(i == 0) {
 				setUpEscenario0();
-				assertTrue(pila.isEmpty(), "La pila deberia estar vacia.");
+				assertTrue("La pila deberia estar vacia.", pila.isEmpty());
 			}
 			else if (i == 1) {
 				setUpEscenario1();
-				assertTrue(!pila.isEmpty(), "La pila deberia NO deberia vacia.");
+				assertTrue("La pila deberia NO deberia vacia.", !pila.isEmpty());
 			}
 			else if (i == 2) {
 				setUpEscenario2();
-				assertTrue(!pila.isEmpty(), "La pila deberia NO deberia vacia.");
+				assertTrue("La pila deberia NO deberia vacia.", !pila.isEmpty());
 			}
 			
 		}
@@ -104,15 +103,15 @@ class TestStack {
 		for (int i = 0; i <= 2; i++) {
 			if 		(i == 0) {
 				setUpEscenario0();
-				assertTrue(pila.size() == 0, "La pila deberia estar vacia.");
+				assertTrue("La pila deberia estar vacia.", pila.size() == 0);
 			}
 			else if (i == 1) {
 				setUpEscenario1();
-				assertTrue(pila.size() == 1, "La pila deberia deberia tener 1 elemento.");
+				assertTrue("La pila deberia deberia tener 1 elemento.", pila.size() == 1);
 			}
 			else if (i == 2) {
 				setUpEscenario2();
-				assertTrue(pila.size() == 2, "La pila deberia deberia tener 2 elementos.");
+				assertTrue("La pila deberia deberia tener 2 elementos.", pila.size() == 2);
 			}
 			
 		}
@@ -128,19 +127,19 @@ class TestStack {
 				setUpEscenario0();
 				pila.push("Nuevo elemento");
 				Iterator<String> it = pila.iterator();
-				assertTrue(it.hasNext(), "Deberia tener elementos sobre los cuales iterar.");
+				assertTrue("Deberia tener elementos sobre los cuales iterar.", it.hasNext());
 				String dato = it.next();
-				assertTrue(dato.equals("Nuevo elemento"), "El primero dato deberia ser el recien anadido");
-				assertTrue(pila.size() == 1, "La pila deberia tener 1 elemento.");
+				assertTrue("El primero dato deberia ser el recien anadido", dato.equals("Nuevo elemento"));
+				assertTrue("La pila deberia tener 1 elemento.", pila.size() == 1);
 			}
 			else if (i == 1) {
 				setUpEscenario2();
 				pila.push("Nuevo elemento");
 				Iterator<String> it = pila.iterator();
-				assertTrue(it.hasNext(), "Deberia tener elementos sobre los cuales iterar.");
+				assertTrue("Deberia tener elementos sobre los cuales iterar.", it.hasNext());
 				String dato = it.next();
-				assertTrue(dato.equals("Nuevo elemento"), "El primero dato deberia ser el recien anadido");				
-				assertTrue(pila.size() == 3, "La pila deberia tener 3 elementos.");
+				assertTrue("El primero dato deberia ser el recien anadido", dato.equals("Nuevo elemento"));				
+				assertTrue("La pila deberia tener 3 elementos.", pila.size() == 3);
 			}
 			
 		}
@@ -155,19 +154,19 @@ class TestStack {
 			if 		(i == 0) {
 				setUpEscenario0();
 				pila.pop();
-				assertTrue(pila.size() == 0, "La pila deberia seguir de tamano 0.");
+				assertTrue("La pila deberia seguir de tamano 0.", pila.size() == 0);
 			}
 			else if (i == 1) {
 				setUpEscenario1();
 				String dato = pila.pop();
-				assertTrue(pila.isEmpty(), "La pila deberia deberia estar vacia.");
-				assertTrue(dato.equals("Elemento 1"), "El elemento eliminado no es el esperado.");
+				assertTrue("La pila deberia deberia estar vacia.", pila.isEmpty());
+				assertTrue("El elemento eliminado no es el esperado.", dato.equals("Elemento 1"));
 			}
 			else if (i == 2) {
 				setUpEscenario2();
 				String dato = pila.pop();
-				assertTrue(pila.size() == 1, "La pila deberia deberia tener 1 elementos.");
-				assertTrue(dato.equals("Elemento 2"), "El elemento eliminado no es el esperado.");
+				assertTrue("La pila deberia deberia tener 1 elementos.", pila.size() == 1);
+				assertTrue("El elemento eliminado no es el esperado.", dato.equals("Elemento 2"));
 			}
 			
 		}

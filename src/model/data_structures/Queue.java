@@ -1,20 +1,17 @@
-/**
- * 
- */
 package model.data_structures;
 
 import java.util.Iterator;
 
 /**
+ * Implementacion de IQueue, interfaz para una cola como estructura de datos abstracta
  * @author cohnan
- *
  */
 public class Queue<T> implements IQueue<T> {
 	/*
 	 * Variables
 	 */
-	private Nodo<T> first;
-	private int size;
+	private Nodo<T> first;	// Primer nodo en ser agregado
+	private int size;		// Tamano de la cola
 	
 	/*
 	 * Constructor
@@ -55,10 +52,7 @@ public class Queue<T> implements IQueue<T> {
 
 	@Override
 	public void enqueue(T t) {
-		
-		
 		Nodo<T> nuevo = new Nodo<>(t);
-		//Daniel: Tener en cuenta el caso en el que la lista este vac�a
 		if(size == 0){
 			first = nuevo;
 		}
@@ -67,36 +61,30 @@ public class Queue<T> implements IQueue<T> {
 			first = nuevo;
 		}
 		
-		size=size +1;
+		size += 1;
 
 	}
 
 	@Override
 	public T dequeue() {
-		
-		
 		if (size == 0) return null;
-		if(size == 1){
-			size --;
+		if (size == 1) {
+			size -= 1;
 			Nodo<T> auxiliar = first;
 			first = null;
 			return auxiliar.darObjeto();
 		}
 		
-		//Daniel: Toca considerar el caso en el que s�lo haya un elemento
-		
-		
+		// Referencia al penultimo nodo actual
 		Nodo<T> penultimoViejo = first;
-
-		
 		while(penultimoViejo.darSiguiente().darSiguiente() != null) {
 			penultimoViejo = penultimoViejo.darSiguiente();
 		}
 		
-		
-		
+		// Eliminacion de referencia al actual nodo ultimo
 		Nodo<T> ultimoViejo = penultimoViejo.darSiguiente();
 		penultimoViejo.cambiarSiguiente(null);
+		
 		size--;
 		return ultimoViejo.darObjeto();
 	}

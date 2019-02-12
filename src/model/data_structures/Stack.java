@@ -5,8 +5,8 @@ import java.util.Iterator;
 public class Stack <T> implements IStack<T> { // Sebastian: creo que es necesario agregar <I> luego de Stack. Edit: al corregir push, si se vuelve necesario
 
 	
-	private Nodo<T> first;
-	private int size; // Sebastian: size no habia sido declarada private
+	private Nodo<T> first; 	// Cabeza de la pila
+	private int size;		// Tamano de la pila
 	
 	
 	public Stack(){
@@ -16,10 +16,10 @@ public class Stack <T> implements IStack<T> { // Sebastian: creo que es necesari
 	
 	
 	@Override
-	public Iterator iterator() {
-		// Sebastian: implemente el metodo retornando el objeto creado abajo
+	public Iterator<T> iterator() {
+		
 		return new Iterator<T>() {
-
+			
 			private Nodo<T> current = first;
 			
 			@Override
@@ -38,8 +38,8 @@ public class Stack <T> implements IStack<T> { // Sebastian: creo que es necesari
 
 	@Override
 	public boolean isEmpty() {
-		// Alternativa: return size == 0;
-		if (first == null){ // Sebastian: Tuve que cambiar el .equals(null) por == null para que pasara el test
+		
+		if (first == null){ 
 			return true;
 		}
 		else
@@ -57,7 +57,7 @@ public class Stack <T> implements IStack<T> { // Sebastian: creo que es necesari
 	@Override
 	public void push(T t) {  // Sebastian: como estaba era posible agregar cualquier Object, a pesar de que solo queremos agregar objetos de tipo T
 		
-		Nodo<T> nuevo = new Nodo(t);
+		Nodo<T> nuevo = new Nodo<>(t);
 		
 		
 		if(size == 0){
@@ -70,7 +70,6 @@ public class Stack <T> implements IStack<T> { // Sebastian: creo que es necesari
 		}
 		
 		size ++;
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -82,15 +81,11 @@ public class Stack <T> implements IStack<T> { // Sebastian: creo que es necesari
 		}
 		else
 		{
-			size -= 1; // Sebastian: faltaba reducir el tamano al eliminar
+			size -= 1;
 			Nodo<T> auxiliar = first;
 			first = first.darSiguiente();
 			return auxiliar.darObjeto();
 		}
-		
-		
-		
-		// TODO Auto-generated method stub
 	}
 	
 
