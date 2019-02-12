@@ -97,6 +97,11 @@ public class Stack <T> implements IStack<T> { // Sebastian: creo que es necesari
 			return auxiliar.darObjeto();
 		}
 	}
+	
+	public Nodo<T> darPrimero(){
+		return first;
+	}
+
 
 
 }

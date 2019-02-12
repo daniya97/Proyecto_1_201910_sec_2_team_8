@@ -25,4 +25,6 @@ public interface IStack<T> extends Iterable<T>{
 	 * @return el elemento agregado más recientemente
 	 */
 	public T pop();	
+	
+	public Nodo<T> darPrimero();
 }

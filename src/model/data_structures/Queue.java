@@ -97,5 +97,9 @@ public class Queue<T> implements IQueue<T> {
 		size--;
 		return ultimoViejo.darObjeto();
 	}
+	
+	public Nodo<T> darPrimero(){
+		return first;
+	}
 
 }

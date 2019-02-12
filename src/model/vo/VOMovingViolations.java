@@ -1,5 +1,8 @@
 package model.vo;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Representation of a Trip object
  */
@@ -13,7 +16,7 @@ public class VOMovingViolations {
 	private String location;
 	private int totalPaid;
 	private boolean accidentIndicator;
-	private String ticketIssueDate;
+	private Calendar ticketIssueDate;
 	private String violationCode;
 	private String violationDesc;
 	private int fineAmount;
@@ -24,18 +27,18 @@ public class VOMovingViolations {
 	 */
 	public VOMovingViolations(String[] linea){
 
-
 		iD = linea[0];
 		location = linea[2];
 		totalPaid = Integer.parseInt(linea[9]);
 		if 		(linea[12].equalsIgnoreCase("Yes")) accidentIndicator = true;
 		else if (linea[12].equalsIgnoreCase("No"))	accidentIndicator = false;
 		else throw new IllegalArgumentException("El indicador de accidente no tiene un valor reconocible.");
-		ticketIssueDate = linea[13];
+		String auxiliar =  linea[13];
+		ticketIssueDate = Calendar.getInstance();
+		ticketIssueDate.set(Integer.parseInt(auxiliar.substring(0, 4)), Integer.parseInt(auxiliar.substring(5, 7)), Integer.parseInt(auxiliar.substring(8,10)),Integer.parseInt( auxiliar.substring(11,13)),Integer.parseInt(auxiliar.substring(14,16)));
 		violationCode = linea[14];
 		violationDesc = linea[15];
 		fineAmount = Integer.parseInt(linea[8]);
-
 	}
 
 
@@ -61,7 +64,7 @@ public class VOMovingViolations {
 	/**
 	 * @return date - Fecha cuando se puso la infracción .
 	 */
-	public String getTicketIssueDate() {
+	public Calendar getTicketIssueDate() {
 		// TODO Auto-generated method stub
 		return ticketIssueDate;
 	}
