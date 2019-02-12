@@ -17,14 +17,14 @@ public class VOMovingViolations {
 	private String violationCode;
 	private String violationDesc;
 	private int fineAmount;
-	
-	
+
+
 	/**
 	 * Constructor. Recibe los argumentos de la infracci�n a trav�s del archivo CSV
 	 */
 	public VOMovingViolations(String[] linea){
-	
-	
+
+
 		iD = linea[0];
 		location = linea[2];
 		totalPaid = Integer.parseInt(linea[9]);
@@ -35,12 +35,12 @@ public class VOMovingViolations {
 		violationCode = linea[14];
 		violationDesc = linea[15];
 		fineAmount = Integer.parseInt(linea[8]);
-		
+
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @return id - Identificador único de la infracción
 	 */
@@ -48,8 +48,8 @@ public class VOMovingViolations {
 		// TODO Auto-generated method stub
 		return iD;
 	}	
-	
-	
+
+
 	/**
 	 * @return location - Direcci�n en formato de texto.
 	 */
@@ -65,7 +65,7 @@ public class VOMovingViolations {
 		// TODO Auto-generated method stub
 		return ticketIssueDate;
 	}
-	
+
 	/**
 	 * @return totalPaid - Cuanto dinero efectivamente pag� el que recibi� la infracci�n en USD.
 	 */
@@ -73,7 +73,7 @@ public class VOMovingViolations {
 		// TODO Auto-generated method stub
 		return totalPaid;
 	}
-	
+
 	/**
 	 * @return accidentIndicator - Si hubo un accidente o no.
 	 */
@@ -81,7 +81,7 @@ public class VOMovingViolations {
 		// TODO Auto-generated method stub
 		return accidentIndicator;
 	}
-		
+
 	/**
 	 * @return description - Descripci�n textual de la infracción.
 	 */
@@ -89,12 +89,12 @@ public class VOMovingViolations {
 		// TODO Auto-generated method stub
 		return violationDesc;
 	}
-	
+
 	public String  getViolationCode() {
 		// TODO Auto-generated method stub
 		return violationCode;
 	}
-	
+
 	public int getFineAmount() {
 		return fineAmount;
 	}

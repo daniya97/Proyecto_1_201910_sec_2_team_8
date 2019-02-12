@@ -7,18 +7,19 @@ import static org.junit.Assert.*;
 
 import java.util.Iterator;
 
-import org.junit.jupiter.api.Test;
+
+import junit.framework.TestCase;
 
 /**
- * @author cohnan
+ * @author cohnan daniya97
  *
  */
-class TestStack {
+public class TestStack extends TestCase{
 	/*
 	 * Atributos 
 	 */
 	private Stack<String> pila;
-	
+
 	/*
 	 * Escenarios
 	 */
@@ -26,41 +27,39 @@ class TestStack {
 	private void setUpEscenario0() {
 		pila = new Stack<String>();
 	}
-	
+
 	// Pila con 1 elemento
 	private void setUpEscenario1() {
 		pila = new Stack<String>();
 		pila.push("Elemento 1");
 	}
-	
+
 	// Pila con 2 elementos
 	private void setUpEscenario2() {
 		pila = new Stack<String>();
 		pila.push("Elemento 1");
 		pila.push("Elemento 2");
 	}
-	
+
 	/*
 	 * Metodos para Pruebas
 	 */
 	/**
 	 * Prueba el constructor
 	 */
-	@Test
-	void testStack() {
+	public void testStack() {
 		setUpEscenario0();
 		assertTrue("La pila deberia estar vacia.", pila.isEmpty());
 		assertTrue("La pila deberia tener tamano 0.", pila.size() == 0);
 		assertTrue("La pila, al hacer pop, deberia retornal null", pila.pop() == null);
 	}
-	
+
 	/**
 	 * Prueba el metodo iterator()
 	 */
-	@Test
-	void testIterator() {
+	public void testIterator() {
 		setUpEscenario2();
-		
+
 		int i = 0;
 		//for(String dato : pila.iterator()) {
 		Iterator<String> iterador = pila.iterator();
@@ -72,12 +71,11 @@ class TestStack {
 		}
 		assertTrue("El iterador deberia identificar y devolver 2 elementos", i == 2);
 	}
-	
+
 	/**
 	 * Prueba el metodo isEmpty()
 	 */
-	@Test
-	void testIsEmpty() {
+	public void testIsEmpty() {
 		for (int i = 0; i <= 2; i++) {
 			if 		(i == 0) {
 				setUpEscenario0();
@@ -91,15 +89,14 @@ class TestStack {
 				setUpEscenario2();
 				assertTrue("La pila deberia NO deberia vacia.", !pila.isEmpty());
 			}
-			
+
 		}
 	}
-	
+
 	/**
 	 * Prueba el metodo size
 	 */
-	@Test
-	void testSize() {
+	public void testSize() {
 		for (int i = 0; i <= 2; i++) {
 			if 		(i == 0) {
 				setUpEscenario0();
@@ -113,15 +110,14 @@ class TestStack {
 				setUpEscenario2();
 				assertTrue("La pila deberia deberia tener 2 elementos.", pila.size() == 2);
 			}
-			
+
 		}
 	}
-	
+
 	/**
 	 * Prueba el metodo push
 	 */
-	@Test
-	void testPush() {
+	public void testPush() {
 		for (int i = 0; i <= 1; i++) {
 			if 		(i == 0) {
 				setUpEscenario0();
@@ -141,15 +137,14 @@ class TestStack {
 				assertTrue("El primero dato deberia ser el recien anadido", dato.equals("Nuevo elemento"));				
 				assertTrue("La pila deberia tener 3 elementos.", pila.size() == 3);
 			}
-			
+
 		}
 	}
-	
+
 	/**
 	 * Prueba el metodo pop
 	 */
-	@Test
-	void testPop() {
+	public void testPop() {
 		for (int i = 0; i <= 2; i++) {
 			if 		(i == 0) {
 				setUpEscenario0();
@@ -168,7 +163,7 @@ class TestStack {
 				assertTrue("La pila deberia deberia tener 1 elementos.", pila.size() == 1);
 				assertTrue("El elemento eliminado no es el esperado.", dato.equals("Elemento 2"));
 			}
-			
+
 		}
 	}
 }

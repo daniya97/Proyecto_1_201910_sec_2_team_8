@@ -11,25 +11,25 @@ public class TestQueue extends TestCase{
 
 
 	private Queue<String> cola;
-	
+
 	// Pila vacia
 	private void setUpEscenario0() {
 		cola = new Queue<String>();
 	}
-	
+
 	// Cola con 1 elemento
 	private void setUpEscenario1() {
 		cola = new Queue<String>();
 		cola.enqueue("Elemento 1");
 	}
-	
+
 	// Pila con 2 elementos
 	private void setUpEscenario2() {
 		cola = new Queue<String>();
 		cola.enqueue("Elemento 1");
 		cola.enqueue("Elemento 2");
 	}
-	
+
 	/*
 	 * Metodos para Pruebas
 	 */
@@ -42,8 +42,8 @@ public class TestQueue extends TestCase{
 		assertEquals("La cola deber�a estar vac�a",0,cola.size());
 		assertEquals("Al quitar un elemento de la cola, debe retornar null",null, cola.dequeue());
 	}
-	
-	
+
+
 	/**
 	 * Prueba el metodo isEmpty()
 	 */
@@ -61,10 +61,10 @@ public class TestQueue extends TestCase{
 				setUpEscenario2();
 				assertEquals("La cola deberia NO estar vacia.", false,cola.isEmpty());
 			}
-			
+
 		}
 	}
-	
+
 	/**
 	 * Prueba el metodo size
 	 */
@@ -82,10 +82,10 @@ public class TestQueue extends TestCase{
 				setUpEscenario2();
 				assertEquals("La cola deber�a tener tama�o 2", 2,cola.size());
 			}
-			
+
 		}
 	}
-	
+
 	/**
 	 * Prueba el metodo Enqueue
 	 */
@@ -107,34 +107,34 @@ public class TestQueue extends TestCase{
 				assertEquals("El primer elemento deber�a ser el recien anadido","Nuevo Elemento",cola.iterator().next());
 				assertEquals("La cola deber�a tener tama�o 3", 3,cola.size());
 			}
-			
+
 		}
 	}
-	
+
 	/**
 	 * Prueba el metodo dequeue
 	 */
 	public void testDequeue() {
 		for (int i = 0; i <2; i++) {
-//			if 		(i == 0) {
-//				setUpEscenario0();
-//				assertEquals("La pila deberia seguir de tamano 0.",0,cola.size());
-//				assertEquals("Deber�a retornar null",null,cola.dequeue());
-//				
-//			}
+			//			if 		(i == 0) {
+			//				setUpEscenario0();
+			//				assertEquals("La pila deberia seguir de tamano 0.",0,cola.size());
+			//				assertEquals("Deber�a retornar null",null,cola.dequeue());
+			//				
+			//			}
 			if (i == 1) {
 				setUpEscenario1();
 				String dato = cola.dequeue();
 				assertEquals("La cola deber�a estar vac�a",true,cola.isEmpty());
 				assertEquals("El elemento eliminado no es el esperado.","Elemento 1",dato);
 			}
-		
+
 		}
 	}
 
-	
-	
-	
-	
-	
+
+
+
+
+
 }

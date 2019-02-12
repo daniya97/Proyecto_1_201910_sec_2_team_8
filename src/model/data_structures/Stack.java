@@ -4,24 +4,26 @@ import java.util.Iterator;
 
 public class Stack <T> implements IStack<T> { // Sebastian: creo que es necesario agregar <I> luego de Stack. Edit: al corregir push, si se vuelve necesario
 
-	
+
 	private Nodo<T> first; 	// Cabeza de la pila
 	private int size;		// Tamano de la pila
-	
-	
+
+	/**
+	 * contructor
+	 */
 	public Stack(){
 		size = 0;
 		first = null;
 	}
-	
-	
+
+
 	@Override
 	public Iterator<T> iterator() {
-		
+
 		return new Iterator<T>() {
-			
+
 			private Nodo<T> current = first;
-			
+
 			@Override
 			public boolean hasNext() {
 				return current != null;
@@ -36,9 +38,11 @@ public class Stack <T> implements IStack<T> { // Sebastian: creo que es necesari
 		};
 	}
 
-	@Override
+	/**
+	 * @return true si la pila esta vacía
+	 */
 	public boolean isEmpty() {
-		
+
 		if (first == null){ 
 			return true;
 		}
@@ -48,18 +52,22 @@ public class Stack <T> implements IStack<T> { // Sebastian: creo que es necesari
 		}
 	}
 
-	@Override
+	/**
+	 * @return el tamano de la cola
+	 */
 	public int size() {
-		
+
 		return size;
 	}
 
-	@Override
-	public void push(T t) {  // Sebastian: como estaba era posible agregar cualquier Object, a pesar de que solo queremos agregar objetos de tipo T
-		
+	/**
+	 * agrega un elemento a la pila
+	 */
+	public void push(T t) {  
+
 		Nodo<T> nuevo = new Nodo<>(t);
-		
-		
+
+
 		if(size == 0){
 			first = nuevo;
 		}
@@ -68,14 +76,16 @@ public class Stack <T> implements IStack<T> { // Sebastian: creo que es necesari
 			nuevo.cambiarSiguiente(first);
 			first = nuevo;
 		}
-		
+
 		size ++;
-		
+
 	}
 
-	@Override
+	/**
+	 * quita un elemento de la pila
+	 */
 	public T pop() {
-		
+
 		if(size == 0){
 			return null;
 		}
@@ -87,6 +97,6 @@ public class Stack <T> implements IStack<T> { // Sebastian: creo que es necesari
 			return auxiliar.darObjeto();
 		}
 	}
-	
+
 
 }
