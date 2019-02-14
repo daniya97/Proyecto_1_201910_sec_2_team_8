@@ -11,6 +11,7 @@ public class Queue<T> implements IQueue<T> {
 	 * Variables
 	 */
 	private Nodo<T> first;	// Primer nodo en ser agregado
+	private Nodo<T> ultimo; // Ultimo nodo en ser agregado
 	private int size;		// Tamano de la cola
 
 	/*
@@ -42,7 +43,7 @@ public class Queue<T> implements IQueue<T> {
 
 
 	/**
-	 * @return true si esta vacía, false de lo contrario
+	 * @return true si esta vacï¿½a, false de lo contrario
 	 */
 	public boolean isEmpty() {
 		return size == 0;
@@ -60,14 +61,15 @@ public class Queue<T> implements IQueue<T> {
 	 */
 	public void enqueue(T t) {
 		Nodo<T> nuevo = new Nodo<>(t);
-		if(size == 0){
+		if(size == 0) {
 			first = nuevo;
+			ultimo = nuevo;
 		}
-		else{
-			nuevo.cambiarSiguiente(first);
-			first = nuevo;
+		else {
+			ultimo.cambiarSiguiente(nuevo);
+			ultimo = nuevo;
 		}
-
+		//System.out.println("se agrego " + t);
 		size += 1;
 
 	}
@@ -78,24 +80,26 @@ public class Queue<T> implements IQueue<T> {
 	public T dequeue() {
 		if (size == 0) return null;
 		if (size == 1) {
-			size -= 1;
+			size = 0;
 			Nodo<T> auxiliar = first;
 			first = null;
+			ultimo = null;
 			return auxiliar.darObjeto();
 		}
 
 		// Referencia al penultimo nodo actual
 		Nodo<T> penultimoViejo = first;
-		while(penultimoViejo.darSiguiente().darSiguiente() != null) {
+		while(penultimoViejo.darSiguiente() != ultimo) {
 			penultimoViejo = penultimoViejo.darSiguiente();
 		}
 
 		// Eliminacion de referencia al actual nodo ultimo
-		Nodo<T> ultimoViejo = penultimoViejo.darSiguiente();
+		T datoViejo = ultimo.darObjeto();
 		penultimoViejo.cambiarSiguiente(null);
+		ultimo = null;
 
 		size--;
-		return ultimoViejo.darObjeto();
+		return datoViejo;
 	}
 	
 	public Nodo<T> darPrimero(){
