@@ -216,7 +216,7 @@ public class Controller {
 
 			suma = contador1+ contador2+contador3+contador4;
 			
-			System.out.println("  ----------Información Sobre la Carga------------------  ");
+			System.out.println("  ----------Informaciï¿½n Sobre la Carga------------------  ");
 			System.out.println("Infracciones Mes 1: "+contador1);
 			System.out.println("Infracciones Mes 2: " + contador2);
 			System.out.println("Infracciones Mes 3: " + contador3);
@@ -316,7 +316,7 @@ public class Controller {
 		
 	}
 	
-public void fineAmtPromedio (String violationCode){
+	public void fineAmtPromedio (String violationCode){
 		
 		Nodo<VOMovingViolations> actual = movingViolationsStack.darPrimero();
 		int sumaAccidente = 0;

@@ -43,7 +43,24 @@ public class TestQueue extends TestCase{
 		assertEquals("Al quitar un elemento de la cola, debe retornar null",null, cola.dequeue());
 	}
 
+	/**
+	 * Prueba el metodo iterator()
+	 */
+	public void testIterator() {
+		setUpEscenario2();
 
+		int i = 0;
+		//for(String dato : pila.iterator()) {
+		Iterator<String> iterador = cola.iterator();
+		String dato;
+		while (iterador.hasNext()) {
+			dato = iterador.next();
+			assertTrue("El elemento siguiente no es identificado correctamente", dato.equals("Elemento " + (i+1)));
+			i += 1;
+		}
+		assertTrue("El iterador deberia identificar y devolver 2 elementos", i == 2);
+	}
+	
 	/**
 	 * Prueba el metodo isEmpty()
 	 */
@@ -100,12 +117,17 @@ public class TestQueue extends TestCase{
 			}
 			else if (i == 1) {
 				setUpEscenario2();
-				cola.enqueue("Nuevo Elemento");
+				cola.enqueue("Nuevo elemento");
 				Iterator<String> it = cola.iterator();
-				assertEquals("Deber�a tener elementos sobre los cuales iterar",true,it.hasNext());
+				assertTrue("Deberia tener elementos sobre los cuales iterar.", it.hasNext());
 				String dato = it.next();
-				assertEquals("El primer elemento deber�a ser el recien anadido","Nuevo Elemento",cola.iterator().next());
-				assertEquals("La cola deber�a tener tama�o 3", 3,cola.size());
+				assertTrue("El primero dato deberia ser el primero anadido", dato.equals("Elemento 1"));
+				dato = it.next();
+				assertTrue("El segundo dato deberia ser el segundo anadido", dato.equals("Elemento 2"));
+				dato = it.next();
+				assertTrue("El ultimo dato deberia ser el ultimo anadido", dato.equals("Nuevo elemento"));
+				assertTrue("La pila deberia tener 3 elementos.", cola.size() == 3);
+				assertTrue("La pila no deberia tener mas elementos", !it.hasNext());
 			}
 
 		}
@@ -116,25 +138,25 @@ public class TestQueue extends TestCase{
 	 */
 	public void testDequeue() {
 		for (int i = 0; i <2; i++) {
-			//			if 		(i == 0) {
-			//				setUpEscenario0();
-			//				assertEquals("La pila deberia seguir de tamano 0.",0,cola.size());
-			//				assertEquals("Deber�a retornar null",null,cola.dequeue());
-			//				
-			//			}
-			if (i == 1) {
+			if 		(i == 0) {
+				setUpEscenario0();
+				assertEquals("La pila deberia seguir de tamano 0.",0,cola.size());
+				assertEquals("Deber�a retornar null",null,cola.dequeue());
+					
+			}
+			else if (i == 1) {
 				setUpEscenario1();
 				String dato = cola.dequeue();
 				assertEquals("La cola deber�a estar vac�a",true,cola.isEmpty());
 				assertEquals("El elemento eliminado no es el esperado.","Elemento 1",dato);
 			}
+			else if (i == 2) {
+				setUpEscenario2();
+				String dato = cola.dequeue();
+				assertTrue("La pila deberia deberia tener 1 elementos.", cola.size() == 1);
+				assertTrue("El elemento eliminado no es el esperado.", dato.equals("Elemento 2"));
+			}
 
 		}
 	}
-
-
-
-
-
-
 }
