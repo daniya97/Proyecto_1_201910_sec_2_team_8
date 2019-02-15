@@ -14,7 +14,7 @@ public class VOMovingViolations {
 	 */
 	private String iD;
 	private String location;
-	private int totalPaid;
+	private double totalPaid;
 	private boolean accidentIndicator;
 	private Calendar ticketIssueDate;
 	private String violationCode;
@@ -29,7 +29,7 @@ public class VOMovingViolations {
 
 		iD = linea[0];
 		location = linea[2];
-		totalPaid = Integer.parseInt(linea[9]);
+		totalPaid = Double.parseDouble(linea[9]);
 		if 		(linea[12].equalsIgnoreCase("Yes")) accidentIndicator = true;
 		else if (linea[12].equalsIgnoreCase("No"))	accidentIndicator = false;
 		else throw new IllegalArgumentException("El indicador de accidente no tiene un valor reconocible.");
@@ -72,7 +72,7 @@ public class VOMovingViolations {
 	/**
 	 * @return totalPaid - Cuanto dinero efectivamente pag� el que recibi� la infracci�n en USD.
 	 */
-	public int getTotalPaid() {
+	public double getTotalPaid() {
 		// TODO Auto-generated method stub
 		return totalPaid;
 	}
