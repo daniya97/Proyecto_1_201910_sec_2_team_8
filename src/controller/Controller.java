@@ -32,15 +32,15 @@ public class Controller {
 	/**
 	 * Pila donde se van a cargar los datos de los archivos
 	 */
-	private IStack<VOMovingViolations> movingViolationsStack;
+	//private IStack<VOMovingViolations> movingViolationsStack;
 
 
 	public Controller() {
 		view = new MovingViolationsManagerView();
 
-		//TODO, inicializar la pila y la cola
+		// Inicializar la pila y la cola
 		movingViolationsQueue = null;
-		movingViolationsStack = null;
+		//movingViolationsStack = null;
 	}
 
 	public void run() {
@@ -149,7 +149,7 @@ public class Controller {
 
 		try {
 
-			movingViolationsStack = new Stack<VOMovingViolations>();
+			//movingViolationsStack = new Stack<VOMovingViolations>();
 			movingViolationsQueue = new Queue<VOMovingViolations>();
 
 			VOMovingViolations infraccion;
@@ -173,7 +173,7 @@ public class Controller {
 				else{
 					infraccion = new VOMovingViolations(row);
 					movingViolationsQueue.enqueue(infraccion);
-					movingViolationsStack.push(infraccion);
+					//movingViolationsStack.push(infraccion);
 					contador1++;
 				}
 			}
@@ -185,7 +185,7 @@ public class Controller {
 				else{
 					infraccion = new VOMovingViolations(row);
 					movingViolationsQueue.enqueue(infraccion);
-					movingViolationsStack.push(infraccion);
+					//movingViolationsStack.push(infraccion);
 					contador2++;
 				}
 			}
@@ -197,7 +197,7 @@ public class Controller {
 				else{
 					infraccion = new VOMovingViolations(row);
 					movingViolationsQueue.enqueue(infraccion);
-					movingViolationsStack.push(infraccion);
+					//movingViolationsStack.push(infraccion);
 					contador3++;
 				}
 			}
@@ -209,7 +209,7 @@ public class Controller {
 				else{
 					infraccion = new VOMovingViolations(row);
 					movingViolationsQueue.enqueue(infraccion);
-					movingViolationsStack.push(infraccion);
+					//movingViolationsStack.push(infraccion);
 					contador4++;
 				}
 			}
@@ -265,7 +265,7 @@ public class Controller {
 		IStack<VOMovingViolations> respuesta = new Stack<>();
 
 
-		Nodo<VOMovingViolations> actual = movingViolationsStack.darPrimero();
+		Nodo<VOMovingViolations> actual = movingViolationsQueue.darPrimero();
 		Nodo<VOMovingViolations> auxiliar =null;
 		while(actual != null){
 			
@@ -292,7 +292,7 @@ public class Controller {
 	public IQueue<VOMovingViolations> consultarInfracciones(int mes1, int dia1, int hora1,int min1, int mes2, int dia2, int hora2, int min2){
 		
 		Queue<VOMovingViolations> respuesta = new Queue<VOMovingViolations>();
-		Nodo<VOMovingViolations> actual = movingViolationsStack.darPrimero();
+		Nodo<VOMovingViolations> actual = movingViolationsQueue.darPrimero();
 
 		Calendar c1 = Calendar.getInstance();
 		Calendar c2 = Calendar.getInstance();
@@ -318,7 +318,7 @@ public class Controller {
 	
 	public void fineAmtPromedio (String violationCode){
 		
-		Nodo<VOMovingViolations> actual = movingViolationsStack.darPrimero();
+		Nodo<VOMovingViolations> actual = movingViolationsQueue.darPrimero();
 		int sumaAccidente = 0;
 		int sumaNoAccidente = 0;
 		int contadorAccidente = 0;

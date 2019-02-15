@@ -15,6 +15,8 @@ public class VOMovingViolations {
 	private String iD;
 	private String location;
 	private double totalPaid;
+	private double penalty1;
+	private double penalty2;
 	private boolean accidentIndicator;
 	private Calendar ticketIssueDate;
 	private String violationCode;
@@ -30,6 +32,9 @@ public class VOMovingViolations {
 		iD = linea[0];
 		location = linea[2];
 		totalPaid = Double.parseDouble(linea[9]);
+		penalty1 = Double.parseDouble(linea[10]);
+		if (!linea[11].equals("")) penalty2 = Double.parseDouble(linea[11]);
+		else penalty2 = 0;
 		if 		(linea[12].equalsIgnoreCase("Yes")) accidentIndicator = true;
 		else if (linea[12].equalsIgnoreCase("No"))	accidentIndicator = false;
 		else throw new IllegalArgumentException("El indicador de accidente no tiene un valor reconocible.");
@@ -48,7 +53,6 @@ public class VOMovingViolations {
 	 * @return id - Identificador único de la infracción
 	 */
 	public String objectId() {
-		// TODO Auto-generated method stub
 		return iD;
 	}	
 
@@ -57,7 +61,6 @@ public class VOMovingViolations {
 	 * @return location - Direcci�n en formato de texto.
 	 */
 	public String getLocation() {
-		// TODO Auto-generated method stub
 		return location;
 	}
 
@@ -65,7 +68,6 @@ public class VOMovingViolations {
 	 * @return date - Fecha cuando se puso la infracción .
 	 */
 	public Calendar getTicketIssueDate() {
-		// TODO Auto-generated method stub
 		return ticketIssueDate;
 	}
 
@@ -73,15 +75,27 @@ public class VOMovingViolations {
 	 * @return totalPaid - Cuanto dinero efectivamente pag� el que recibi� la infracci�n en USD.
 	 */
 	public double getTotalPaid() {
-		// TODO Auto-generated method stub
 		return totalPaid;
+	}
+	
+	/**
+	 * @return penalty1 - 
+	 */
+	public double getPenalty1() {
+		return penalty1;
+	}
+	
+	/**
+	 * @return penalty2 - 
+	 */
+	public double getPenalty2() {
+		return penalty2;
 	}
 
 	/**
 	 * @return accidentIndicator - Si hubo un accidente o no.
 	 */
 	public boolean getAccidentIndicator() {
-		// TODO Auto-generated method stub
 		return accidentIndicator;
 	}
 
@@ -89,12 +103,10 @@ public class VOMovingViolations {
 	 * @return description - Descripci�n textual de la infracción.
 	 */
 	public String  getViolationDescription() {
-		// TODO Auto-generated method stub
 		return violationDesc;
 	}
 
 	public String  getViolationCode() {
-		// TODO Auto-generated method stub
 		return violationCode;
 	}
 
