@@ -1,5 +1,6 @@
 package model.data_structures;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 /**
@@ -102,8 +103,12 @@ public class Queue<T> implements IQueue<T> {
 		return datoViejo;
 	}
 	
-	public Nodo<T> darPrimero(){
-		return first;
+	public void sort(Queue<T> cola, Comparator<T> comparador, boolean descendente) {
+		
+	}
+	
+	private static <T> void merge(Queue<T> q1, Queue<T> q2, Queue<T> result, Comparator<T> comparador, boolean descendente) {
+		
 	}
 
 }

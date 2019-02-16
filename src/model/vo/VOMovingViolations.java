@@ -15,6 +15,7 @@ public class VOMovingViolations {
 	 */
 	private String iD;
 	private String location;
+	private int streetsegID;
 	private double totalPaid;
 	private double penalty1;
 	private double penalty2;
@@ -32,6 +33,7 @@ public class VOMovingViolations {
 
 		iD = linea[0];
 		location = linea[2];
+		streetsegID = Integer.parseInt(linea[3]);
 		totalPaid = Double.parseDouble(linea[9]);
 		penalty1 = Double.parseDouble(linea[10]);
 		if (!linea[11].equals("")) penalty2 = Double.parseDouble(linea[11]);
@@ -60,6 +62,13 @@ public class VOMovingViolations {
 	 */
 	public String getLocation() {
 		return location;
+	}
+	
+	/**
+	 * @return streetsgeID
+	 */
+	public int getStreetsegID() {
+		return streetsegID;
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package model.data_structures;
 
+import java.util.Comparator;
+
 public interface IStack<T> extends Iterable<T>{
 	
 	/**
@@ -26,5 +28,5 @@ public interface IStack<T> extends Iterable<T>{
 	 */
 	public T pop();	
 	
-	public Nodo<T> darPrimero();
+	public void sort(Stack<T> pila, Comparator<T> comparador, boolean descendente);
 }

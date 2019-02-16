@@ -1,5 +1,7 @@
 package model.data_structures;
 
+import java.util.Comparator;
+
 public interface IQueue<T> extends Iterable<T>{
 
 	/**
@@ -26,6 +28,7 @@ public interface IQueue<T> extends Iterable<T>{
 	 */
 	public T dequeue();
 	
-	public Nodo<T> darPrimero();
+	
+	public void sort(Queue<T> cola, Comparator<T> comparador, boolean descendente);
 	
 }
