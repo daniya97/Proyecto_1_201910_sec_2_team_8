@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -127,18 +128,36 @@ public class Controller {
 	 */
 	public void loadMovingViolations(String[] movingViolationsFilePaths){
 		CSVReader reader = null;
+		int[] contadores = new int[movingViolationsFilePaths.length];
+		int fileCounter = 0;
 		try {
 			movingViolationsQueue = new Queue<VOMovingViolations>();
 			
 			for (String filePath : movingViolationsFilePaths) {
-				reader = new CSVReader(new FileReader("./data/"+filePath));
+				reader = new CSVReader(new FileReader("data/"+filePath));
+				
 				 
 				String[] headers = reader.readNext();
+				int[] posiciones = new int[VOMovingViolations.EXPECTEDHEADERS.length];
+				for (int i = 0; i < VOMovingViolations.EXPECTEDHEADERS.length; i++) {
+					posiciones[i] = buscarArray(headers, VOMovingViolations.EXPECTEDHEADERS[i]);
+				}
 				
+				contadores[fileCounter] = 0;
 			    for (String[] row : reader) {
-			    	movingViolationsQueue.enqueue(new VOMovingViolations(headers, row));
+			    	movingViolationsQueue.enqueue(new VOMovingViolations(posiciones, row));
+			    	contadores[fileCounter] += 1;
 			    }
+			    fileCounter += 1;
 			}
+			
+			int suma = 0;
+			for (int contador : contadores) suma += contador;
+			System.out.println("  ----------Informaci�n Sobre la Carga------------------  ");
+			for (int i = 0; i < contadores.length; i++) {
+				System.out.println("Infracciones Mes " + (i+1)+": " + contadores[i]);
+			}
+			System.out.println("Total Infracciones Cuatrisemetre: " + suma);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -269,6 +288,22 @@ public class Controller {
 
 	
 	
+	private int buscarArray(String[] array, String string) {
+		int i = 0;
+		
+		while (i < array.length) {
+			if (array[i].replaceAll("\\s", "").equals(string)) {
+				//System.out.println(i);
+				//System.out.println(array[i] + "  " + string );
+				return i;
+			}
+			i += 1;
+		}
+		//System.out.println("."+string+".");
+		//System.out.println(-1);
+		return -1;
+	}
+
 	public IStack <VOMovingViolations> verificarObjectIDRepetidos(){
 		// Sebastian: no fue inmediatamente claro como cambiar este metodo para usar iteradores
 		// PERO asi como esta planteado este metodo tiene orden de crecimiento O(n^2), yo sugeriria
