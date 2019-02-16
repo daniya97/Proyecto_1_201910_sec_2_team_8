@@ -1,6 +1,7 @@
 package model.vo;
 
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -45,9 +46,6 @@ public class VOMovingViolations {
 		violationDesc = linea[15];
 		fineAmount = Integer.parseInt(linea[8]);
 	}
-
-
-
 
 	/**
 	 * @return id - Identificador único de la infracción
@@ -112,5 +110,80 @@ public class VOMovingViolations {
 
 	public int getFineAmount() {
 		return fineAmount;
+	}
+	
+	/**
+	 * For comparations
+	 */
+	
+	public static class ObjectIDOrder implements Comparator<VOMovingViolations> {
+
+		@Override
+		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
+			
+			return 0;
+		}
+		
+	}
+	
+	public static class TicketIssueOrder implements Comparator<VOMovingViolations> {
+
+		@Override
+		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
+			
+			return 0;
+		}
+		
+	}
+	
+	public static class TimeOrder implements Comparator<VOMovingViolations> {
+
+		@Override
+		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
+			
+			return 0;
+		}
+		
+	}
+	
+	public static class ViolationCodeOrder implements Comparator<VOMovingViolations> {
+
+		@Override
+		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
+			
+			return 0;
+		}
+		
+	}
+	
+	public static class StreetsgeIDDateOrder implements Comparator<VOMovingViolations> {
+
+		@Override
+		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
+			
+			return 0;
+		}
+		
+	}
+	
+	
+	public static class TotalPaidOrder implements Comparator<VOMovingViolations> {
+
+		@Override
+		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
+			
+			return 0;
+		}
+		
+	}
+	
+	public static class ViolationDescOrder implements Comparator<VOMovingViolations> {
+
+		@Override
+		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
+			
+			return 0;
+		}
+		
 	}
 }
