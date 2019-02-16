@@ -92,59 +92,68 @@ public class Controller {
 
 	public void elegirCuatriSemestre(int n)
 	{
-		try {
-
-			CSVReader readerJan = new CSVReader(new FileReader("."+File.separator+"data"+File.separator+"Moving_Violations_Issued_in_January_2018.csv"));
-			CSVReader readerFeb = new CSVReader(new FileReader("."+File.separator+"data"+File.separator+"Moving_Violations_Issued_in_February_2018.csv"));
-			CSVReader readerMar = new CSVReader(new FileReader("."+File.separator+"data"+File.separator+"Moving_Violations_Issued_in_March_2018.csv"));
-			CSVReader readerApr = new CSVReader(new FileReader("."+File.separator+"data"+File.separator+"Moving_Violations_Issued_in_April_2018.csv"));
-			CSVReader readerMay = new CSVReader(new FileReader("."+File.separator+"data"+File.separator+"Moving_Violations_Issued_in_May_2018.csv"));
-			CSVReader readerJun = new CSVReader(new FileReader("."+File.separator+"data"+File.separator+"Moving_Violations_Issued_in_June_2018.csv"));
-			CSVReader readerJul = new CSVReader(new FileReader("."+File.separator+"data"+File.separator+"Moving_Violations_Issued_in_July_2018.csv"));
-			CSVReader readerAgu = new CSVReader(new FileReader("."+File.separator+"data"+File.separator+"Moving_Violations_Issued_in_August_2018.csv"));
-			CSVReader readerSep = new CSVReader(new FileReader("."+File.separator+"data"+File.separator+"Moving_Violations_Issued_in_September_2018.csv"));
-			CSVReader readerOct = new CSVReader(new FileReader("."+File.separator+"data"+File.separator+"Moving_Violations_Issued_in_October_2018.csv"));
-			CSVReader readerNov = new CSVReader(new FileReader("."+File.separator+"data"+File.separator+"Moving_Violations_Issued_in_November_2018.csv"));
-			CSVReader readerDec = new CSVReader(new FileReader("."+File.separator+"data"+File.separator+"Moving_Violations_Issued_in_December_2018.csv"));
-
-
-			if(n == 1)
-			{
-				loadMovingViolations(readerJan, readerFeb, readerMar, readerApr);
-			}
-			else if(n == 2)
-			{
-				loadMovingViolations(readerMay, readerJun, readerJul, readerAgu);
-			}
-			else if(n == 3){
-
-				loadMovingViolations(readerSep,readerOct,readerNov,readerDec);
-			}
-			else
-			{
-				//handle
-			}
-
-
-
-
-		} catch (FileNotFoundException e) {
-
-
-
-
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(n == 1)
+		{
+			loadMovingViolations(new String[] {"Moving_Violations_Issued_in_January_2018.csv", 
+					    	     "Moving_Violations_Issued_in_February_2018.csv",
+					    	     "Moving_Violations_Issued_in_March_2018.csv",
+					    	     "Moving_Violations_Issued_in_April_2018.csv"});
 		}
-
-
+		else if(n == 2)
+		{
+			loadMovingViolations(new String[] {"Moving_Violations_Issued_in_May_2018.csv", 
+								 "Moving_Violations_Issued_in_June_2018.csv",
+								 "Moving_Violations_Issued_in_July_2018.csv",
+								 "Moving_Violations_Issued_in_August_2018.csv"});
+		}
+		else if(n == 3){
+			loadMovingViolations(new String[] {"Moving_Violations_Issued_in_September_2018.csv", 
+		    	     			 "Moving_Violations_Issued_in_October_2018.csv",
+		    	     			 "Moving_Violations_Issued_in_November_2018.csv",
+		    	     			 "Moving_Violations_Issued_in_December_2018.csv"});
+		}
+		else
+		{
+			throw new IllegalArgumentException("No existe ese cuatrimestre en un annio.");
+		}
+		
 	}
+		
+
 
 
 	/**
 	 * Carga la informacion sobre infracciones de los archivos a una pila y una cola ordenadas por fecha.
 	 */
-	public void loadMovingViolations(CSVReader reader1, CSVReader reader2, CSVReader reader3, CSVReader reader4) {
+	public void loadMovingViolations(String[] movingViolationsFilePaths){
+		CSVReader reader = null;
+		try {
+			movingViolationsQueue = new Queue<VOMovingViolations>();
+			
+			for (String filePath : movingViolationsFilePaths) {
+				reader = new CSVReader(new FileReader("./data/"+filePath));
+				 
+				String[] headers = reader.readNext();
+				
+			    for (String[] row : reader) {
+			    	movingViolationsQueue.enqueue(new VOMovingViolations(headers, row));
+			    }
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+	}
+	/*public void loadMovingViolations(CSVReader reader1, CSVReader reader2, CSVReader reader3, CSVReader reader4) {
 
 
 		try {
@@ -256,7 +265,7 @@ public class Controller {
 			}
 
 		}
-	}
+	}*/
 
 	
 	
