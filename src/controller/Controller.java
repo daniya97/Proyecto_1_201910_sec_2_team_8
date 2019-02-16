@@ -138,6 +138,7 @@ public class Controller {
 				
 				 
 				String[] headers = reader.readNext();
+				//System.out.println("." + headers[0] + ".");
 				int[] posiciones = new int[VOMovingViolations.EXPECTEDHEADERS.length];
 				for (int i = 0; i < VOMovingViolations.EXPECTEDHEADERS.length; i++) {
 					posiciones[i] = buscarArray(headers, VOMovingViolations.EXPECTEDHEADERS[i]);
@@ -292,7 +293,7 @@ public class Controller {
 		int i = 0;
 		
 		while (i < array.length) {
-			if (array[i].replaceAll("\\s", "").equals(string)) {
+			if (array[i].equals(string)) {
 				//System.out.println(i);
 				//System.out.println(array[i] + "  " + string );
 				return i;

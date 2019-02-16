@@ -54,7 +54,7 @@ public class VOMovingViolations {
 		//System.out.println("Procesando linea: "+ linea);
 		String campo;
 		
-		//iD = linea[headerPositions[OBJECTID]];
+		iD = linea[0];//linea[headerPositions[OBJECTID]];
 		
 		location = linea[headerPositions[LOCATION]];
 		
