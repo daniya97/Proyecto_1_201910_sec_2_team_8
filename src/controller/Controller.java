@@ -261,12 +261,20 @@ public class Controller {
 	
 	
 	public IStack <VOMovingViolations> verificarObjectIDRepetidos(){
-		
+		// Sebastian: no fue inmediatamente claro como cambiar este metodo para usar iteradores
+		// PERO asi como esta planteado este metodo tiene orden de crecimiento O(n^2), yo sugeriria
+		// que se ordenara la lista por ObjectID y asi solo hay revisar una vez la lista, similar a como
+		// hizo getDailyStatistics()
+		/*
 		IStack<VOMovingViolations> respuesta = new Stack<>();
-
-
-		Nodo<VOMovingViolations> actual = movingViolationsQueue.darPrimero();
-		Nodo<VOMovingViolations> auxiliar =null;
+		
+		Iterator<VOMovingViolations> iterador1 = movingViolationsQueue.iterator();
+		Iterator<VOMovingViolations> iterador2 = movingViolationsQueue.iterator();
+		//Nodo<VOMovingViolations> actual = movingViolationsQueue.darPrimero();
+		VOMovingViolations actual = iterador1.next();
+		//Nodo<VOMovingViolations> auxiliar =null;
+		VOMovingViolations auxiliar = null;
+		
 		while(actual != null){
 			
 			auxiliar = actual.darSiguiente();
@@ -283,16 +291,18 @@ public class Controller {
 		actual = actual.darSiguiente();
 			
 		}
-		
-		return respuesta;
+		*/
+		return null;
 		
 	}
 	
 	
 	public IQueue<VOMovingViolations> consultarInfracciones(int mes1, int dia1, int hora1,int min1, int mes2, int dia2, int hora2, int min2){
-		
+		// Sebastian: Lo modifique solo para no usar darPrimero() 
+		// TODO esto parece que tendra un Off By One error
 		Queue<VOMovingViolations> respuesta = new Queue<VOMovingViolations>();
-		Nodo<VOMovingViolations> actual = movingViolationsQueue.darPrimero();
+		Iterator<VOMovingViolations> iterador = movingViolationsQueue.iterator();
+		VOMovingViolations actual = iterador.next();
 
 		Calendar c1 = Calendar.getInstance();
 		Calendar c2 = Calendar.getInstance();
@@ -301,15 +311,15 @@ public class Controller {
 		c1.set(2018, mes1, dia1, hora1, min1);
 		c1.set(2018, mes2, dia2, hora2, min2);
 		
-		while(actual != null){
+		while(iterador.hasNext()){
 			
-			Fechaobjeto = actual.darObjeto().getTicketIssueDate();
+			Fechaobjeto = actual.getTicketIssueDate();
 			
 			if(Fechaobjeto.compareTo(c1)>0 && Fechaobjeto.compareTo(c2)<0){
-				respuesta.enqueue(actual.darObjeto());
+				respuesta.enqueue(actual);
 			}
 			
-			actual = actual.darSiguiente();
+			actual = iterador.next();
 		}
 		
 		return respuesta;
@@ -317,8 +327,10 @@ public class Controller {
 	}
 	
 	public void fineAmtPromedio (String violationCode){
-		
-		Nodo<VOMovingViolations> actual = movingViolationsQueue.darPrimero();
+		// Sebastian: Lo modifique solo para no usar darPrimero() 
+		// TODO esto parece que tendra un Off By One error
+		Iterator<VOMovingViolations> iterador = movingViolationsQueue.iterator();
+		VOMovingViolations actual = iterador.next();
 		int sumaAccidente = 0;
 		int sumaNoAccidente = 0;
 		int contadorAccidente = 0;
@@ -327,18 +339,18 @@ public class Controller {
 		double respuestaNoAccidente = 0;
 		
 		
-		while(actual != null){
+		while(iterador.hasNext()){
 			
-			if(actual.darObjeto().getAccidentIndicator()){
-				sumaAccidente+=actual.darObjeto().getFineAmount();
+			if(actual.getAccidentIndicator()){
+				sumaAccidente+=actual.getFineAmount();
 				contadorAccidente++;
 			}
 			else
 			{
-				sumaNoAccidente+=actual.darObjeto().getFineAmount();
+				sumaNoAccidente+=actual.getFineAmount();
 				contadorNoAccidente++;
 			}
-			actual = actual.darSiguiente();
+			actual = iterador.next();
 		}
 		
 		respuestaAccidente = sumaAccidente/contadorAccidente;
