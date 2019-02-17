@@ -17,7 +17,6 @@ import model.data_structures.IStack;
 import model.data_structures.Nodo;
 import model.data_structures.Queue;
 import model.data_structures.Stack;
-import model.vo.VODaylyStatistic;
 import model.vo.VOMovingViolations;
 import view.MovingViolationsManagerView;
 
