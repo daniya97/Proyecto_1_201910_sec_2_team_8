@@ -29,6 +29,7 @@ public class Controller {
 	 * Cola donde se van a cargar los datos de los archivos
 	 */
 	private IQueue<VOMovingViolations> movingViolationsQueue;
+	private int cuatrimestreCargado = -1;
 
 	/**
 	 * Pila donde se van a cargar los datos de los archivos
@@ -99,6 +100,7 @@ public class Controller {
 					    	     "Moving_Violations_Issued_in_February_2018.csv",
 					    	     "Moving_Violations_Issued_in_March_2018.csv",
 					    	     "Moving_Violations_Issued_in_April_2018.csv"});
+			cuatrimestreCargado = 1;
 		}
 		else if(n == 2)
 		{
@@ -106,12 +108,14 @@ public class Controller {
 								 "Moving_Violations_Issued_in_June_2018.csv",
 								 "Moving_Violations_Issued_in_July_2018.csv",
 								 "Moving_Violations_Issued_in_August_2018.csv"});
+			cuatrimestreCargado = 2;
 		}
 		else if(n == 3){
 			loadMovingViolations(new String[] {"Moving_Violations_Issued_in_September_2018.csv", 
 		    	     			 "Moving_Violations_Issued_in_October_2018.csv",
 		    	     			 "Moving_Violations_Issued_in_November_2018.csv",
 		    	     			 "Moving_Violations_Issued_in_December_2018.csv"});
+			cuatrimestreCargado = 3;
 		}
 		else
 		{
@@ -119,7 +123,6 @@ public class Controller {
 		}
 		
 	}
-		
 
 
 

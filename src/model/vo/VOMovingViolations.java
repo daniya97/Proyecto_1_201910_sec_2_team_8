@@ -36,6 +36,7 @@ public class VOMovingViolations {
 	 */
 	private String iD; 
 	private String location;
+	private int addressID;
 	private int streetsegID;
 	private double totalPaid;
 	private double penalty1;
@@ -57,6 +58,10 @@ public class VOMovingViolations {
 		iD = linea[0];//linea[headerPositions[OBJECTID]];
 		
 		location = linea[headerPositions[LOCATION]];
+		
+		campo = linea[headerPositions[ADDRESS_ID]];
+		if (!campo.equals("")) addressID = Integer.parseInt(campo);
+		else addressID = -1;
 		
 		campo = linea[headerPositions[STREETSEGID]];
 		if (!campo.equals("")) streetsegID = Integer.parseInt(campo);
@@ -101,6 +106,13 @@ public class VOMovingViolations {
 	 */
 	public String getLocation() {
 		return location;
+	}
+	
+	/**
+	 * @return addressID
+	 */
+	public int getAddressID() {
+		return addressID;
 	}
 	
 	/**
