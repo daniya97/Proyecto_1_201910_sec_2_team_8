@@ -70,7 +70,6 @@ public class Queue<T> implements IQueue<T> {
 			ultimo.cambiarSiguiente(nuevo);
 			ultimo = nuevo;
 		}
-		//System.out.println("se agrego " + t);
 		size += 1;
 
 	}

@@ -1,10 +1,7 @@
 package controller;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -14,9 +11,7 @@ import com.opencsv.CSVReader;
 
 import model.data_structures.IQueue;
 import model.data_structures.IStack;
-import model.data_structures.Nodo;
 import model.data_structures.Queue;
-import model.data_structures.Stack;
 import model.vo.VOMovingViolations;
 import view.MovingViolationsManagerView;
 
@@ -88,9 +83,6 @@ public class Controller {
 		}
 	}
 
-
-
-
 	public void elegirCuatriSemestre(int n)
 	{
 		if(n == 1)
@@ -119,17 +111,15 @@ public class Controller {
 		else
 		{
 			throw new IllegalArgumentException("No existe ese cuatrimestre en un annio.");
-		}
-		
+		}	
 	}
-
-
 
 	/**
 	 * Carga la informacion sobre infracciones de los archivos a una pila y una cola ordenadas por fecha.
 	 */
 	public void loadMovingViolations(String[] movingViolationsFilePaths){
 		CSVReader reader = null;
+		// Contadores de infracciones en cada mes del cuatrimestre
 		int[] contadores = new int[movingViolationsFilePaths.length];
 		int fileCounter = 0;
 		try {
@@ -137,15 +127,15 @@ public class Controller {
 			
 			for (String filePath : movingViolationsFilePaths) {
 				reader = new CSVReader(new FileReader("data/"+filePath));
-				
-				 
 				String[] headers = reader.readNext();
-				//System.out.println("." + headers[0] + ".");
+				// Array con la posicion de cada header conocido (e.g. LOCATION) dentro del header del archivo
+				// Esto permite que el archivo tenga otras columnas y se encuentren en otro orden y aun asi
+				// el programa funcione.
 				int[] posiciones = new int[VOMovingViolations.EXPECTEDHEADERS.length];
 				for (int i = 0; i < VOMovingViolations.EXPECTEDHEADERS.length; i++) {
 					posiciones[i] = buscarArray(headers, VOMovingViolations.EXPECTEDHEADERS[i]);
 				}
-				
+				// Carga de las infracciones a la cola, teniendo en cuenta el formato del archivo
 				contadores[fileCounter] = 0;
 			    for (String[] row : reader) {
 			    	movingViolationsQueue.enqueue(new VOMovingViolations(posiciones, row));
@@ -175,177 +165,24 @@ public class Controller {
 
 		}
 	}
-	/*public void loadMovingViolations(CSVReader reader1, CSVReader reader2, CSVReader reader3, CSVReader reader4) {
-
-
-		try {
-
-			//movingViolationsStack = new Stack<VOMovingViolations>();
-			movingViolationsQueue = new Queue<VOMovingViolations>();
-
-			VOMovingViolations infraccion;
-
-			boolean primeraFila = true;
-			boolean primeraFila2 = true;
-			boolean primeraFila3 = true;
-			boolean primeraFila4 = true;
-			
-			int contador1 = 0;
-			int contador2 = 0;
-			int contador3 = 0;
-			int contador4 = 0;
-			int suma = 0;
-
-			for (String[] row : reader1) {
-
-				if(primeraFila){
-					primeraFila = false;
-				}
-				else{
-					infraccion = new VOMovingViolations(row);
-					movingViolationsQueue.enqueue(infraccion);
-					//movingViolationsStack.push(infraccion);
-					contador1++;
-				}
-			}
-			for (String[] row : reader2) {
-
-				if(primeraFila2){
-					primeraFila2 = false;
-				}
-				else{
-					infraccion = new VOMovingViolations(row);
-					movingViolationsQueue.enqueue(infraccion);
-					//movingViolationsStack.push(infraccion);
-					contador2++;
-				}
-			}
-			for (String[] row : reader3) {
-
-				if(primeraFila3){
-					primeraFila3 = false;
-				}
-				else{
-					infraccion = new VOMovingViolations(row);
-					movingViolationsQueue.enqueue(infraccion);
-					//movingViolationsStack.push(infraccion);
-					contador3++;
-				}
-			}
-			for (String[] row : reader4) {
-
-				if(primeraFila4){
-					primeraFila4 = false;
-				}
-				else{
-					infraccion = new VOMovingViolations(row);
-					movingViolationsQueue.enqueue(infraccion);
-					//movingViolationsStack.push(infraccion);
-					contador4++;
-				}
-			}
-
-			suma = contador1+ contador2+contador3+contador4;
-			
-			System.out.println("  ----------Informaci�n Sobre la Carga------------------  ");
-			System.out.println("Infracciones Mes 1: "+contador1);
-			System.out.println("Infracciones Mes 2: " + contador2);
-			System.out.println("Infracciones Mes 3: " + contador3);
-			System.out.println("Infracciones Mes 4: " + contador4);
-			System.out.println("Total Infracciones Cuatrisemetre: "+ suma);
-			
-			
-			
-		} finally{
-			if (reader1 != null) {
-				try {
-					reader1.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if (reader2 != null) {
-				try {
-					reader2.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if (reader3 != null) {
-				try {
-					reader3.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if (reader4 != null) {
-				try {
-					reader4.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-
-		}
-	}*/
-
-	
-	
+		
 	private int buscarArray(String[] array, String string) {
 		int i = 0;
 		
 		while (i < array.length) {
-			if (array[i].equals(string)) {
-				//System.out.println(i);
-				//System.out.println(array[i] + "  " + string );
-				return i;
-			}
+			if (array[i].equals(string)) return i;
 			i += 1;
 		}
-		//System.out.println("."+string+".");
-		//System.out.println(-1);
 		return -1;
 	}
 
 	public IStack <VOMovingViolations> verificarObjectIDRepetidos(){
-		// Sebastian: no fue inmediatamente claro como cambiar este metodo para usar iteradores
-		// PERO asi como esta planteado este metodo tiene orden de crecimiento O(n^2), yo sugeriria
-		// que se ordenara la lista por ObjectID y asi solo hay revisar una vez la lista, similar a como
-		// hizo getDailyStatistics()
-		/*
-		IStack<VOMovingViolations> respuesta = new Stack<>();
-		
-		Iterator<VOMovingViolations> iterador1 = movingViolationsQueue.iterator();
-		Iterator<VOMovingViolations> iterador2 = movingViolationsQueue.iterator();
-		//Nodo<VOMovingViolations> actual = movingViolationsQueue.darPrimero();
-		VOMovingViolations actual = iterador1.next();
-		//Nodo<VOMovingViolations> auxiliar =null;
-		VOMovingViolations auxiliar = null;
-		
-		while(actual != null){
-			
-			auxiliar = actual.darSiguiente();
-			while(auxiliar!=null)
-			{
-				if(actual.darObjeto().objectId().equals(auxiliar.darObjeto().objectId())){
-					respuesta.push(actual.darObjeto());
-					respuesta.push(auxiliar.darObjeto());
-				}
-				
-				auxiliar = auxiliar.darSiguiente();
-			}
-			
-		actual = actual.darSiguiente();
-			
-		}
-		*/
+
 		return null;
-		
 	}
 	
 	
 	public IQueue<VOMovingViolations> consultarInfracciones(int mes1, int dia1, int hora1,int min1, int mes2, int dia2, int hora2, int min2){
-		// Sebastian: Lo modifique solo para no usar darPrimero() 
 		// TODO esto parece que tendra un Off By One error
 		Queue<VOMovingViolations> respuesta = new Queue<VOMovingViolations>();
 		Iterator<VOMovingViolations> iterador = movingViolationsQueue.iterator();
@@ -374,7 +211,6 @@ public class Controller {
 	}
 	
 	public void fineAmtPromedio (String violationCode){
-		// Sebastian: Lo modifique solo para no usar darPrimero() 
 		// TODO esto parece que tendra un Off By One error
 		Iterator<VOMovingViolations> iterador = movingViolationsQueue.iterator();
 		VOMovingViolations actual = iterador.next();
@@ -403,15 +239,8 @@ public class Controller {
 		respuestaAccidente = sumaAccidente/contadorAccidente;
 		respuestaNoAccidente = sumaNoAccidente/contadorNoAccidente;
 		
-		
-		
 		System.out.println("----------Promedio Fine Amount ------------");
 		System.out.println("Promedio  Fine Amount Accidentes: " + respuestaAccidente);
 		System.out.println("Promedio  Fine Amount No Accidentes: " + respuestaNoAccidente);
-	}
-
-
-	
-	
-	
+	}	
 }

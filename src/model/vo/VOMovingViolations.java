@@ -52,10 +52,9 @@ public class VOMovingViolations {
 	 * Constructor. Recibe los argumentos de la infracci�n a trav�s del archivo CSV
 	 */
 	public VOMovingViolations(int[] headerPositions, String[] linea){
-		//System.out.println("Procesando linea: "+ linea);
 		String campo;
 		
-		iD = linea[0];//linea[headerPositions[OBJECTID]];
+		iD = linea[0]; //linea[headerPositions[OBJECTID]];
 		
 		location = linea[headerPositions[LOCATION]];
 		
@@ -99,7 +98,6 @@ public class VOMovingViolations {
 	public String objectId() {
 		return iD;
 	}	
-
 
 	/**
 	 * @return location - Direcci�n en formato de texto.
