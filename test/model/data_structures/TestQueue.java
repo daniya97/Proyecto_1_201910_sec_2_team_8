@@ -137,7 +137,7 @@ public class TestQueue extends TestCase{
 	 * Prueba el metodo dequeue
 	 */
 	public void testDequeue() {
-		for (int i = 0; i <2; i++) {
+		for (int i = 0; i < 3; i++) {
 			if 		(i == 0) {
 				setUpEscenario0();
 				assertEquals("La pila deberia seguir de tamano 0.",0,cola.size());
@@ -154,9 +154,8 @@ public class TestQueue extends TestCase{
 				setUpEscenario2();
 				String dato = cola.dequeue();
 				assertTrue("La pila deberia deberia tener 1 elementos.", cola.size() == 1);
-				assertTrue("El elemento eliminado no es el esperado.", dato.equals("Elemento 2"));
+				assertTrue("El elemento eliminado no es el esperado.", dato.equals("Elemento 1"));
 			}
-
 		}
 	}
 }
