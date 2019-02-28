@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Representation of a Trip object
  */
-public class VOMovingViolations {
+public class VOMovingViolations{
 	
 	public static final String[] EXPECTEDHEADERS = new String[] {"OBJECTID", "ROW_", "LOCATION", "ADDRESS_ID", "STREETSEGID", "XCOORD", "YCOORD", "TICKETTYPE", "FINEAMT", "TOTALPAID", "PENALTY1", "PENALTY2", "ACCIDENTINDICATOR", "AGENCYID", "TICKETISSUEDATE", "VIOLATIONCODE", "VIOLATIONDESC", "ROW_ID"};
 	// Estos son los indice de los textos en EXPECTEDHEADERS
@@ -30,6 +30,7 @@ public class VOMovingViolations {
 		public static final int VIOLATIONCODE = 15;
 		public static final int VIOLATIONDESC = 16;	
 		public static final int ROW_ID = 17;
+		public static final Comparator<VOMovingViolations> ObjectIDOrder = new ObjectIDOrder();
 	
 	/**
 	 * Atributos de la infracci�n
@@ -177,13 +178,14 @@ public class VOMovingViolations {
 	 */
 	
 	public static class ObjectIDOrder implements Comparator<VOMovingViolations> {
-
 		@Override
-		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
-			
+		public int compare(VOMovingViolations infraccion1, VOMovingViolations infraccion2) {
+			int inf1 = Integer.parseInt(infraccion1.objectId());
+			int inf2 = Integer.parseInt(infraccion2.objectId());
+			if(inf1>inf2) return 1;
+			if(inf1<inf2) return -1;
 			return 0;
 		}
-		
 	}
 	
 	public static class TicketIssueOrder implements Comparator<VOMovingViolations> {

@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -17,7 +20,11 @@ import model.data_structures.IStack;
 import model.data_structures.Nodo;
 import model.data_structures.Queue;
 import model.data_structures.Stack;
+import model.util.Sort;
+import model.vo.VODaylyStatistic;
 import model.vo.VOMovingViolations;
+import model.vo.VOMovingViolations.ObjectIDOrder;
+import model.vo.VOViolationCode;
 import view.MovingViolationsManagerView;
 
 public class Controller {
@@ -27,7 +34,7 @@ public class Controller {
 	/**
 	 * Cola donde se van a cargar los datos de los archivos
 	 */
-	private IQueue<VOMovingViolations> movingViolationsQueue;
+	private Queue<VOMovingViolations> movingViolationsQueue;
 	private int cuatrimestreCargado = -1;
 
 	/**
@@ -38,15 +45,12 @@ public class Controller {
 
 	public Controller() {
 		view = new MovingViolationsManagerView();
-
-		// Inicializar la pila y la cola
-		movingViolationsQueue = null;
-		//movingViolationsStack = null;
 	}
 
 	public void run() {
 		Scanner sc = new Scanner(System.in);
 		boolean fin = false;
+		Controller controller = new Controller();
 
 		while(!fin)
 		{
@@ -56,35 +60,146 @@ public class Controller {
 
 			switch(option)
 			{
-			case 1:
-				view.printMensage("Elija un cuatrisemestre (1: Enero, Febrero, Marzo, Abril - 2: Mayo, Junio, Julio, Agosto- 3: Septiembre, Octubre, Noviembre y Diciembre)");
+			case 0:
+				view.printMessage("Elija un cuatrisemestre (1: Enero, Febrero, Marzo, Abril - 2: Mayo, Junio, Julio, Agosto- 3: Septiembre, Octubre, Noviembre y Diciembre)");
 				int s = sc.nextInt();
 				this.elegirCuatriSemestre(s);
+				
+				System.out.println(movingViolationsQueue.size());
 				break;
-
+			case 1:
+				boolean isUnique = verifyObjectIDIsUnique();
+				view.printMessage("El objectId es �nico: " + isUnique);
+				break;
+				
 			case 2:
-				IStack<VOMovingViolations> verificacion = this.verificarObjectIDRepetidos();
-				if(verificacion.size() == 0)
-				{
-					view.printMensage("No hay elementos con OBJECTID repetido");
-				}
-				else
-				{
-					view.printVerificacion(verificacion);
-				}
+				
+				view.printMessage("Ingrese la fecha con hora inicial (Ej : 28/03/2017T15:30:20)");
+				LocalDateTime fechaInicialReq2A = convertirFecha_Hora_LDT(sc.next());
+				
+				view.printMessage("Ingrese la fecha con hora final (Ej : 28/03/2017T15:30:20)");
+				LocalDateTime fechaFinalReq2A = convertirFecha_Hora_LDT(sc.next());
+				
+				IQueue<VOMovingViolations> resultados2 = controller.getMovingViolationsInRange(fechaInicialReq2A, fechaFinalReq2A);
+				
+				view.printMovingViolationsReq2(resultados2);
 				
 				break;
-
+				
 			case 3:
-				view.printMensage("Ingrese el número de infracciones a buscar");
-				int n = sc.nextInt();
+				
+				view.printMessage("Ingrese el VIOLATIONCODE (Ej : T210)");
+				String violationCode3 = sc.next();
+				
+				double [] promedios3 = controller.avgFineAmountByViolationCode(violationCode3);
+				
+				view.printMessage("FINEAMT promedio sin accidente: " + promedios3[0] + ", con accidente:" + promedios3[1]);
 				break;
+					
+				
+			case 4:
+				
+				view.printMessage("Ingrese el ADDRESS_ID");
+				String addressId4 = sc.next();
 
-			case 4:	
+				view.printMessage("Ingrese la fecha con hora inicial (Ej : 28/03/2017)");
+				LocalDate fechaInicialReq4A = convertirFecha(sc.next());
+				
+				view.printMessage("Ingrese la fecha con hora final (Ej : 28/03/2017)");
+				LocalDate fechaFinalReq4A = convertirFecha(sc.next());
+				
+				IStack<VOMovingViolations> resultados4 = controller.getMovingViolationsAtAddressInRange(addressId4, fechaInicialReq4A, fechaFinalReq4A);
+				
+				view.printMovingViolationsReq4(resultados4);
+				
+				break;
+				
+			case 5:
+				view.printMessage("Ingrese el limite inferior de FINEAMT  (Ej: 50)");
+				double limiteInf5 = sc.nextDouble();
+				
+				view.printMessage("Ingrese el limite superior de FINEAMT  (Ej: 50)");
+				double limiteSup5 = sc.nextDouble();
+				
+				IQueue<VOViolationCode> violationCodes = controller.violationCodesByFineAmt(limiteInf5, limiteSup5);
+				view.printViolationCodesReq5(violationCodes);
+				break;
+			
+			case 6:
+				
+				view.printMessage("Ingrese el limite inferior de TOTALPAID (Ej: 200)");
+				double limiteInf6 = sc.nextDouble();
+				
+				view.printMessage("Ingrese el limite superior de TOTALPAID (Ej: 200)");
+				double limiteSup6 = sc.nextDouble();
+				
+				view.printMessage("Ordenar Ascendentmente: (Ej: true)");
+				boolean ascendente6 = sc.nextBoolean();				
+				
+				IStack<VOMovingViolations> resultados6 = controller.getMovingViolationsByTotalPaid(limiteInf6, limiteSup6, ascendente6);
+				view.printMovingViolationReq6(resultados6);
+				break;
+				
+			case 7:
+				
+				view.printMessage("Ingrese la hora inicial (Ej: 23)");
+				int horaInicial7 = sc.nextInt();
+				
+				view.printMessage("Ingrese la hora final (Ej: 23)");
+				int horaFinal7 = sc.nextInt();
+				
+				IQueue<VOMovingViolations> resultados7 = controller.getMovingViolationsByHour(horaInicial7, horaFinal7);
+				view.printMovingViolationsReq7(resultados7);
+				break;
+				
+			case 8:
+				
+				view.printMessage("Ingrese el VIOLATIONCODE (Ej : T210)");
+				String violationCode8 = sc.next();
+				
+				double [] resultado8 = controller.avgAndStdDevFineAmtOfMovingViolation(violationCode8);
+				
+				view.printMessage("FINEAMT promedio: " + resultado8[0] + ", desviación estandar:" + resultado8[1]);
+				break;
+				
+			case 9:
+				
+				view.printMessage("Ingrese la hora inicial (Ej: 23)");
+				int horaInicial9 = sc.nextInt();
+				
+				view.printMessage("Ingrese la hora final (Ej: 23)");
+				int horaFinal9 = sc.nextInt();
+				
+				int resultado9 = controller.countMovingViolationsInHourRange(horaInicial9, horaFinal9);
+				
+				view.printMessage("Número de infracciones: " + resultado9);
+				break;
+			
+			case 10:
+				view.printMovingViolationsByHourReq10();
+				break;
+				
+			case 11:
+				view.printMessage("Ingrese la fecha inicial (Ej : 28/03/2017)");
+				LocalDate fechaInicial11 = convertirFecha(sc.next());
+				
+				view.printMessage("Ingrese la fecha final (Ej : 28/03/2017)");
+				LocalDate fechaFinal11 = convertirFecha(sc.next());
+				
+				double resultados11 = controller.totalDebt(fechaInicial11, fechaFinal11);
+				view.printMessage("Deuda total "+ resultados11);
+				break;
+			
+			case 12:	
+				view.printTotalDebtbyMonthReq12();
+				
+				break;
+				
+			case 13:	
 				fin=true;
 				sc.close();
 				break;
-			}
+		}
 		}
 	}
 
@@ -98,7 +213,11 @@ public class Controller {
 			loadMovingViolations(new String[] {"Moving_Violations_Issued_in_January_2018.csv", 
 					    	     "Moving_Violations_Issued_in_February_2018.csv",
 					    	     "Moving_Violations_Issued_in_March_2018.csv",
-					    	     "Moving_Violations_Issued_in_April_2018.csv"});
+			});
+			
+			//FALTA ABRIL LO HICE PARA QUE ME CARGARAN PILAS NO OLVIDAR!!!!!!!!!
+			//!!!!!!!!!!!!!!!!!!!!!!!!!!
+			
 			cuatrimestreCargado = 1;
 		}
 		else if(n == 2)
@@ -175,120 +294,6 @@ public class Controller {
 
 		}
 	}
-	/*public void loadMovingViolations(CSVReader reader1, CSVReader reader2, CSVReader reader3, CSVReader reader4) {
-
-
-		try {
-
-			//movingViolationsStack = new Stack<VOMovingViolations>();
-			movingViolationsQueue = new Queue<VOMovingViolations>();
-
-			VOMovingViolations infraccion;
-
-			boolean primeraFila = true;
-			boolean primeraFila2 = true;
-			boolean primeraFila3 = true;
-			boolean primeraFila4 = true;
-			
-			int contador1 = 0;
-			int contador2 = 0;
-			int contador3 = 0;
-			int contador4 = 0;
-			int suma = 0;
-
-			for (String[] row : reader1) {
-
-				if(primeraFila){
-					primeraFila = false;
-				}
-				else{
-					infraccion = new VOMovingViolations(row);
-					movingViolationsQueue.enqueue(infraccion);
-					//movingViolationsStack.push(infraccion);
-					contador1++;
-				}
-			}
-			for (String[] row : reader2) {
-
-				if(primeraFila2){
-					primeraFila2 = false;
-				}
-				else{
-					infraccion = new VOMovingViolations(row);
-					movingViolationsQueue.enqueue(infraccion);
-					//movingViolationsStack.push(infraccion);
-					contador2++;
-				}
-			}
-			for (String[] row : reader3) {
-
-				if(primeraFila3){
-					primeraFila3 = false;
-				}
-				else{
-					infraccion = new VOMovingViolations(row);
-					movingViolationsQueue.enqueue(infraccion);
-					//movingViolationsStack.push(infraccion);
-					contador3++;
-				}
-			}
-			for (String[] row : reader4) {
-
-				if(primeraFila4){
-					primeraFila4 = false;
-				}
-				else{
-					infraccion = new VOMovingViolations(row);
-					movingViolationsQueue.enqueue(infraccion);
-					//movingViolationsStack.push(infraccion);
-					contador4++;
-				}
-			}
-
-			suma = contador1+ contador2+contador3+contador4;
-			
-			System.out.println("  ----------Informaci�n Sobre la Carga------------------  ");
-			System.out.println("Infracciones Mes 1: "+contador1);
-			System.out.println("Infracciones Mes 2: " + contador2);
-			System.out.println("Infracciones Mes 3: " + contador3);
-			System.out.println("Infracciones Mes 4: " + contador4);
-			System.out.println("Total Infracciones Cuatrisemetre: "+ suma);
-			
-			
-			
-		} finally{
-			if (reader1 != null) {
-				try {
-					reader1.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if (reader2 != null) {
-				try {
-					reader2.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if (reader3 != null) {
-				try {
-					reader3.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if (reader4 != null) {
-				try {
-					reader4.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-
-		}
-	}*/
-
 	
 	
 	private int buscarArray(String[] array, String string) {
@@ -307,110 +312,118 @@ public class Controller {
 		return -1;
 	}
 
-	public IStack <VOMovingViolations> verificarObjectIDRepetidos(){
-		// Sebastian: no fue inmediatamente claro como cambiar este metodo para usar iteradores
-		// PERO asi como esta planteado este metodo tiene orden de crecimiento O(n^2), yo sugeriria
-		// que se ordenara la lista por ObjectID y asi solo hay revisar una vez la lista, similar a como
-		// hizo getDailyStatistics()
-		/*
-		IStack<VOMovingViolations> respuesta = new Stack<>();
-		
-		Iterator<VOMovingViolations> iterador1 = movingViolationsQueue.iterator();
-		Iterator<VOMovingViolations> iterador2 = movingViolationsQueue.iterator();
-		//Nodo<VOMovingViolations> actual = movingViolationsQueue.darPrimero();
-		VOMovingViolations actual = iterador1.next();
-		//Nodo<VOMovingViolations> auxiliar =null;
-		VOMovingViolations auxiliar = null;
-		
-		while(actual != null){
-			
-			auxiliar = actual.darSiguiente();
-			while(auxiliar!=null)
-			{
-				if(actual.darObjeto().objectId().equals(auxiliar.darObjeto().objectId())){
-					respuesta.push(actual.darObjeto());
-					respuesta.push(auxiliar.darObjeto());
-				}
-				
-				auxiliar = auxiliar.darSiguiente();
-			}
-			
-		actual = actual.darSiguiente();
-			
-		}
-		*/
+	public IQueue <VODaylyStatistic> getDailyStatistics () {
 		return null;
-		
 	}
 	
-	
-	public IQueue<VOMovingViolations> consultarInfracciones(int mes1, int dia1, int hora1,int min1, int mes2, int dia2, int hora2, int min2){
-		// Sebastian: Lo modifique solo para no usar darPrimero() 
-		// TODO esto parece que tendra un Off By One error
-		Queue<VOMovingViolations> respuesta = new Queue<VOMovingViolations>();
-		Iterator<VOMovingViolations> iterador = movingViolationsQueue.iterator();
-		VOMovingViolations actual = iterador.next();
+	public IStack <VOMovingViolations> nLastAccidents(int n) {
+		return null;
+	}
 
-		Calendar c1 = Calendar.getInstance();
-		Calendar c2 = Calendar.getInstance();
-		Calendar Fechaobjeto = Calendar.getInstance();
+	public boolean verifyObjectIDIsUnique() {
 		
-		c1.set(2018, mes1, dia1, hora1, min1);
-		c1.set(2018, mes2, dia2, hora2, min2);
+		int contador = 0;
+		boolean respuesta = true;	
+		System.out.println(movingViolationsQueue.size());
+		Sort.ordenarMergeSort(movingViolationsQueue, VOMovingViolations.ObjectIDOrder);
+		String actual = null;
+		String anterior = null;
+		Queue<VOMovingViolations> repetidos = new Queue<>();
+		Queue<VOMovingViolations> Norepetidos = new Queue<>();
 		
-		while(iterador.hasNext()){
-			
-			Fechaobjeto = actual.getTicketIssueDate();
-			
-			if(Fechaobjeto.compareTo(c1)>0 && Fechaobjeto.compareTo(c2)<0){
-				respuesta.enqueue(actual);
-			}
-			
-			actual = iterador.next();
-		}
-		
-		return respuesta;
-		
-	}
-	
-	public void fineAmtPromedio (String violationCode){
-		// Sebastian: Lo modifique solo para no usar darPrimero() 
-		// TODO esto parece que tendra un Off By One error
-		Iterator<VOMovingViolations> iterador = movingViolationsQueue.iterator();
-		VOMovingViolations actual = iterador.next();
-		int sumaAccidente = 0;
-		int sumaNoAccidente = 0;
-		int contadorAccidente = 0;
-		int contadorNoAccidente = 0;
-		double respuestaAccidente = 0;
-		double respuestaNoAccidente = 0;
-		
-		
-		while(iterador.hasNext()){
-			
-			if(actual.getAccidentIndicator()){
-				sumaAccidente+=actual.getFineAmount();
-				contadorAccidente++;
+		for(VOMovingViolations s: movingViolationsQueue){
+			actual = s.objectId();
+			if(actual.equals(anterior)){
+				repetidos.enqueue(s);
+				respuesta = false;
 			}
 			else
 			{
-				sumaNoAccidente+=actual.getFineAmount();
-				contadorNoAccidente++;
+				Norepetidos.enqueue(s);
 			}
-			actual = iterador.next();
+			anterior = actual;
+				
 		}
 		
-		respuestaAccidente = sumaAccidente/contadorAccidente;
-		respuestaNoAccidente = sumaNoAccidente/contadorNoAccidente;
 		
+		if(!respuesta){
+			for(VOMovingViolations s: repetidos){
+				System.out.println(s.objectId());
+			}
+			
+		}
 		
-		
-		System.out.println("----------Promedio Fine Amount ------------");
-		System.out.println("Promedio  Fine Amount Accidentes: " + respuestaAccidente);
-		System.out.println("Promedio  Fine Amount No Accidentes: " + respuestaNoAccidente);
+		return respuesta;
 	}
 
+	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial,
+			LocalDateTime fechaFinal) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	public double[] avgFineAmountByViolationCode(String violationCode3) {
+		return new double [] {0.0 , 0.0};
+	}
+
+	public IStack<VOMovingViolations> getMovingViolationsAtAddressInRange(String addressId,
+			LocalDate fechaInicial, LocalDate fechaFinal) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public IStack<VOMovingViolations> getMovingViolationsByTotalPaid(double limiteInf6, double limiteSup6,
+			boolean ascendente6) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public IQueue<VOMovingViolations> getMovingViolationsByHour(int horaInicial7, int horaFinal7) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public double[] avgAndStdDevFineAmtOfMovingViolation(String violationCode8) {
+		// TODO Auto-generated method stub
+		return new double [] {0.0 , 0.0};
+	}
+
+	public int countMovingViolationsInHourRange(int horaInicial9, int horaFinal9) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public double totalDebt(LocalDate fechaInicial11, LocalDate fechaFinal11) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	
+	/**
+	 * Convertir fecha a un objeto LocalDate
+	 * @param fecha fecha en formato dd/mm/aaaa con dd para dia, mm para mes y aaaa para agno
+	 * @return objeto LD con fecha
+	 */
+	private static LocalDate convertirFecha(String fecha)
+	{
+		return LocalDate.parse(fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+	}
+
+	
+	/**
+	 * Convertir fecha y hora a un objeto LocalDateTime
+	 * @param fecha fecha en formato dd/mm/aaaaTHH:mm:ss con dd para dia, mm para mes y aaaa para agno, HH para hora, mm para minutos y ss para segundos
+	 * @return objeto LDT con fecha y hora integrados
+	 */
+	private static LocalDateTime convertirFecha_Hora_LDT(String fechaHora)
+	{
+		return LocalDateTime.parse(fechaHora, DateTimeFormatter.ofPattern("dd/MM/yyyy'T'HH:mm:ss"));
+	}
 	
 	
 	
