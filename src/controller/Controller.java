@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -37,7 +38,7 @@ public class Controller {
 	/**
 	 * Cola donde se van a cargar los datos de los archivos
 	 */
-	private ArregloDinamico<VOMovingViolations> movingViolationsQueue;
+	private static ArregloDinamico<VOMovingViolations> movingViolationsQueue;
 	private int cuatrimestreCargado = -1;
 
 	/**
@@ -379,14 +380,71 @@ public class Controller {
 	}
 
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
-		// TODO Auto-generated method stub
-		return null;
+		// Ordena los datos por codigo de violacion
+		Sort.ordenarShellSort(this.movingViolationsQueue, new VOMovingViolations.ViolationCodeOrder());
+		
+		// Cola de tuplas a retornar
+		Queue<VOViolationCode> colaTuplas = new Queue<VOViolationCode>(); 
+		Iterator<VOMovingViolations> iterador = movingViolationsQueue.iterator();
+		
+		// Si no hay datos, entonces retorna una cola vacia
+		if (!iterador.hasNext()) return colaTuplas;
+		
+		// Como los datos estan ordenados, tomo una infraccion de referencia par 
+		VOMovingViolations infrRevisar = iterador.next();
+		String codigoRef = infrRevisar.getViolationCode();
+		// variables para hallar el promedio
+		int contadorIgs = 1;
+		double sumaActual = infrRevisar.getFineAmount();
+		double promedio;
+		
+		while (iterador.hasNext()) {
+			infrRevisar = iterador.next();
+			
+			if (codigoRef.equals(infrRevisar.getViolationCode())) {
+				// Actualiza contadores
+				contadorIgs += 1;
+				sumaActual += infrRevisar.getFineAmount();
+			} else {
+				// Agrega el VOCOde que esta revisando a la cola
+				promedio = sumaActual/contadorIgs; 
+				if (limiteInf5 <= promedio && promedio <= limiteSup5) {
+					colaTuplas.enqueue(new VOViolationCode(codigoRef, promedio));
+				}
+				// Reestablece referencias
+				codigoRef = infrRevisar.getViolationCode();
+				contadorIgs = 1;
+				sumaActual = infrRevisar.getFineAmount();
+			}
+		}
+		// Agregar la ultima referencia
+		promedio = sumaActual/contadorIgs; 
+		if (limiteInf5 <= promedio && promedio <= limiteSup5) {
+			colaTuplas.enqueue(new VOViolationCode(codigoRef, promedio));
+		}
+		
+		return colaTuplas;
 	}
 
 	public IStack<VOMovingViolations> getMovingViolationsByTotalPaid(double limiteInf6, double limiteSup6,
 			boolean ascendente6) {
-		// TODO Auto-generated method stub
-		return null;
+		// Ordena los datos por codigo de violacion
+		if (ascendente6) { // OJO: como los datos se quieren meter a una cola, se ordenan al contrario para que en el stack tengan el orden deseado
+			Sort.ordenarShellSort(this.movingViolationsQueue, new VOMovingViolations.TicketIssueOrder().reversed());
+		} else {
+			Sort.ordenarShellSort(this.movingViolationsQueue, new VOMovingViolations.TicketIssueOrder());
+		}
+		
+		// Pila de infracciones a retornar
+		Stack<VOMovingViolations> pilaInfr = new Stack<VOMovingViolations>();
+		
+		for (VOMovingViolations infraccion : movingViolationsQueue) {
+			if (limiteInf6 <= infraccion.getTotalPaid() && infraccion.getTotalPaid() <= limiteSup6) {
+				pilaInfr.push(infraccion);
+			}
+		}
+		
+		return pilaInfr;
 	}
 
 	public IQueue<VOMovingViolations> getMovingViolationsByHour(int horaInicial7, int horaFinal7) {

@@ -38,7 +38,7 @@ public class VOMovingViolations {
 	 */
 	private String iD; 
 	private String location;
-	private int addressID;
+	private String addressID;
 	private int streetsegID;
 	private double totalPaid;
 	private double penalty1;
@@ -60,10 +60,12 @@ public class VOMovingViolations {
 		
 		location = linea[headerPositions[LOCATION]];
 		
+		addressID = linea[headerPositions[ADDRESS_ID]];
+		/*
 		campo = linea[headerPositions[ADDRESS_ID]];
 		if (!campo.equals("")) addressID = Integer.parseInt(campo);
 		else addressID = -1;
-		
+		*/
 		campo = linea[headerPositions[STREETSEGID]];
 		if (!campo.equals("")) streetsegID = Integer.parseInt(campo);
 		else streetsegID = -1;
@@ -112,7 +114,7 @@ public class VOMovingViolations {
 	/**
 	 * @return addressID
 	 */
-	public int getAddressID() {
+	public String getAddressID() {
 		return addressID;
 	}
 	
@@ -190,9 +192,9 @@ public class VOMovingViolations {
 	public static class TicketIssueOrder implements Comparator<VOMovingViolations> {
 
 		@Override
-		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
+		public int compare(VOMovingViolations inf1, VOMovingViolations inf2) {
 			
-			return 0;
+			return inf1.getTicketIssueDate().compareTo(inf2.getTicketIssueDate());
 		}
 		
 	}
@@ -210,9 +212,8 @@ public class VOMovingViolations {
 	public static class ViolationCodeOrder implements Comparator<VOMovingViolations> {
 
 		@Override
-		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
-			
-			return 0;
+		public int compare(VOMovingViolations inf1, VOMovingViolations inf2) {
+			return inf1.getViolationCode().compareTo(inf2.getViolationCode());
 		}
 		
 	}

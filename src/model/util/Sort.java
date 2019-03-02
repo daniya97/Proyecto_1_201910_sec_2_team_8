@@ -194,7 +194,7 @@ public class Sort {
 	 */
 	private static void exchange(ArregloDinamico datos, int i, int j)
 	{
-		Comparable temp = datos.darObjeto(i);
+		Object temp = datos.darObjeto(i);
 		datos.cambiarEnPos(i, datos.darObjeto(j));
 		datos.cambiarEnPos(j, temp);
 	}
