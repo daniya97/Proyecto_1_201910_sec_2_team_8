@@ -78,10 +78,10 @@ public class Controller {
 
 			case 2:
 
-				view.printMessage("Ingrese la fecha con hora inicial (Ej : 28/03/2017T15:30:20)");
+				view.printMessage("Ingrese la fecha con hora inicial (Ej : 28/03/2018T15:30:20)");
 				LocalDateTime fechaInicialReq2A = convertirFecha_Hora_LDT(sc.next());
 
-				view.printMessage("Ingrese la fecha con hora final (Ej : 28/03/2017T15:30:20)");
+				view.printMessage("Ingrese la fecha con hora final (Ej : 28/03/2087T15:30:20)");
 				LocalDateTime fechaFinalReq2A = convertirFecha_Hora_LDT(sc.next());
 
 				IQueue<VOMovingViolations> resultados2 = controller.getMovingViolationsInRange(fechaInicialReq2A, fechaFinalReq2A);
@@ -106,10 +106,10 @@ public class Controller {
 				view.printMessage("Ingrese el ADDRESS_ID");
 				String addressId4 = sc.next();
 
-				view.printMessage("Ingrese la fecha con hora inicial (Ej : 28/03/2017)");
+				view.printMessage("Ingrese la fecha inicial (Ej : 28/03/2018)");
 				LocalDate fechaInicialReq4A = convertirFecha(sc.next());
 
-				view.printMessage("Ingrese la fecha con hora final (Ej : 28/03/2017)");
+				view.printMessage("Ingrese la fecha final (Ej : 28/03/2018)");
 				LocalDate fechaFinalReq4A = convertirFecha(sc.next());
 
 				IStack<VOMovingViolations> resultados4 = controller.getMovingViolationsAtAddressInRange(addressId4, fechaInicialReq4A, fechaFinalReq4A);
