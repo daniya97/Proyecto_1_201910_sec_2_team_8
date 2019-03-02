@@ -14,17 +14,18 @@ import java.util.Scanner;
 
 import com.opencsv.CSVReader;
 
-
 import model.data_structures.IQueue;
 import model.data_structures.IStack;
 import model.data_structures.Nodo;
 import model.data_structures.Queue;
 import model.data_structures.Stack;
-import model.util.Sort;
-import model.vo.VODaylyStatistic;
+
 import model.vo.VOMovingViolations;
-import model.vo.VOMovingViolations.ObjectIDOrder;
+import model.vo.VODaylyStatistic;
 import model.vo.VOViolationCode;
+
+import model.util.Sort;
+
 import view.MovingViolationsManagerView;
 
 public class Controller {
@@ -327,7 +328,7 @@ public class Controller {
 		int contador = 0;
 		boolean respuesta = true;	
 		System.out.println(movingViolationsQueue.size());
-		Sort.ordenarMergeSort(movingViolationsQueue, VOMovingViolations.ObjectIDOrder);
+		Sort.ordenarMergeSort(movingViolationsQueue, new VOMovingViolations.ObjectIDOrder());
 		String actual = null;
 		String anterior = null;
 		Queue<VOMovingViolations> repetidos = new Queue<>();

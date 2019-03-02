@@ -1,6 +1,8 @@
 package model.vo;
 
 import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
@@ -8,7 +10,7 @@ import java.util.Date;
 /**
  * Representation of a Trip object
  */
-public class VOMovingViolations{
+public class VOMovingViolations {
 	
 	public static final String[] EXPECTEDHEADERS = new String[] {"OBJECTID", "ROW_", "LOCATION", "ADDRESS_ID", "STREETSEGID", "XCOORD", "YCOORD", "TICKETTYPE", "FINEAMT", "TOTALPAID", "PENALTY1", "PENALTY2", "ACCIDENTINDICATOR", "AGENCYID", "TICKETISSUEDATE", "VIOLATIONCODE", "VIOLATIONDESC", "ROW_ID"};
 	// Estos son los indice de los textos en EXPECTEDHEADERS
@@ -30,7 +32,6 @@ public class VOMovingViolations{
 		public static final int VIOLATIONCODE = 15;
 		public static final int VIOLATIONDESC = 16;	
 		public static final int ROW_ID = 17;
-		public static final Comparator<VOMovingViolations> ObjectIDOrder = new ObjectIDOrder();
 	
 	/**
 	 * Atributos de la infracci�n
@@ -43,7 +44,7 @@ public class VOMovingViolations{
 	private double penalty1;
 	private double penalty2;
 	private boolean accidentIndicator;
-	private Calendar ticketIssueDate;
+	private LocalDateTime ticketIssueDate;
 	private String violationCode;
 	private String violationDesc;
 	private int fineAmount;
@@ -53,10 +54,9 @@ public class VOMovingViolations{
 	 * Constructor. Recibe los argumentos de la infracci�n a trav�s del archivo CSV
 	 */
 	public VOMovingViolations(int[] headerPositions, String[] linea){
-		//System.out.println("Procesando linea: "+ linea);
 		String campo;
 		
-		iD = linea[0];//linea[headerPositions[OBJECTID]];
+		iD = linea[0]; //linea[headerPositions[OBJECTID]];
 		
 		location = linea[headerPositions[LOCATION]];
 		
@@ -84,8 +84,9 @@ public class VOMovingViolations{
 		else throw new IllegalArgumentException("El indicador de accidente no tiene un valor reconocible.");
 		
 		campo = linea[headerPositions[TICKETISSUEDATE]];
-		ticketIssueDate = Calendar.getInstance();
-		ticketIssueDate.set(Integer.parseInt(campo.substring(0, 4)), Integer.parseInt(campo.substring(5, 7)), Integer.parseInt(campo.substring(8,10)),Integer.parseInt(campo.substring(11,13)),Integer.parseInt(campo.substring(14,16)));
+		//ticketIssueDate = Calendar.getInstance();
+		//ticketIssueDate.set(Integer.parseInt(campo.substring(0, 4)), Integer.parseInt(campo.substring(5, 7)), Integer.parseInt(campo.substring(8,10)),Integer.parseInt(campo.substring(11,13)),Integer.parseInt(campo.substring(14,16)));
+		ticketIssueDate = LocalDateTime.parse(campo, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'.000Z'"));
 		
 		violationCode = linea[headerPositions[VIOLATIONCODE]];
 		
@@ -100,7 +101,6 @@ public class VOMovingViolations{
 	public String objectId() {
 		return iD;
 	}	
-
 
 	/**
 	 * @return location - Direcci�n en formato de texto.
@@ -126,7 +126,7 @@ public class VOMovingViolations{
 	/**
 	 * @return date - Fecha cuando se puso la infracción .
 	 */
-	public Calendar getTicketIssueDate() {
+	public LocalDateTime getTicketIssueDate() {
 		return ticketIssueDate;
 	}
 
@@ -178,14 +178,13 @@ public class VOMovingViolations{
 	 */
 	
 	public static class ObjectIDOrder implements Comparator<VOMovingViolations> {
+
 		@Override
-		public int compare(VOMovingViolations infraccion1, VOMovingViolations infraccion2) {
-			int inf1 = Integer.parseInt(infraccion1.objectId());
-			int inf2 = Integer.parseInt(infraccion2.objectId());
-			if(inf1>inf2) return 1;
-			if(inf1<inf2) return -1;
+		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
+			
 			return 0;
 		}
+		
 	}
 	
 	public static class TicketIssueOrder implements Comparator<VOMovingViolations> {

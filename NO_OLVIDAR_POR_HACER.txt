@@ -1,0 +1,3 @@
+ - Implementar el Shuffle de quicksort sin la libreria del libro
+ - Hacer cambios en la Linked List para hacer uso de la clase Nodo ya existente
+ - DOCUMENTACION GENERICS ARREGLO DINAMICO
