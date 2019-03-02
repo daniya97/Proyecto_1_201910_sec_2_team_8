@@ -389,7 +389,7 @@ public class Controller {
 			}
 			
 		}
-		return new double [] {suma1/contador1 , suma2/contador2};
+		return new double [] {suma1 != 0? suma1/contador1:0 , suma2 != 0? suma2/contador2:0};
 	}
 
 	public IStack<VOMovingViolations> getMovingViolationsAtAddressInRange(String addressId,
@@ -506,7 +506,6 @@ public class Controller {
 	}
 
 	public double[] avgAndStdDevFineAmtOfMovingViolation(String violationCode8) {
-		// TODO Auto-generated method stub
 		// Extraccion de datos necesarios
 		double suma = 0;
 		int contador = 0;
@@ -523,8 +522,10 @@ public class Controller {
 		double promedio = suma/contador;
 		double var = 0;
 		for (double fa : valores) {
-			var += (fa - promedio)*(fa - promedio)/(contador - 1);
+			var += (fa - promedio)*(fa - promedio)/contador;
 		}
+		
+		if (contador == 0) return new double [] {0.0, 0.0};
 		
 		return new double [] {promedio , Math.sqrt(var)};
 	}
@@ -564,7 +565,7 @@ public class Controller {
 	 */
 	private static LocalDateTime convertirFecha_Hora_LDT(String fechaHora)
     {
-		return LocalDateTime.parse(fechaHora, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'.000Z'"));
+		return LocalDateTime.parse(fechaHora, DateTimeFormatter.ofPattern("dd/MM/yyyy'T'HH:mm:ss"));
     }
 	
 	
