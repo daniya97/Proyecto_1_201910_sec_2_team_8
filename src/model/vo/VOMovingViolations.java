@@ -32,6 +32,7 @@ public class VOMovingViolations {
 		public static final int VIOLATIONCODE = 15;
 		public static final int VIOLATIONDESC = 16;	
 		public static final int ROW_ID = 17;
+		public static final Comparator TicketIssueOrder = null;
 	
 	/**
 	 * Atributos de la infracci�n
@@ -60,12 +61,13 @@ public class VOMovingViolations {
 		
 		location = linea[headerPositions[LOCATION]];
 		
-		addressID = linea[headerPositions[ADDRESS_ID]];
 		/*
 		campo = linea[headerPositions[ADDRESS_ID]];
 		if (!campo.equals("")) addressID = Integer.parseInt(campo);
 		else addressID = -1;
 		*/
+		addressID = linea[headerPositions[ADDRESS_ID]];
+
 		campo = linea[headerPositions[STREETSEGID]];
 		if (!campo.equals("")) streetsegID = Integer.parseInt(campo);
 		else streetsegID = -1;
@@ -85,9 +87,9 @@ public class VOMovingViolations {
 		else if (campo.equalsIgnoreCase("No"))	accidentIndicator = false;
 		else throw new IllegalArgumentException("El indicador de accidente no tiene un valor reconocible.");
 		
-		campo = linea[headerPositions[TICKETISSUEDATE]];
 		//ticketIssueDate = Calendar.getInstance();
 		//ticketIssueDate.set(Integer.parseInt(campo.substring(0, 4)), Integer.parseInt(campo.substring(5, 7)), Integer.parseInt(campo.substring(8,10)),Integer.parseInt(campo.substring(11,13)),Integer.parseInt(campo.substring(14,16)));
+		campo = linea[headerPositions[TICKETISSUEDATE]];
 		ticketIssueDate = LocalDateTime.parse(campo, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'.000Z'"));
 		
 		violationCode = linea[headerPositions[VIOLATIONCODE]];
@@ -184,7 +186,7 @@ public class VOMovingViolations {
 		@Override
 		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
 			
-			return 0;
+			return arg0.objectId().compareTo(arg1.objectId());
 		}
 		
 	}
@@ -204,7 +206,9 @@ public class VOMovingViolations {
 		@Override
 		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
 			
-			return 0;
+		if(arg0.getTicketIssueDate().getHour()>arg1.getTicketIssueDate().getHour()) return 1;
+		else if(arg0.getTicketIssueDate().getHour()>arg1.getTicketIssueDate().getHour()) return -1;	
+		else return 0;
 		}
 		
 	}
@@ -244,6 +248,14 @@ public class VOMovingViolations {
 		@Override
 		public int compare(VOMovingViolations inf1, VOMovingViolations inf2) {
 			return inf1.getViolationDescription().compareTo(inf2.getViolationDescription());
+		}
+		
+	}
+	public static class AddressIDOrder implements Comparator<VOMovingViolations> {
+
+		@Override
+		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
+			return arg0.getAddressID().compareTo(arg1.getAddressID());
 		}
 		
 	}

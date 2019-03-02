@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
 import java.time.*;
-import java.time.format.DateTimeFormatter;
+import java.time.format.*;
+
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -66,12 +68,7 @@ public class Controller {
 			case 0:
 				view.printMessage("Ingrese el cuatrimestre (1, 2 o 3)");
 				int numeroCuatrimestre = sc.nextInt();
-				loadMovingViolations(numeroCuatrimestre);/*
-				view.printMessage("Elija un cuatrisemestre (1: Enero, Febrero, Marzo, Abril - 2: Mayo, Junio, Julio, Agosto- 3: Septiembre, Octubre, Noviembre y Diciembre)");
-				int s = sc.nextInt();
-				this.elegirCuatriSemestre(s);
-				*/
-				System.out.println(movingViolationsQueue.darTamano());
+				loadMovingViolations(numeroCuatrimestre);
 				break;
 			case 1:
 				IQueue<VOMovingViolations> resultados1 = verifyObjectIDIsUnique();
@@ -208,10 +205,6 @@ public class Controller {
 		}
 		}
 	}
-
-
-
-
 	public void loadMovingViolations(int n)
 	{
 		if(n == 1)
@@ -330,7 +323,6 @@ public class Controller {
 		
 		int contador = 0;
 		boolean respuesta = true;	
-		System.out.println(movingViolationsQueue.darTamano());
 		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.ObjectIDOrder());
 		String actual = null;
 		String anterior = null;
@@ -348,34 +340,77 @@ public class Controller {
 				Norepetidos.enqueue(s);
 			}
 			anterior = actual;
-				
 		}
 		
 		return repetidos;
-		/*if(!respuesta){
-			for(VOMovingViolations s: repetidos){
-				System.out.println(s.objectId());
-			}
-			
-		}
-		
-		return respuesta;*/
+
 	}
 
-	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial,
-			LocalDateTime fechaFinal) {
-		// TODO Auto-generated method stub
-		return null;
+	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
+		
+		IQueue<VOMovingViolations> respuesta = new Queue<>();
+		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder());
+		
+		for(VOMovingViolations s: movingViolationsQueue){
+			if(s.getTicketIssueDate().isAfter(fechaInicial)){
+				if(s.getTicketIssueDate().isBefore(fechaFinal)){
+					respuesta.enqueue(s);
+				}
+				else{
+					return respuesta;
+				}
+			}
+		}
+		return respuesta;
 	}
 
 	public double[] avgFineAmountByViolationCode(String violationCode3) {
-		return new double [] {0.0 , 0.0};
+		boolean encontrado = false;
+		int suma1 = 0;
+		int suma2 = 0;
+		int contador1 = 0;
+		int contador2 = 0;
+		
+		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.ViolationCodeOrder());
+		for(VOMovingViolations s: movingViolationsQueue){
+			if(s.getViolationCode().equals(violationCode3)){
+				encontrado = true;
+				if(s.getAccidentIndicator()){
+					suma1 += s.getFineAmount();
+					contador1++;
+				}
+				else{
+					suma2+=s.getFineAmount();
+					contador2++;
+				}
+			}
+			else if(encontrado){
+				return new double [] {suma1/contador1 , suma2/contador2};
+			}
+			
+		}
+		return new double [] {suma1/contador1 , suma2/contador2};
 	}
 
 	public IStack<VOMovingViolations> getMovingViolationsAtAddressInRange(String addressId,
 			LocalDate fechaInicial, LocalDate fechaFinal) {
+	
+		IStack<VOMovingViolations> respuesta = new Stack<>();
+		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.AddressIDOrder());
+		boolean encontrado = false;
+		for(VOMovingViolations s: movingViolationsQueue){
+			if(s.equals(addressId) && s.getTicketIssueDate().toLocalDate().isAfter(fechaInicial)){
+				encontrado = true;
+				if(s.getTicketIssueDate().toLocalDate().isBefore(fechaFinal)){
+					respuesta.push(s);
+				}
+			}
+			if(encontrado){
+				return respuesta;
+			}
+		}
 		// TODO Auto-generated method stub
-		return null;
+		return respuesta;
 	}
 
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
@@ -495,8 +530,14 @@ public class Controller {
 	}
 
 	public int countMovingViolationsInHourRange(int horaInicial9, int horaFinal9) {
+		
+		int contador = 0;
+		Sort.ordenarQuickSort(movingViolationsQueue,new VOMovingViolations.TimeOrder());
+		for(VOMovingViolations s: movingViolationsQueue){
+			if(s.getTicketIssueDate().getHour()>=horaInicial9 && s.getTicketIssueDate().getHour()<=horaFinal9 ) contador++;
+		}
 		// TODO Auto-generated method stub
-		return 0;
+		return contador;
 	}
 
 	public double totalDebt(LocalDate fechaInicial11, LocalDate fechaFinal11) {
