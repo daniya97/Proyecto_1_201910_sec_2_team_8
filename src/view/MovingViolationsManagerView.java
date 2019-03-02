@@ -89,7 +89,7 @@ public class MovingViolationsManagerView
 		}
 	}
 	
-	public void printMovingViolationsByHourReq10() {
+	public void printMovingViolationsByHourReq10(double[] resultados10) {
 		System.out.println("Porcentaje de infracciones que tuvieron accidentes por hora. 2018");
 		System.out.println("Hora| % de accidentes");
 		System.out.println("00 | X");

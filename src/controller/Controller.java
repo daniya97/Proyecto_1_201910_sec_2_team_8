@@ -180,7 +180,8 @@ public class Controller {
 				break;
 
 			case 10:
-				view.printMovingViolationsByHourReq10();
+				double[] resultados10 = controller.percentWithAccidentsByHour();
+				view.printMovingViolationsByHourReq10(resultados10);
 				break;
 
 			case 11:
@@ -206,7 +207,7 @@ public class Controller {
 			}
 		}
 	}
-	
+
 	public void loadMovingViolations(int n)
 	{
 		if(n == 1)
@@ -552,7 +553,11 @@ public class Controller {
 
 		return deudaAcum;
 	}
-
+	
+	private double[] percentWithAccidentsByHour() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	private double[] accumulatedDebtByMonth() {
 		double[] deudasByMonth = new double[] {0., 0., 0., 0.};
