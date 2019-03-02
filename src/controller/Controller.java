@@ -299,7 +299,7 @@ public class Controller {
 		int i = 0;
 		
 		while (i < array.length) {
-			if (array[i].equals(string)) {
+			if (array[i].equalsIgnoreCase(string)) {
 				//System.out.println(i);
 				//System.out.println(array[i] + "  " + string );
 				return i;
@@ -543,7 +543,17 @@ public class Controller {
 
 	public double totalDebt(LocalDate fechaInicial11, LocalDate fechaFinal11) {
 		// TODO Auto-generated method stub
-		return 0;
+		double deudaAcum = 0;
+		LocalDate fechaAct;
+		for (VOMovingViolations infraccion : movingViolationsQueue) {
+			fechaAct = infraccion.getTicketIssueDate().toLocalDate();
+			if (fechaInicial11.compareTo(fechaAct) <= 0 && fechaAct.compareTo(fechaFinal11) <= 0) {
+				deudaAcum += (infraccion.getTotalPaid() - infraccion.getFineAmount() - 
+						infraccion.getPenalty1() - infraccion.getPenalty2());
+			}
+		}
+		
+		return deudaAcum;
 	}
 	
 	
