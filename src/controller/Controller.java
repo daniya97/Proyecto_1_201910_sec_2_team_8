@@ -61,15 +61,18 @@ public class Controller {
 			switch(option)
 			{
 			case 0:
+				view.printMessage("Ingrese el cuatrimestre (1, 2 o 3)");
+				int numeroCuatrimestre = sc.nextInt();
+				controller.loadMovingViolations(numeroCuatrimestre);/*
 				view.printMessage("Elija un cuatrisemestre (1: Enero, Febrero, Marzo, Abril - 2: Mayo, Junio, Julio, Agosto- 3: Septiembre, Octubre, Noviembre y Diciembre)");
 				int s = sc.nextInt();
 				this.elegirCuatriSemestre(s);
-				
+				*/
 				System.out.println(movingViolationsQueue.size());
 				break;
 			case 1:
 				boolean isUnique = verifyObjectIDIsUnique();
-				view.printMessage("El objectId es único: " + isUnique);
+				view.printMessage("El objectId es ï¿½nico: " + isUnique);
 				break;
 				
 			case 2:
@@ -206,18 +209,15 @@ public class Controller {
 
 
 
-	public void elegirCuatriSemestre(int n)
+	public void loadMovingViolations(int n)
 	{
 		if(n == 1)
 		{
 			loadMovingViolations(new String[] {"Moving_Violations_Issued_in_January_2018.csv", 
 					    	     "Moving_Violations_Issued_in_February_2018.csv",
 					    	     "Moving_Violations_Issued_in_March_2018.csv",
-			});
-			
-			//FALTA ABRIL LO HICE PARA QUE ME CARGARAN PILAS NO OLVIDAR!!!!!!!!!
-			//!!!!!!!!!!!!!!!!!!!!!!!!!!
-			
+					    	     "Moving_Violations_Issued_in_Abril_2018.csv"
+					    	     });
 			cuatrimestreCargado = 1;
 		}
 		else if(n == 2)
@@ -225,14 +225,16 @@ public class Controller {
 			loadMovingViolations(new String[] {"Moving_Violations_Issued_in_May_2018.csv", 
 								 "Moving_Violations_Issued_in_June_2018.csv",
 								 "Moving_Violations_Issued_in_July_2018.csv",
-								 "Moving_Violations_Issued_in_August_2018.csv"});
+								 "Moving_Violations_Issued_in_August_2018.csv"
+								 });
 			cuatrimestreCargado = 2;
 		}
 		else if(n == 3){
 			loadMovingViolations(new String[] {"Moving_Violations_Issued_in_September_2018.csv", 
 		    	     			 "Moving_Violations_Issued_in_October_2018.csv",
 		    	     			 "Moving_Violations_Issued_in_November_2018.csv",
-		    	     			 "Moving_Violations_Issued_in_December_2018.csv"});
+		    	     			 "Moving_Violations_Issued_in_December_2018.csv"
+		    	     			 });
 			cuatrimestreCargado = 3;
 		}
 		else
@@ -247,7 +249,7 @@ public class Controller {
 	/**
 	 * Carga la informacion sobre infracciones de los archivos a una pila y una cola ordenadas por fecha.
 	 */
-	public void loadMovingViolations(String[] movingViolationsFilePaths){
+	private void loadMovingViolations(String[] movingViolationsFilePaths){
 		CSVReader reader = null;
 		int[] contadores = new int[movingViolationsFilePaths.length];
 		int fileCounter = 0;
@@ -417,13 +419,13 @@ public class Controller {
 	
 	/**
 	 * Convertir fecha y hora a un objeto LocalDateTime
-	 * @param fecha fecha en formato dd/mm/aaaaTHH:mm:ss con dd para dia, mm para mes y aaaa para agno, HH para hora, mm para minutos y ss para segundos
+	 * @param fecha fecha en formato yyyy-MM-dd'T'HH:mm:ss'.000Z' con dd para dia, mm para mes y yyy para agno, HH para hora, mm para minutos y ss para segundos
 	 * @return objeto LDT con fecha y hora integrados
 	 */
 	private static LocalDateTime convertirFecha_Hora_LDT(String fechaHora)
-	{
-		return LocalDateTime.parse(fechaHora, DateTimeFormatter.ofPattern("dd/MM/yyyy'T'HH:mm:ss"));
-	}
+    {
+                   return LocalDateTime.parse(fechaHora, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'.000Z'"));
+    }
 	
 	
 	
