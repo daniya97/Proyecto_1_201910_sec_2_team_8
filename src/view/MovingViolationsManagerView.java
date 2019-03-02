@@ -121,15 +121,21 @@ public class MovingViolationsManagerView
 	}
 	
 	public void printTotalDebtbyMonthReq12(double[] resultados12) {
-		
+		double vX = 10; 
 		System.out.println("Deuda acumulada por mes de infracciones. 2018");
 		System.out.println("Mes| Dinero");
-		System.out.println("01| X");
-		System.out.println("02| XX");
-		System.out.println("03 | XXXXXX");
-		System.out.println("04 | XXXXXXXXXX");
-		System.out.println("");
-		System.out.println("Cada X representa $YYYY USD");
+		for (int m = 1; m <= 4; m++) {
+			System.out.printf("%d.2|", m);
+			for (int k = 0; k < (int) (resultados12[m-1]/vX); k++) {
+				System.out.print("X");
+			}
+			System.out.println("");
+		}
+		//System.out.println("02| XX");
+		//System.out.println("03 | XXXXXX");
+		//System.out.println("04 | XXXXXXXXXX");
+		//System.out.println("");
+		System.out.println("Cada X representa $" + vX + "USD");
 	}
 	
 }
