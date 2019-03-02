@@ -203,7 +203,9 @@ public class VOMovingViolations {
 		@Override
 		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
 			
-			return 0;
+		if(arg0.getTicketIssueDate().getHour()>arg1.getTicketIssueDate().getHour()) return 1;
+		else if(arg0.getTicketIssueDate().getHour()>arg1.getTicketIssueDate().getHour()) return -1;	
+		else return 0;
 		}
 		
 	}

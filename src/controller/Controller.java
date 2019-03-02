@@ -396,22 +396,18 @@ public class Controller {
 	
 		IStack<VOMovingViolations> respuesta = new Stack<>();
 		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.AddressIDOrder());
-		LocalDateTime fechaI = LocalDateTime.of(fechaInicial, LocalTime.MIN);
-		LocalDateTime fechaF = LocalDateTime.of(fechaFinal, LocalTime.MAX);
-		
-		
+		boolean encontrado = false;
 		for(VOMovingViolations s: movingViolationsQueue){
-			if(s.equals(addressId) && s.getTicketIssueDate().isAfter(fechaI)){
-				if(s.getTicketIssueDate().isAfter(fechaF)){
-					return respuesta;
-				}
-				else{
+			if(s.equals(addressId) && s.getTicketIssueDate().toLocalDate().isAfter(fechaInicial)){
+				encontrado = true;
+				if(s.getTicketIssueDate().toLocalDate().isBefore(fechaFinal)){
 					respuesta.push(s);
 				}
-				
+			}
+			if(encontrado){
+				return respuesta;
 			}
 		}
-		
 		// TODO Auto-generated method stub
 		return respuesta;
 	}
@@ -438,8 +434,14 @@ public class Controller {
 	}
 
 	public int countMovingViolationsInHourRange(int horaInicial9, int horaFinal9) {
+		
+		int contador = 0;
+		Sort.ordenarQuickSort(movingViolationsQueue,new VOMovingViolations.TimeOrder());
+		for(VOMovingViolations s: movingViolationsQueue){
+			if(s.getTicketIssueDate().getHour()>=horaInicial9 && s.getTicketIssueDate().getHour()<=horaFinal9 ) contador++;
+		}
 		// TODO Auto-generated method stub
-		return 0;
+		return contador;
 	}
 
 	public double totalDebt(LocalDate fechaInicial11, LocalDate fechaFinal11) {
