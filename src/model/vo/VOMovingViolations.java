@@ -32,6 +32,7 @@ public class VOMovingViolations {
 		public static final int VIOLATIONCODE = 15;
 		public static final int VIOLATIONDESC = 16;	
 		public static final int ROW_ID = 17;
+		public static final Comparator TicketIssueOrder = null;
 	
 	/**
 	 * Atributos de la infracci�n
@@ -44,7 +45,7 @@ public class VOMovingViolations {
 	private double penalty1;
 	private double penalty2;
 	private boolean accidentIndicator;
-	private LocalDateTime ticketIssueDate;
+	private String ticketIssueDate;
 	private String violationCode;
 	private String violationDesc;
 	private int fineAmount;
@@ -83,10 +84,9 @@ public class VOMovingViolations {
 		else if (campo.equalsIgnoreCase("No"))	accidentIndicator = false;
 		else throw new IllegalArgumentException("El indicador de accidente no tiene un valor reconocible.");
 		
-		campo = linea[headerPositions[TICKETISSUEDATE]];
 		//ticketIssueDate = Calendar.getInstance();
 		//ticketIssueDate.set(Integer.parseInt(campo.substring(0, 4)), Integer.parseInt(campo.substring(5, 7)), Integer.parseInt(campo.substring(8,10)),Integer.parseInt(campo.substring(11,13)),Integer.parseInt(campo.substring(14,16)));
-		ticketIssueDate = LocalDateTime.parse(campo, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'.000Z'"));
+		ticketIssueDate =linea[headerPositions[TICKETISSUEDATE]];
 		
 		violationCode = linea[headerPositions[VIOLATIONCODE]];
 		
@@ -126,7 +126,7 @@ public class VOMovingViolations {
 	/**
 	 * @return date - Fecha cuando se puso la infracción .
 	 */
-	public LocalDateTime getTicketIssueDate() {
+	public String getTicketIssueDate() {
 		return ticketIssueDate;
 	}
 

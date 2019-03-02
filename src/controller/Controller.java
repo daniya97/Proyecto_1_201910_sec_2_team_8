@@ -66,12 +66,7 @@ public class Controller {
 			case 0:
 				view.printMessage("Ingrese el cuatrimestre (1, 2 o 3)");
 				int numeroCuatrimestre = sc.nextInt();
-				loadMovingViolations(numeroCuatrimestre);/*
-				view.printMessage("Elija un cuatrisemestre (1: Enero, Febrero, Marzo, Abril - 2: Mayo, Junio, Julio, Agosto- 3: Septiembre, Octubre, Noviembre y Diciembre)");
-				int s = sc.nextInt();
-				this.elegirCuatriSemestre(s);
-				*/
-				System.out.println(movingViolationsQueue.darTamano());
+				loadMovingViolations(numeroCuatrimestre);
 				break;
 			case 1:
 				IQueue<VOMovingViolations> resultados1 = verifyObjectIDIsUnique();
@@ -208,10 +203,6 @@ public class Controller {
 		}
 		}
 	}
-
-
-
-
 	public void loadMovingViolations(int n)
 	{
 		if(n == 1)
@@ -330,7 +321,6 @@ public class Controller {
 		
 		int contador = 0;
 		boolean respuesta = true;	
-		System.out.println(movingViolationsQueue.darTamano());
 		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.ObjectIDOrder());
 		String actual = null;
 		String anterior = null;
@@ -348,27 +338,40 @@ public class Controller {
 				Norepetidos.enqueue(s);
 			}
 			anterior = actual;
-				
 		}
 		
 		return repetidos;
-		/*if(!respuesta){
-			for(VOMovingViolations s: repetidos){
-				System.out.println(s.objectId());
-			}
-			
-		}
-		
-		return respuesta;*/
+
 	}
 
-	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial,
-			LocalDateTime fechaFinal) {
-		// TODO Auto-generated method stub
-		return null;
+	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
+		
+		IQueue<VOMovingViolations> respuesta = new Queue<>();
+		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder());
+		LocalDateTime aux = null;
+		
+		for(VOMovingViolations s: movingViolationsQueue){
+			aux = convertirFecha_Hora_LDT(s.getTicketIssueDate());
+			if(aux.isAfter(fechaInicial)){
+				if(aux.isBefore(fechaFinal)){
+					respuesta.enqueue(s);
+				}
+				else{
+					return respuesta;
+				}
+			}
+		}
+		
+		return respuesta;
 	}
 
 	public double[] avgFineAmountByViolationCode(String violationCode3) {
+		
+		
+		
+		
+		
+		
 		return new double [] {0.0 , 0.0};
 	}
 
