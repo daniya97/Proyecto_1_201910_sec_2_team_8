@@ -22,7 +22,7 @@ public class ArregloDinamico<T> implements IArregloDinamico<T> {
          */
 		public ArregloDinamico( int max )
         {
-               elementos = (T[]) new Comparable[max];
+               elementos = (T[]) new Object[max];
                tamanoMax = max;
                tamanoAct = 0;
         }
@@ -32,7 +32,7 @@ public class ArregloDinamico<T> implements IArregloDinamico<T> {
          */
 		public ArregloDinamico()
         {
-               elementos = (T[]) new Comparable[2];
+               elementos = (T[]) new Object[2];
                tamanoMax = 2;
                tamanoAct = 0;
         }
@@ -45,7 +45,7 @@ public class ArregloDinamico<T> implements IArregloDinamico<T> {
             if ( tamanoAct == tamanoMax ) {
             	tamanoMax = 2 * tamanoMax;
                 T[] copia = elementos;
-                elementos = (T[]) new Comparable[tamanoMax];
+                elementos = (T[]) new Object[tamanoMax];
                 for ( int i = 0; i < tamanoAct; i++) {
                 	elementos[i] = copia[i];
                 } 
@@ -104,7 +104,7 @@ public class ArregloDinamico<T> implements IArregloDinamico<T> {
 			
 			// Caso especial: se eliminaron todos los elementos
 			if (tamanoAct == 0) {
-				elementos = (T[]) new Comparable[2];
+				elementos = (T[]) new Object[2];
 				tamanoMax = 2;
 				return dato;
 			}
