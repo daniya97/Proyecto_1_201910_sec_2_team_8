@@ -472,7 +472,26 @@ public class Controller {
 
 	public double[] avgAndStdDevFineAmtOfMovingViolation(String violationCode8) {
 		// TODO Auto-generated method stub
-		return new double [] {0.0 , 0.0};
+		// Extraccion de datos necesarios
+		double suma = 0;
+		int contador = 0;
+		ArregloDinamico<Integer> valores = new ArregloDinamico<>();
+		
+		for (VOMovingViolations infraccion : movingViolationsQueue) {
+			if (infraccion.getViolationCode().equals(violationCode8)) {
+				suma += 1;
+				contador += 1;
+				valores.agregar(infraccion.getFineAmount());
+			}
+		}
+		// Calculos
+		double promedio = suma/contador;
+		double var = 0;
+		for (double fa : valores) {
+			var += (fa - promedio)*(fa - promedio)/(contador - 1);
+		}
+		
+		return new double [] {promedio , Math.sqrt(var)};
 	}
 
 	public int countMovingViolationsInHourRange(int horaInicial9, int horaFinal9) {
