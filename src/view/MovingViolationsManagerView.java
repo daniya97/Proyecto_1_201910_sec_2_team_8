@@ -24,13 +24,13 @@ public class MovingViolationsManagerView
 
 		
 		System.out.println("5. Consultar los tipos de infracciones (VIOLATIONCODE) con su valor (FINEAMT) promedio en un rango dado");
-		System.out.println("6. Consultar infracciones donde la cantidad pagada (TOTALPAID) esta en un rango dado. Se ordena por fecha de infracción");
+		System.out.println("6. Consultar infracciones donde la cantidad pagada (TOTALPAID) esta en un rango dado. Se ordena por fecha de infracciï¿½n");
 		System.out.println("7. Consultar infracciones por hora inicial y hora final, ordenada ascendentemente por VIOLATIONDESC");
 		System.out.println("8. Dado un tipo de infraccion (VIOLATIONCODE) informar el (FINEAMT) promedio y su desviacion estandar.");
 
 		System.out.println("9. El numero de infracciones que ocurrieron en un rango de horas del dia. Se define el rango de horas por valores enteros en el rango [0, 24]");
 		System.out.println("10. Grafica ASCII con el porcentaje de infracciones que tuvieron accidentes por hora del dia");
-		System.out.println("11. La deuda (TOTALPAID “ FINEAMT - PENALTY1 â€“ PENALTY2) total por infracciones que se dieron en un rango de fechas.");
+		System.out.println("11. La deuda (TOTALPAID ï¿½ FINEAMT - PENALTY1 â€“ PENALTY2) total por infracciones que se dieron en un rango de fechas.");
 		System.out.println("12. Grafica ASCII con la deuda acumulada total por infracciones");
 
 		
@@ -41,6 +41,16 @@ public class MovingViolationsManagerView
 	
 	public void printMessage(String mensaje) {
 		System.out.println(mensaje);
+	}
+	
+	public void printMovingViolationsReq1(IQueue<VOMovingViolations> resultados1) {
+		if (resultados1 == null) {
+			System.out.println("El objectId es ï¿½nico");
+			return;
+		}
+		for(VOMovingViolations v: resultados1) {
+			System.out.println("ObjectID: " + v.objectId());
+		}
 	}
 	
 	public void printMovingViolationsReq2(IQueue<VOMovingViolations> resultados2) {

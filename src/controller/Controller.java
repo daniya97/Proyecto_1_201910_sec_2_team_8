@@ -74,8 +74,8 @@ public class Controller {
 				System.out.println(movingViolationsQueue.darTamano());
 				break;
 			case 1:
-				boolean isUnique = verifyObjectIDIsUnique();
-				view.printMessage("El objectId es �nico: " + isUnique);
+				IQueue<VOMovingViolations> resultados1 = verifyObjectIDIsUnique();
+				view.printMovingViolationsReq2(resultados1);
 				break;
 				
 			case 2:
@@ -278,7 +278,7 @@ public class Controller {
 			    }
 			    fileCounter += 1;
 			}
-			
+			/*
 			int suma = 0;
 			for (int contador : contadores) suma += contador;
 			System.out.println("  ----------Informaci�n Sobre la Carga------------------  ");
@@ -286,7 +286,7 @@ public class Controller {
 				System.out.println("Infracciones Mes " + (i+1)+": " + contadores[i]);
 			}
 			System.out.println("Total Infracciones Cuatrisemetre: " + this.movingViolationsQueue.darTamano());
-			
+			*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -326,7 +326,7 @@ public class Controller {
 		return null;
 	}
 
-	public boolean verifyObjectIDIsUnique() {
+	public IQueue<VOMovingViolations> verifyObjectIDIsUnique() {
 		
 		int contador = 0;
 		boolean respuesta = true;	
@@ -351,15 +351,15 @@ public class Controller {
 				
 		}
 		
-		
-		if(!respuesta){
+		return repetidos;
+		/*if(!respuesta){
 			for(VOMovingViolations s: repetidos){
 				System.out.println(s.objectId());
 			}
 			
 		}
 		
-		return respuesta;
+		return respuesta;*/
 	}
 
 	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial,
