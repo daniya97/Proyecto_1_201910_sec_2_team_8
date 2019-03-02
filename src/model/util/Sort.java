@@ -3,8 +3,7 @@ import java.lang.Math;
 import java.util.Comparator;
 import java.util.Random;
 
-import model.data_structures.IQueue;
-import model.data_structures.Queue;
+import model.data_structures.*;
 import model.vo.VOMovingViolations;
 
 public class Sort {
@@ -19,22 +18,22 @@ public class Sort {
 	 * @param datos - conjunto de datos a ordenar (inicio) y conjunto de datos ordenados (final)
 	 */
 
-	public static void ordenarShellSort( Comparable[ ] datos ) {
+	public static void ordenarShellSort(ArregloDinamico datos, Comparator c) {
 		// Esta es una implementacion hecha con el proposito de entender shellsort, que permite
 		// el uso de diferentes secuencias con facilidad. La unica diferencia en uso de recursos
 		// de esta implementacion es la creacion de la secuencia y su guardado en memoria, algo minimo.
-		int[] secuencia = giveSequence(datos.length);
+		int[] secuencia = giveSequence(datos.darTamano());
 		
-		for (int h : secuencia) hsort(datos, h);
+		for (int h : secuencia) hsort(datos, h, c);
 	}
 	
-	private static void hsort(Comparable[] datos, int h) {
+	private static void hsort(ArregloDinamico datos, int h, Comparator c) {
 		int posOfInserting;
 		for (int i = 0; i < h; i += 1) {
 			// insertion-sort el h-subarray que empieza en i
-			for (int j = i + h; j < datos.length ; j += h) {
+			for (int j = i + h; j < datos.darTamano() ; j += h) {
 				posOfInserting = j;
-				while ((posOfInserting - h)>= 0 && less(datos[posOfInserting], datos[posOfInserting-h])) {
+				while ((posOfInserting - h)>= 0 && less(c, datos.darObjeto(posOfInserting), datos.darObjeto(posOfInserting-h))) {
 					exchange(datos, posOfInserting, posOfInserting-h);
 					posOfInserting -= h;
 				}
@@ -68,11 +67,11 @@ public class Sort {
 	 * Ordenar datos aplicando el algoritmo MergeSort
 	 * @param movingViolationsQueue - conjunto de datos a ordenar (inicio) y conjunto de datos ordenados (final)
 	 */
-	public static void ordenarMergeSort(Queue<VOMovingViolations> datos, Comparator comparator ) {
+	public static void ordenarMergeSort(ArregloDinamico datos, Comparator comparator ) {
 		
 		//Bottom - Up
-		System.out.println(datos.size());
-		int N = datos.size();
+		System.out.println(datos.darTamano());
+		int N = datos.darTamano();
 		//Se crea un arreglo auxiliar
 		Queue auxiliar = new Queue<VOMovingViolations>();
 		Queue auxiliar2 = new Queue<VOMovingViolations>();
@@ -86,7 +85,7 @@ public class Sort {
 	}
 
 	
-	private static void merge(IQueue<VOMovingViolations> datos, IQueue<VOMovingViolations> auxiliar, IQueue<VOMovingViolations> auxiliar2, int min, int med, int max, Comparator comparator){
+	private static void merge(ArregloDinamico datos, ArregloDinamico auxiliar, ArregloDinamico auxiliar2, int min, int med, int max, Comparator comparator){
 		//Se copia el arreglo
 		for( int k = min; k<=med; k++){
 			auxiliar.enqueue(datos.dequeue());
@@ -135,28 +134,28 @@ public class Sort {
 	 * Ordenar datos aplicando el algoritmo QuickSort
 	 * @param datos - conjunto de datos a ordenar (inicio) y conjunto de datos ordenados (final)
 	 */
-	public static void ordenarQuickSort( Comparable[ ] datos ) {
+	public static void ordenarQuickSort( ArregloDinamico datos, Comparator c ) {
 		// Desordenar
 		
-		StdRandom.shuffle(datos);
-		ordenarQuickSort(datos, 0, datos.length-1);
+		//StdRandom.shuffle(datos);
+		ordenarQuickSort(datos, 0, datos.darTamano()-1, c);
 	}
 	
-	private static void ordenarQuickSort( Comparable[ ] datos, int min, int max) {
+	private static void ordenarQuickSort( ArregloDinamico datos, int min, int max, Comparator c ) {
 		if (min >= max) return;
 		
-		Comparable ref = datos[min];
+		Comparable ref = datos.darObjeto(min);
 		
 		// Partir array en dato de referencia, datos menores o iguales, y datos mayores
 		int indLastLeq = min;
 		int indFirstGr = max + 1;
 		while (true) {
 			// Encontrar la posicion actual donde termina la particion de numeros menores o iguales
-			while (indLastLeq < max && datos[indLastLeq + 1].compareTo(ref) <= 0) indLastLeq += 1;
+			while (indLastLeq < max && datos.darObjeto(indLastLeq + 1).compareTo(ref) <= 0) indLastLeq += 1;
 			if (indLastLeq + 1 == indFirstGr) break;
 			
 			// Encontrar la posicion actual donde empieza la particion de numeros mayores
-			while (indFirstGr > (min+1) && datos[indFirstGr - 1].compareTo(ref) > 0) indFirstGr -= 1;
+			while (indFirstGr > (min+1) && datos.darObjeto(indFirstGr - 1).compareTo(ref) > 0) indFirstGr -= 1;
 			if (indLastLeq + 1 == indFirstGr) break;
 			
 			// En caso de no cruzarse las dos partes del array, hacer el intercambio de los
@@ -169,8 +168,8 @@ public class Sort {
 		exchange(datos, min, indLastLeq);
 		
 		// Ordenar las 2 partes restantes
-		ordenarQuickSort(datos, min, indLastLeq - 1);
-		ordenarQuickSort(datos, indFirstGr, max);
+		ordenarQuickSort(datos, min, indLastLeq - 1, c);
+		ordenarQuickSort(datos, indFirstGr, max, c);
 	}
 	/*
 	 * **********************************************************************************************
@@ -182,7 +181,7 @@ public class Sort {
 	 * @param w segundo objeto de comparacion
 	 * @return true si v es menor que w usando el metodo compareTo. false en caso contrario.
 	 */
-	private static boolean less(Comparator c, Object v, Object w)
+	private static boolean less(Comparator c, Comparable v, Comparable w)
 	{
 		return c.compare(v, w) < 0;
 	}
@@ -193,16 +192,16 @@ public class Sort {
 	 * @param i posicion del 1er elemento a intercambiar
 	 * @param j posicion del 2o elemento a intercambiar
 	 */
-	private static void exchange( Comparable[] datos, int i, int j)
+	private static void exchange(ArregloDinamico datos, int i, int j)
 	{
-		Comparable temp = datos[i];
-		datos[i] = datos[j];
-		datos[j] = temp;
+		Comparable temp = datos.darObjeto(i);
+		datos.cambiarEnPos(i, datos.darObjeto(j));
+		datos.cambiarEnPos(j, temp);
 	}
 	
-	public static boolean isSorted(Comparable[] datos) {
-		for (int i = 0; i < datos.length-1; i++)
-			if (less(datos[i+1], datos[i])) return false;
+	public static boolean isSorted(Comparator c, ArregloDinamico datos) {
+		for (int i = 0; i < datos.darTamano()-1; i++)
+			if (less(c, datos.darObjeto(i+1), datos.darObjeto(i))) return false;
 		return true;
 	}
 
