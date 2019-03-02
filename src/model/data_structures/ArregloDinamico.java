@@ -82,9 +82,8 @@ public class ArregloDinamico<T> implements IArregloDinamico<T> {
 		}
 
 		public T eliminar(T dato) {
-			eliminarEnPos(buscar(dato));
 			
-			return dato;
+			return eliminarEnPos(buscar(dato));
 		}
 		
 		public T eliminarEnPos(int n) {

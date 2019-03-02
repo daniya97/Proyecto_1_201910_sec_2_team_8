@@ -66,7 +66,7 @@ public class Controller {
 			case 0:
 				view.printMessage("Ingrese el cuatrimestre (1, 2 o 3)");
 				int numeroCuatrimestre = sc.nextInt();
-				controller.loadMovingViolations(numeroCuatrimestre);/*
+				loadMovingViolations(numeroCuatrimestre);/*
 				view.printMessage("Elija un cuatrisemestre (1: Enero, Febrero, Marzo, Abril - 2: Mayo, Junio, Julio, Agosto- 3: Septiembre, Octubre, Noviembre y Diciembre)");
 				int s = sc.nextInt();
 				this.elegirCuatriSemestre(s);
@@ -257,7 +257,7 @@ public class Controller {
 		int[] contadores = new int[movingViolationsFilePaths.length];
 		int fileCounter = 0;
 		try {
-			movingViolationsQueue = new ArregloDinamico<VOMovingViolations>();
+			this.movingViolationsQueue = new ArregloDinamico<VOMovingViolations>(450000);
 			
 			for (String filePath : movingViolationsFilePaths) {
 				reader = new CSVReader(new FileReader("data/"+filePath));
@@ -273,6 +273,7 @@ public class Controller {
 				contadores[fileCounter] = 0;
 			    for (String[] row : reader) {
 			    	movingViolationsQueue.agregar(new VOMovingViolations(posiciones, row));
+			    	//System.out.println(movingViolationsQueue.darTamano() + " " + movingViolationsQueue.darObjeto(movingViolationsQueue.darTamano()-1).objectId());
 			    	contadores[fileCounter] += 1;
 			    }
 			    fileCounter += 1;
@@ -284,7 +285,7 @@ public class Controller {
 			for (int i = 0; i < contadores.length; i++) {
 				System.out.println("Infracciones Mes " + (i+1)+": " + contadores[i]);
 			}
-			System.out.println("Total Infracciones Cuatrisemetre: " + suma);
+			System.out.println("Total Infracciones Cuatrisemetre: " + this.movingViolationsQueue.darTamano());
 			
 		} catch (Exception e) {
 			e.printStackTrace();

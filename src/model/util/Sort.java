@@ -181,7 +181,7 @@ public class Sort {
 	 * @param w segundo objeto de comparacion
 	 * @return true si v es menor que w usando el metodo compareTo. false en caso contrario.
 	 */
-	private static boolean less(Comparator c, Comparable v, Comparable w)
+	private static boolean less(Comparator c, Object v, Object w)
 	{
 		return c.compare(v, w) < 0;
 	}
