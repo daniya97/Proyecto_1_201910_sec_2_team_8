@@ -4,8 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -449,7 +448,19 @@ public class Controller {
 
 	public IQueue<VOMovingViolations> getMovingViolationsByHour(int horaInicial7, int horaFinal7) {
 		// TODO Auto-generated method stub
-		return null;
+		LocalTime horaIn = LocalTime.of(horaInicial7, 0);
+		LocalTime horaFin = LocalTime.of(horaFinal7, 0);
+		
+		Queue<VOMovingViolations> colaInf = new Queue<>();
+		
+		LocalTime hora;
+		for (VOMovingViolations infraccion : movingViolationsQueue) {
+			hora = infraccion.getTicketIssueDate().toLocalTime();
+			if (horaIn.compareTo(hora) <= 0 && hora.compareTo(horaFin) <= 0) {
+				colaInf.enqueue(infraccion);
+			}
+		}
+		return colaInf;
 	}
 
 	public double[] avgAndStdDevFineAmtOfMovingViolation(String violationCode8) {
@@ -486,7 +497,7 @@ public class Controller {
 	 */
 	private static LocalDateTime convertirFecha_Hora_LDT(String fechaHora)
     {
-                   return LocalDateTime.parse(fechaHora, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'.000Z'"));
+		return LocalDateTime.parse(fechaHora, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'.000Z'"));
     }
 	
 	
