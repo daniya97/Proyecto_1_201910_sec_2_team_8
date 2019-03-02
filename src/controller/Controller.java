@@ -532,7 +532,6 @@ public class Controller {
 	public int countMovingViolationsInHourRange(int horaInicial9, int horaFinal9) {
 
 		int contador = 0;
-		Sort.ordenarQuickSort(movingViolationsQueue,new VOMovingViolations.TimeOrder());
 		for(VOMovingViolations s: movingViolationsQueue){
 			if(s.getTicketIssueDate().getHour()>=horaInicial9 && s.getTicketIssueDate().getHour()<=horaFinal9 ) contador++;
 		}
