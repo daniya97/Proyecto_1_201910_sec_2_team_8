@@ -74,135 +74,135 @@ public class Controller {
 				IQueue<VOMovingViolations> resultados1 = verifyObjectIDIsUnique();
 				view.printMovingViolationsReq2(resultados1);
 				break;
-				
+
 			case 2:
-				
+
 				view.printMessage("Ingrese la fecha con hora inicial (Ej : 28/03/2017T15:30:20)");
 				LocalDateTime fechaInicialReq2A = convertirFecha_Hora_LDT(sc.next());
-				
+
 				view.printMessage("Ingrese la fecha con hora final (Ej : 28/03/2017T15:30:20)");
 				LocalDateTime fechaFinalReq2A = convertirFecha_Hora_LDT(sc.next());
-				
+
 				IQueue<VOMovingViolations> resultados2 = controller.getMovingViolationsInRange(fechaInicialReq2A, fechaFinalReq2A);
-				
+
 				view.printMovingViolationsReq2(resultados2);
-				
+
 				break;
-				
+
 			case 3:
-				
+
 				view.printMessage("Ingrese el VIOLATIONCODE (Ej : T210)");
 				String violationCode3 = sc.next();
-				
+
 				double [] promedios3 = controller.avgFineAmountByViolationCode(violationCode3);
-				
+
 				view.printMessage("FINEAMT promedio sin accidente: " + promedios3[0] + ", con accidente:" + promedios3[1]);
 				break;
-					
-				
+
+
 			case 4:
-				
+
 				view.printMessage("Ingrese el ADDRESS_ID");
 				String addressId4 = sc.next();
 
 				view.printMessage("Ingrese la fecha con hora inicial (Ej : 28/03/2017)");
 				LocalDate fechaInicialReq4A = convertirFecha(sc.next());
-				
+
 				view.printMessage("Ingrese la fecha con hora final (Ej : 28/03/2017)");
 				LocalDate fechaFinalReq4A = convertirFecha(sc.next());
-				
+
 				IStack<VOMovingViolations> resultados4 = controller.getMovingViolationsAtAddressInRange(addressId4, fechaInicialReq4A, fechaFinalReq4A);
-				
+
 				view.printMovingViolationsReq4(resultados4);
-				
+
 				break;
-				
+
 			case 5:
 				view.printMessage("Ingrese el limite inferior de FINEAMT  (Ej: 50)");
 				double limiteInf5 = sc.nextDouble();
-				
+
 				view.printMessage("Ingrese el limite superior de FINEAMT  (Ej: 50)");
 				double limiteSup5 = sc.nextDouble();
-				
+
 				IQueue<VOViolationCode> violationCodes = controller.violationCodesByFineAmt(limiteInf5, limiteSup5);
 				view.printViolationCodesReq5(violationCodes);
 				break;
-			
+
 			case 6:
-				
+
 				view.printMessage("Ingrese el limite inferior de TOTALPAID (Ej: 200)");
 				double limiteInf6 = sc.nextDouble();
-				
+
 				view.printMessage("Ingrese el limite superior de TOTALPAID (Ej: 200)");
 				double limiteSup6 = sc.nextDouble();
-				
+
 				view.printMessage("Ordenar Ascendentmente: (Ej: true)");
 				boolean ascendente6 = sc.nextBoolean();				
-				
+
 				IStack<VOMovingViolations> resultados6 = controller.getMovingViolationsByTotalPaid(limiteInf6, limiteSup6, ascendente6);
 				view.printMovingViolationReq6(resultados6);
 				break;
-				
+
 			case 7:
-				
+
 				view.printMessage("Ingrese la hora inicial (Ej: 23)");
 				int horaInicial7 = sc.nextInt();
-				
+
 				view.printMessage("Ingrese la hora final (Ej: 23)");
 				int horaFinal7 = sc.nextInt();
-				
+
 				IQueue<VOMovingViolations> resultados7 = controller.getMovingViolationsByHour(horaInicial7, horaFinal7);
 				view.printMovingViolationsReq7(resultados7);
 				break;
-				
+
 			case 8:
-				
+
 				view.printMessage("Ingrese el VIOLATIONCODE (Ej : T210)");
 				String violationCode8 = sc.next();
-				
+
 				double [] resultado8 = controller.avgAndStdDevFineAmtOfMovingViolation(violationCode8);
-				
+
 				view.printMessage("FINEAMT promedio: " + resultado8[0] + ", desviación estandar:" + resultado8[1]);
 				break;
-				
+
 			case 9:
-				
+
 				view.printMessage("Ingrese la hora inicial (Ej: 23)");
 				int horaInicial9 = sc.nextInt();
-				
+
 				view.printMessage("Ingrese la hora final (Ej: 23)");
 				int horaFinal9 = sc.nextInt();
-				
+
 				int resultado9 = controller.countMovingViolationsInHourRange(horaInicial9, horaFinal9);
-				
+
 				view.printMessage("Número de infracciones: " + resultado9);
 				break;
-			
+
 			case 10:
 				view.printMovingViolationsByHourReq10();
 				break;
-				
+
 			case 11:
 				view.printMessage("Ingrese la fecha inicial (Ej : 28/03/2017)");
 				LocalDate fechaInicial11 = convertirFecha(sc.next());
-				
+
 				view.printMessage("Ingrese la fecha final (Ej : 28/03/2017)");
 				LocalDate fechaFinal11 = convertirFecha(sc.next());
-				
+
 				double resultados11 = controller.totalDebt(fechaInicial11, fechaFinal11);
 				view.printMessage("Deuda total "+ resultados11);
 				break;
-			
+
 			case 12:	
 				view.printTotalDebtbyMonthReq12();
-				
+
 				break;
-				
+
 			case 13:	
 				fin=true;
 				sc.close();
 				break;
-		}
+			}
 		}
 	}
 	public void loadMovingViolations(int n)
@@ -210,34 +210,34 @@ public class Controller {
 		if(n == 1)
 		{
 			loadMovingViolations(new String[] {"Moving_Violations_Issued_in_January_2018.csv", 
-					    	     "Moving_Violations_Issued_in_February_2018.csv",
-					    	     "Moving_Violations_Issued_in_March_2018.csv",
-					    	     "Moving_Violations_Issued_in_April_2018.csv"
-					    	     });
+					"Moving_Violations_Issued_in_February_2018.csv",
+					"Moving_Violations_Issued_in_March_2018.csv",
+					"Moving_Violations_Issued_in_April_2018.csv"
+			});
 			cuatrimestreCargado = 1;
 		}
 		else if(n == 2)
 		{
 			loadMovingViolations(new String[] {"Moving_Violations_Issued_in_May_2018.csv", 
-								 "Moving_Violations_Issued_in_June_2018.csv",
-								 "Moving_Violations_Issued_in_July_2018.csv",
-								 "Moving_Violations_Issued_in_August_2018.csv"
-								 });
+					"Moving_Violations_Issued_in_June_2018.csv",
+					"Moving_Violations_Issued_in_July_2018.csv",
+					"Moving_Violations_Issued_in_August_2018.csv"
+			});
 			cuatrimestreCargado = 2;
 		}
 		else if(n == 3){
 			loadMovingViolations(new String[] {"Moving_Violations_Issued_in_September_2018.csv", 
-		    	     			 "Moving_Violations_Issued_in_October_2018.csv",
-		    	     			 "Moving_Violations_Issued_in_November_2018.csv",
-		    	     			 "Moving_Violations_Issued_in_December_2018.csv"
-		    	     			 });
+					"Moving_Violations_Issued_in_October_2018.csv",
+					"Moving_Violations_Issued_in_November_2018.csv",
+					"Moving_Violations_Issued_in_December_2018.csv"
+			});
 			cuatrimestreCargado = 3;
 		}
 		else
 		{
 			throw new IllegalArgumentException("No existe ese cuatrimestre en un annio.");
 		}
-		
+
 	}
 
 
@@ -251,25 +251,25 @@ public class Controller {
 		int fileCounter = 0;
 		try {
 			this.movingViolationsQueue = new ArregloDinamico<VOMovingViolations>(500000);
-			
+
 			for (String filePath : movingViolationsFilePaths) {
 				reader = new CSVReader(new FileReader("data/"+filePath));
-				
-				 
+
+
 				String[] headers = reader.readNext();
 				//System.out.println("." + headers[0] + ".");
 				int[] posiciones = new int[VOMovingViolations.EXPECTEDHEADERS.length];
 				for (int i = 0; i < VOMovingViolations.EXPECTEDHEADERS.length; i++) {
 					posiciones[i] = buscarArray(headers, VOMovingViolations.EXPECTEDHEADERS[i]);
 				}
-				
+
 				contadores[fileCounter] = 0;
-			    for (String[] row : reader) {
-			    	movingViolationsQueue.agregar(new VOMovingViolations(posiciones, row));
-			    	//System.out.println(movingViolationsQueue.darTamano() + " " + movingViolationsQueue.darObjeto(movingViolationsQueue.darTamano()-1).objectId());
-			    	contadores[fileCounter] += 1;
-			    }
-			    fileCounter += 1;
+				for (String[] row : reader) {
+					movingViolationsQueue.agregar(new VOMovingViolations(posiciones, row));
+					//System.out.println(movingViolationsQueue.darTamano() + " " + movingViolationsQueue.darObjeto(movingViolationsQueue.darTamano()-1).objectId());
+					contadores[fileCounter] += 1;
+				}
+				fileCounter += 1;
 			}
 			/*
 			int suma = 0;
@@ -279,7 +279,7 @@ public class Controller {
 				System.out.println("Infracciones Mes " + (i+1)+": " + contadores[i]);
 			}
 			System.out.println("Total Infracciones Cuatrisemetre: " + this.movingViolationsQueue.darTamano());
-			*/
+			 */
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -293,11 +293,11 @@ public class Controller {
 
 		}
 	}
-	
-	
+
+
 	private int buscarArray(String[] array, String string) {
 		int i = 0;
-		
+
 		while (i < array.length) {
 			if (array[i].equalsIgnoreCase(string)) {
 				//System.out.println(i);
@@ -314,13 +314,13 @@ public class Controller {
 	public IQueue <VODaylyStatistic> getDailyStatistics () {
 		return null;
 	}
-	
+
 	public IStack <VOMovingViolations> nLastAccidents(int n) {
 		return null;
 	}
 
 	public IQueue<VOMovingViolations> verifyObjectIDIsUnique() {
-		
+
 		int contador = 0;
 		boolean respuesta = true;	
 		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.ObjectIDOrder());
@@ -328,7 +328,7 @@ public class Controller {
 		String anterior = null;
 		Queue<VOMovingViolations> repetidos = new Queue<>();
 		Queue<VOMovingViolations> Norepetidos = new Queue<>();
-		
+
 		for(VOMovingViolations s: movingViolationsQueue){
 			actual = s.objectId();
 			if(actual.equals(anterior)){
@@ -341,16 +341,16 @@ public class Controller {
 			}
 			anterior = actual;
 		}
-		
+
 		return repetidos;
 
 	}
 
 	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
-		
+
 		IQueue<VOMovingViolations> respuesta = new Queue<>();
 		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder());
-		
+
 		for(VOMovingViolations s: movingViolationsQueue){
 			if(s.getTicketIssueDate().isAfter(fechaInicial)){
 				if(s.getTicketIssueDate().isBefore(fechaFinal)){
@@ -370,11 +370,9 @@ public class Controller {
 		int suma2 = 0;
 		int contador1 = 0;
 		int contador2 = 0;
-		
-		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.ViolationCodeOrder());
+
 		for(VOMovingViolations s: movingViolationsQueue){
 			if(s.getViolationCode().equals(violationCode3)){
-				encontrado = true;
 				if(s.getAccidentIndicator()){
 					suma1 += s.getFineAmount();
 					contador1++;
@@ -384,46 +382,44 @@ public class Controller {
 					contador2++;
 				}
 			}
-			else if(encontrado){
-				return new double [] {suma1/contador1 , suma2/contador2};
-			}
-			
 		}
 		return new double [] {suma1 != 0? suma1/contador1:0 , suma2 != 0? suma2/contador2:0};
 	}
 
 	public IStack<VOMovingViolations> getMovingViolationsAtAddressInRange(String addressId,
 			LocalDate fechaInicial, LocalDate fechaFinal) {
-	
-		IStack<VOMovingViolations> respuesta = new Stack<>();
-		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.AddressIDOrder());
-		boolean encontrado = false;
+		
+		ArregloDinamico<VOMovingViolations> respuesta = new ArregloDinamico<>();
+		IStack<VOMovingViolations> resultado = new Stack<>();
+		
 		for(VOMovingViolations s: movingViolationsQueue){
-			if(s.equals(addressId) && s.getTicketIssueDate().toLocalDate().isAfter(fechaInicial)){
-				encontrado = true;
-				if(s.getTicketIssueDate().toLocalDate().isBefore(fechaFinal)){
-					respuesta.push(s);
-				}
-			}
-			if(encontrado){
-				return respuesta;
+			
+			if(s.getAddressID().equals(addressId) && s.getTicketIssueDate().toLocalDate().isAfter(fechaInicial) && s.getTicketIssueDate().toLocalDate().isBefore(fechaFinal)){
+				respuesta.agregar(s);
 			}
 		}
 		// TODO Auto-generated method stub
-		return respuesta;
+		
+		Sort.ordenarShellSort(respuesta,new VOMovingViolations.StreetsgeIDDateOrder());
+	
+		for(VOMovingViolations s: respuesta){
+			resultado.push(s);
+		}
+		
+		return resultado;
 	}
 
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
 		// Ordena los datos por codigo de violacion
 		Sort.ordenarShellSort(this.movingViolationsQueue, new VOMovingViolations.ViolationCodeOrder());
-		
+
 		// Cola de tuplas a retornar
 		Queue<VOViolationCode> colaTuplas = new Queue<VOViolationCode>(); 
 		Iterator<VOMovingViolations> iterador = movingViolationsQueue.iterator();
-		
+
 		// Si no hay datos, entonces retorna una cola vacia
 		if (!iterador.hasNext()) return colaTuplas;
-		
+
 		// Como los datos estan ordenados, tomo una infraccion de referencia par 
 		VOMovingViolations infrRevisar = iterador.next();
 		String codigoRef = infrRevisar.getViolationCode();
@@ -431,10 +427,10 @@ public class Controller {
 		int contadorIgs = 1;
 		double sumaActual = infrRevisar.getFineAmount();
 		double promedio;
-		
+
 		while (iterador.hasNext()) {
 			infrRevisar = iterador.next();
-			
+
 			if (codigoRef.equals(infrRevisar.getViolationCode())) {
 				// Actualiza contadores
 				contadorIgs += 1;
@@ -456,7 +452,7 @@ public class Controller {
 		if (limiteInf5 <= promedio && promedio <= limiteSup5) {
 			colaTuplas.enqueue(new VOViolationCode(codigoRef, promedio));
 		}
-		
+
 		return colaTuplas;
 	}
 
@@ -468,16 +464,16 @@ public class Controller {
 		} else {
 			Sort.ordenarShellSort(this.movingViolationsQueue, new VOMovingViolations.TicketIssueOrder());
 		}
-		
+
 		// Pila de infracciones a retornar
 		Stack<VOMovingViolations> pilaInfr = new Stack<VOMovingViolations>();
-		
+
 		for (VOMovingViolations infraccion : movingViolationsQueue) {
 			if (limiteInf6 <= infraccion.getTotalPaid() && infraccion.getTotalPaid() <= limiteSup6) {
 				pilaInfr.push(infraccion);
 			}
 		}
-		
+
 		return pilaInfr;
 	}
 
@@ -485,9 +481,9 @@ public class Controller {
 		// Conversion de horas a formato util
 		LocalTime horaIn = LocalTime.of(horaInicial7, 0);
 		LocalTime horaFin = LocalTime.of(horaFinal7, 0);
-		
+
 		ArregloDinamico<VOMovingViolations> arregloInf = new ArregloDinamico<>();
-		
+
 		LocalTime hora;
 		for (VOMovingViolations infraccion : movingViolationsQueue) {
 			hora = infraccion.getTicketIssueDate().toLocalTime();
@@ -495,10 +491,10 @@ public class Controller {
 				arregloInf.agregar(infraccion);
 			}
 		}
-		
+
 		// Order resultados (~12 veces menos datos)
 		Sort.ordenarShellSort(arregloInf, new VOMovingViolations.ViolationDescOrder());
-		
+
 		// Pasar datos a una cola
 		Queue<VOMovingViolations> colaInf = new Queue<>();
 		for (VOMovingViolations infraccion : arregloInf) colaInf.enqueue(infraccion);
@@ -510,7 +506,7 @@ public class Controller {
 		double suma = 0;
 		int contador = 0;
 		ArregloDinamico<Integer> valores = new ArregloDinamico<>();
-		
+
 		for (VOMovingViolations infraccion : movingViolationsQueue) {
 			if (infraccion.getViolationCode().equals(violationCode8)) {
 				suma += 1;
@@ -524,14 +520,14 @@ public class Controller {
 		for (double fa : valores) {
 			var += (fa - promedio)*(fa - promedio)/contador;
 		}
-		
+
 		if (contador == 0) return new double [] {0.0, 0.0};
-		
+
 		return new double [] {promedio , Math.sqrt(var)};
 	}
 
 	public int countMovingViolationsInHourRange(int horaInicial9, int horaFinal9) {
-		
+
 		int contador = 0;
 		Sort.ordenarQuickSort(movingViolationsQueue,new VOMovingViolations.TimeOrder());
 		for(VOMovingViolations s: movingViolationsQueue){
@@ -552,11 +548,11 @@ public class Controller {
 						infraccion.getPenalty1() - infraccion.getPenalty2());
 			}
 		}
-		
+
 		return deudaAcum;
 	}
-	
-	
+
+
 	/**
 	 * Convertir fecha a un objeto LocalDate
 	 * @param fecha fecha en formato dd/mm/aaaa con dd para dia, mm para mes y aaaa para agno
@@ -567,17 +563,17 @@ public class Controller {
 		return LocalDate.parse(fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 	}
 
-	
+
 	/**
 	 * Convertir fecha y hora a un objeto LocalDateTime
 	 * @param fecha fecha en formato yyyy-MM-dd'T'HH:mm:ss'.000Z' con dd para dia, mm para mes y yyy para agno, HH para hora, mm para minutos y ss para segundos
 	 * @return objeto LDT con fecha y hora integrados
 	 */
 	private static LocalDateTime convertirFecha_Hora_LDT(String fechaHora)
-    {
+	{
 		return LocalDateTime.parse(fechaHora, DateTimeFormatter.ofPattern("dd/MM/yyyy'T'HH:mm:ss"));
-    }
-	
-	
-	
+	}
+
+
+
 }

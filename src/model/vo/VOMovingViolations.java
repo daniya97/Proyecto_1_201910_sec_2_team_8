@@ -227,7 +227,11 @@ public class VOMovingViolations {
 		@Override
 		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
 			
-			return 0;
+			if(arg0.getStreetsegID()>arg1.getStreetsegID()) return 1;
+			else if(arg0.getStreetsegID()<arg1.getStreetsegID()) return -1;
+			else if(arg0.getTicketIssueDate().compareTo(arg1.getTicketIssueDate())>0) return 1;
+			else if(arg0.getTicketIssueDate().compareTo(arg1.getTicketIssueDate())<0) return -1;
+			else return 0;
 		}
 		
 	}
