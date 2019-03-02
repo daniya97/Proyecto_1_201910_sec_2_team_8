@@ -447,19 +447,26 @@ public class Controller {
 	}
 
 	public IQueue<VOMovingViolations> getMovingViolationsByHour(int horaInicial7, int horaFinal7) {
-		// TODO Auto-generated method stub
+		// Conversion de horas a formato util
 		LocalTime horaIn = LocalTime.of(horaInicial7, 0);
 		LocalTime horaFin = LocalTime.of(horaFinal7, 0);
 		
-		Queue<VOMovingViolations> colaInf = new Queue<>();
+		ArregloDinamico<VOMovingViolations> arregloInf = new ArregloDinamico<>();
 		
 		LocalTime hora;
 		for (VOMovingViolations infraccion : movingViolationsQueue) {
 			hora = infraccion.getTicketIssueDate().toLocalTime();
 			if (horaIn.compareTo(hora) <= 0 && hora.compareTo(horaFin) <= 0) {
-				colaInf.enqueue(infraccion);
+				arregloInf.agregar(infraccion);
 			}
 		}
+		
+		// Order resultados (~12 veces menos datos)
+		Sort.ordenarShellSort(arregloInf, new VOMovingViolations.ViolationDescOrder());
+		
+		// Pasar datos a una cola
+		Queue<VOMovingViolations> colaInf = new Queue<>();
+		for (VOMovingViolations infraccion : arregloInf) colaInf.enqueue(infraccion);
 		return colaInf;
 	}
 

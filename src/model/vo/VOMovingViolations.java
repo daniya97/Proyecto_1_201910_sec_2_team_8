@@ -242,9 +242,8 @@ public class VOMovingViolations {
 	public static class ViolationDescOrder implements Comparator<VOMovingViolations> {
 
 		@Override
-		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
-			
-			return 0;
+		public int compare(VOMovingViolations inf1, VOMovingViolations inf2) {
+			return inf1.getViolationDescription().compareTo(inf2.getViolationDescription());
 		}
 		
 	}
