@@ -2,7 +2,7 @@ package model.data_structures;
 
 import java.util.Iterator;
 
-public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamico<T> {
+public class ArregloDinamico<T> implements IArregloDinamico<T> {
 		/**
 		 * Capacidad maxima del arreglo
 		 */
@@ -72,7 +72,7 @@ public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamic
 		public int buscar(T dato) {
 			
 			for (int i = 0; i < tamanoAct; i++) {
-				if (dato.compareTo(elementos[i]) == 0) {
+				if (dato.equals(elementos[i])) {
 					return i;
 				}
 			}

@@ -2,3 +2,6 @@
 # - Hacer cambios en la Linked List para hacer uso de la clase Nodo ya existente
  - DOCUMENTACION GENERICS ARREGLO DINAMICO
  - Terminar tests de arreglo dinamico
+ - Arreglar MergeSort
+ - Mejorar Sort.java para no dejar las clases genericas ocmo Raw
+ - Nodo en controller

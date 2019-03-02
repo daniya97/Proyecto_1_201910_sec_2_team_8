@@ -16,9 +16,11 @@ import com.opencsv.CSVReader;
 
 import model.data_structures.IQueue;
 import model.data_structures.IStack;
+import model.data_structures.IArregloDinamico;
 import model.data_structures.Nodo;
 import model.data_structures.Queue;
 import model.data_structures.Stack;
+import model.data_structures.ArregloDinamico;
 
 import model.vo.VOMovingViolations;
 import model.vo.VODaylyStatistic;
@@ -35,7 +37,7 @@ public class Controller {
 	/**
 	 * Cola donde se van a cargar los datos de los archivos
 	 */
-	private Queue<VOMovingViolations> movingViolationsQueue;
+	private ArregloDinamico<VOMovingViolations> movingViolationsQueue;
 	private int cuatrimestreCargado = -1;
 
 	/**
@@ -69,7 +71,7 @@ public class Controller {
 				int s = sc.nextInt();
 				this.elegirCuatriSemestre(s);
 				*/
-				System.out.println(movingViolationsQueue.size());
+				System.out.println(movingViolationsQueue.darTamano());
 				break;
 			case 1:
 				boolean isUnique = verifyObjectIDIsUnique();
@@ -255,7 +257,7 @@ public class Controller {
 		int[] contadores = new int[movingViolationsFilePaths.length];
 		int fileCounter = 0;
 		try {
-			movingViolationsQueue = new Queue<VOMovingViolations>();
+			movingViolationsQueue = new ArregloDinamico<VOMovingViolations>();
 			
 			for (String filePath : movingViolationsFilePaths) {
 				reader = new CSVReader(new FileReader("data/"+filePath));
@@ -270,7 +272,7 @@ public class Controller {
 				
 				contadores[fileCounter] = 0;
 			    for (String[] row : reader) {
-			    	movingViolationsQueue.enqueue(new VOMovingViolations(posiciones, row));
+			    	movingViolationsQueue.agregar(new VOMovingViolations(posiciones, row));
 			    	contadores[fileCounter] += 1;
 			    }
 			    fileCounter += 1;
@@ -327,8 +329,8 @@ public class Controller {
 		
 		int contador = 0;
 		boolean respuesta = true;	
-		System.out.println(movingViolationsQueue.size());
-		Sort.ordenarMergeSort(movingViolationsQueue, new VOMovingViolations.ObjectIDOrder());
+		System.out.println(movingViolationsQueue.darTamano());
+		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.ObjectIDOrder());
 		String actual = null;
 		String anterior = null;
 		Queue<VOMovingViolations> repetidos = new Queue<>();

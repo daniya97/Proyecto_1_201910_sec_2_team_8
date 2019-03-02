@@ -1,6 +1,6 @@
 package model.data_structures;
 
-public interface IArregloDinamico<T extends Comparable<T>> extends Iterable<T>{
+public interface IArregloDinamico<T> extends Iterable<T>{
 
 	/**
 	 * Retornar el numero de elementos en el arreglo
