@@ -120,7 +120,8 @@ public class MovingViolationsManagerView
 		System.out.println("Cada X representa Y%");
 	}
 	
-	public void printTotalDebtbyMonthReq12() {
+	public void printTotalDebtbyMonthReq12(double[] resultados12) {
+		
 		System.out.println("Deuda acumulada por mes de infracciones. 2018");
 		System.out.println("Mes| Dinero");
 		System.out.println("01| X");

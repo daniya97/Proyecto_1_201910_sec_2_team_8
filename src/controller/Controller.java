@@ -7,7 +7,8 @@ import java.io.IOException;
 
 import java.time.*;
 import java.time.format.*;
-
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAmount;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -40,7 +41,7 @@ public class Controller {
 	 * Cola donde se van a cargar los datos de los archivos
 	 */
 	private static ArregloDinamico<VOMovingViolations> movingViolationsQueue;
-	private int cuatrimestreCargado = -1;
+	private static int cuatrimestreCargado = -1;
 
 	/**
 	 * Pila donde se van a cargar los datos de los archivos
@@ -193,8 +194,9 @@ public class Controller {
 				view.printMessage("Deuda total "+ resultados11);
 				break;
 			
-			case 12:	
-				view.printTotalDebtbyMonthReq12();
+			case 12:
+				double[] resultados12 = controller.accumulatedDebtByMonth();
+				view.printTotalDebtbyMonthReq12(resultados12);
 				
 				break;
 				
@@ -205,6 +207,7 @@ public class Controller {
 		}
 		}
 	}
+	
 	public void loadMovingViolations(int n)
 	{
 		if(n == 1)
@@ -214,7 +217,7 @@ public class Controller {
 					    	     "Moving_Violations_Issued_in_March_2018.csv",
 					    	     "Moving_Violations_Issued_in_April_2018.csv"
 					    	     });
-			cuatrimestreCargado = 1;
+			this.cuatrimestreCargado = 1;
 		}
 		else if(n == 2)
 		{
@@ -223,7 +226,7 @@ public class Controller {
 								 "Moving_Violations_Issued_in_July_2018.csv",
 								 "Moving_Violations_Issued_in_August_2018.csv"
 								 });
-			cuatrimestreCargado = 2;
+			this.cuatrimestreCargado = 2;
 		}
 		else if(n == 3){
 			loadMovingViolations(new String[] {"Moving_Violations_Issued_in_September_2018.csv", 
@@ -231,7 +234,7 @@ public class Controller {
 		    	     			 "Moving_Violations_Issued_in_November_2018.csv",
 		    	     			 "Moving_Violations_Issued_in_December_2018.csv"
 		    	     			 });
-			cuatrimestreCargado = 3;
+			this.cuatrimestreCargado = 3;
 		}
 		else
 		{
@@ -542,7 +545,6 @@ public class Controller {
 	}
 
 	public double totalDebt(LocalDate fechaInicial11, LocalDate fechaFinal11) {
-		// TODO Auto-generated method stub
 		double deudaAcum = 0;
 		LocalDate fechaAct;
 		for (VOMovingViolations infraccion : movingViolationsQueue) {
@@ -556,6 +558,47 @@ public class Controller {
 		return deudaAcum;
 	}
 	
+	private double[] accumulatedDebtByMonth() {
+		double[] deudasByMonth = new double[4];
+		
+		int mes1 = -1;
+		
+		switch (cuatrimestreCargado) {
+		case(1):
+			//fechaInic = LocalDate.of(2017, 1, 1);
+			mes1 = 1;
+			break;
+		case(2):
+			mes1 = 5;
+			break;
+		case(3):
+			mes1 = 9;
+			break;
+		default:
+			
+		}
+		
+		int mesAct;
+		double deudaAcM1 = 0;
+		double deudaAcM2 = 0;
+		double deudaAcM3 = 0;
+		double deudaAcM4 = 0;
+		double deudaAdicional = 0;
+		
+		LocalDate fechaAct;
+		for (VOMovingViolations infraccion : movingViolationsQueue) {
+			mesAct = infraccion.getTicketIssueDate().getMonthValue();
+			deudaAdicional = (infraccion.getTotalPaid() - infraccion.getFineAmount() - 
+					infraccion.getPenalty1() - infraccion.getPenalty2());
+			
+			switch (fechaAct.getMonthValue() ) {//fechaAct.compareTo(fechaInic.plus(1, ChronoUnit.MONTHS)) <= 0) {
+				deudaAcM1 += deudaAdicional;
+			} else if ()
+		}
+*/		
+		return null;
+	}
+
 	
 	/**
 	 * Convertir fecha a un objeto LocalDate
@@ -576,8 +619,6 @@ public class Controller {
 	private static LocalDateTime convertirFecha_Hora_LDT(String fechaHora)
     {
 		return LocalDateTime.parse(fechaHora, DateTimeFormatter.ofPattern("dd/MM/yyyy'T'HH:mm:ss"));
-    }
-	
-	
+    }	
 	
 }
