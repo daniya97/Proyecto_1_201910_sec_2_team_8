@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -37,7 +38,7 @@ public class Controller {
 	/**
 	 * Cola donde se van a cargar los datos de los archivos
 	 */
-	private ArregloDinamico<VOMovingViolations> movingViolationsQueue;
+	private static ArregloDinamico<VOMovingViolations> movingViolationsQueue;
 	private int cuatrimestreCargado = -1;
 
 	/**
@@ -348,12 +349,10 @@ public class Controller {
 		
 		IQueue<VOMovingViolations> respuesta = new Queue<>();
 		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder());
-		LocalDateTime aux = null;
 		
 		for(VOMovingViolations s: movingViolationsQueue){
-			aux = convertirFecha_Hora_LDT(s.getTicketIssueDate());
-			if(aux.isAfter(fechaInicial)){
-				if(aux.isBefore(fechaFinal)){
+			if(s.getTicketIssueDate().isAfter(fechaInicial)){
+				if(s.getTicketIssueDate().isBefore(fechaFinal)){
 					respuesta.enqueue(s);
 				}
 				else{
@@ -361,24 +360,60 @@ public class Controller {
 				}
 			}
 		}
-		
 		return respuesta;
 	}
 
 	public double[] avgFineAmountByViolationCode(String violationCode3) {
+		boolean encontrado = false;
+		int suma1 = 0;
+		int suma2 = 0;
+		int contador1 = 0;
+		int contador2 = 0;
 		
-		
-		
-		
-		
-		
-		return new double [] {0.0 , 0.0};
+		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.ViolationCodeOrder());
+		for(VOMovingViolations s: movingViolationsQueue){
+			if(s.getViolationCode().equals(violationCode3)){
+				encontrado = true;
+				if(s.getAccidentIndicator()){
+					suma1 += s.getFineAmount();
+					contador1++;
+				}
+				else{
+					suma2+=s.getFineAmount();
+					contador2++;
+				}
+			}
+			else if(encontrado){
+				return new double [] {suma1/contador1 , suma2/contador2};
+			}
+			
+		}
+		return new double [] {suma1/contador1 , suma2/contador2};
 	}
 
 	public IStack<VOMovingViolations> getMovingViolationsAtAddressInRange(String addressId,
 			LocalDate fechaInicial, LocalDate fechaFinal) {
+	
+		IStack<VOMovingViolations> respuesta = new Stack<>();
+		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.AddressIDOrder());
+		LocalDateTime fechaI = LocalDateTime.of(fechaInicial, LocalTime.MIN);
+		LocalDateTime fechaF = LocalDateTime.of(fechaFinal, LocalTime.MAX);
+		
+		
+		for(VOMovingViolations s: movingViolationsQueue){
+			if(s.equals(addressId) && s.getTicketIssueDate().isAfter(fechaI)){
+				if(s.getTicketIssueDate().isAfter(fechaF)){
+					return respuesta;
+				}
+				else{
+					respuesta.push(s);
+				}
+				
+			}
+		}
+		
 		// TODO Auto-generated method stub
-		return null;
+		return respuesta;
 	}
 
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
