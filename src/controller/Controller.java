@@ -257,7 +257,7 @@ public class Controller {
 		int[] contadores = new int[movingViolationsFilePaths.length];
 		int fileCounter = 0;
 		try {
-			this.movingViolationsQueue = new ArregloDinamico<VOMovingViolations>(450000);
+			this.movingViolationsQueue = new ArregloDinamico<VOMovingViolations>(500000);
 			
 			for (String filePath : movingViolationsFilePaths) {
 				reader = new CSVReader(new FileReader("data/"+filePath));
