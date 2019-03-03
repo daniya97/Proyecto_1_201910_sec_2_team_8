@@ -60,7 +60,8 @@ public class Controller {
 			case 0:
 				view.printMessage("Ingrese el cuatrimestre (1, 2 o 3)");
 				int numeroCuatrimestre = sc.nextInt();
-				loadMovingViolations(numeroCuatrimestre);
+				IQueue<Integer> resultados0 = loadMovingViolations(numeroCuatrimestre);
+				view.printMovingViolationsLoad(resultados0);
 				break;
 			case 1:
 				IQueue<VOMovingViolations> resultados1 = verifyObjectIDIsUnique();
@@ -199,11 +200,12 @@ public class Controller {
 		}
 	}
 
-	public void loadMovingViolations(int n)
+	public IQueue<Integer> loadMovingViolations(int n)
 	{
+		IQueue<Integer> numeroDeCargas = new Queue<>();
 		if(n == 1)
 		{
-			loadMovingViolations(new String[] {"Moving_Violations_Issued_in_January_2018.csv", 
+			numeroDeCargas = loadMovingViolations(new String[] {"Moving_Violations_Issued_in_January_2018.csv", 
 					    	     "Moving_Violations_Issued_in_February_2018.csv",
 					    	     "Moving_Violations_Issued_in_March_2018.csv",
 					    	     "Moving_Violations_Issued_in_April_2018.csv"
@@ -212,7 +214,7 @@ public class Controller {
 		}
 		else if(n == 2)
 		{
-			loadMovingViolations(new String[] {"Moving_Violations_Issued_in_May_2018.csv", 
+			numeroDeCargas = loadMovingViolations(new String[] {"Moving_Violations_Issued_in_May_2018.csv", 
 								 "Moving_Violations_Issued_in_June_2018.csv",
 								 "Moving_Violations_Issued_in_July_2018.csv",
 								 "Moving_Violations_Issued_in_August_2018.csv"
@@ -220,7 +222,7 @@ public class Controller {
 			cuatrimestreCargado = 2;
 		}
 		else if(n == 3){
-			loadMovingViolations(new String[] {"Moving_Violations_Issued_in_September_2018.csv", 
+			numeroDeCargas = loadMovingViolations(new String[] {"Moving_Violations_Issued_in_September_2018.csv", 
 					"Moving_Violations_Issued_in_October_2018.csv",
 					"Moving_Violations_Issued_in_November_2018.csv",
 					"Moving_Violations_Issued_in_December_2018.csv"
@@ -231,7 +233,7 @@ public class Controller {
 		{
 			throw new IllegalArgumentException("No existe ese cuatrimestre en un annio.");
 		}
-
+		return numeroDeCargas;
 	}
 
 
@@ -239,53 +241,48 @@ public class Controller {
 	/**
 	 * Carga la informacion sobre infracciones de los archivos a una pila y una cola ordenadas por fecha.
 	 */
-	private void loadMovingViolations(String[] movingViolationsFilePaths){
+	private IQueue<Integer> loadMovingViolations(String[] movingViolationsFilePaths){
 		CSVReader reader = null;
-		int[] contadores = new int[movingViolationsFilePaths.length];
-		int fileCounter = 0;
+		IQueue<Integer> numeroDeCargas =new Queue<>();
+		
+		int contadorInf; // Cuenta numero de infracciones en cada archivo
 		try {
 			movingViolationsQueue = new ArregloDinamico<VOMovingViolations>(500000);
 
 			for (String filePath : movingViolationsFilePaths) {
 				reader = new CSVReader(new FileReader("data/"+filePath));
-
-
+				
+				contadorInf = 0;
+				// Deduce las posiciones de las columnas que se reconocen de acuerdo al header
 				String[] headers = reader.readNext();
-				//System.out.println("." + headers[0] + ".");
 				int[] posiciones = new int[VOMovingViolations.EXPECTEDHEADERS.length];
 				for (int i = 0; i < VOMovingViolations.EXPECTEDHEADERS.length; i++) {
 					posiciones[i] = buscarArray(headers, VOMovingViolations.EXPECTEDHEADERS[i]);
 				}
-
-				contadores[fileCounter] = 0;
+				
+				// Lee linea a linea el archivo para crear las infracciones y cargarlas a la lista
 				for (String[] row : reader) {
 					movingViolationsQueue.agregar(new VOMovingViolations(posiciones, row));
-					//System.out.println(movingViolationsQueue.darTamano() + " " + movingViolationsQueue.darObjeto(movingViolationsQueue.darTamano()-1).objectId());
-					contadores[fileCounter] += 1;
+					contadorInf += 1;
 				}
-				fileCounter += 1;
+				// Se agrega el numero de infracciones cargadas en este archivo al resultado 
+				numeroDeCargas.enqueue(contadorInf);
 			}
-			/*
-			int suma = 0;
-			for (int contador : contadores) suma += contador;
-			System.out.println("  ----------Informaci�n Sobre la Carga------------------  ");
-			for (int i = 0; i < contadores.length; i++) {
-				System.out.println("Infracciones Mes " + (i+1)+": " + contadores[i]);
-			}
-			System.out.println("Total Infracciones Cuatrisemetre: " + movingViolationsQueue.darTamano());
-			 */
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		} finally {
 			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {
 					e.printStackTrace();
+					return null;
 				}
 			}
 
 		}
+		return numeroDeCargas;
 	}
 
 

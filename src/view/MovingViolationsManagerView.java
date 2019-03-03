@@ -43,6 +43,20 @@ public class MovingViolationsManagerView
 		System.out.println(mensaje);
 	}
 	
+	public void printMovingViolationsLoad(IQueue<Integer> resultados0) {
+		int totalInfracciones = 0;
+		int totalMeses = resultados0.size();
+		int infMes;
+		System.out.println("  ----------Informaci�n Sobre la Carga------------------  ");
+		for (int i = 0; i < totalMeses; i++) {
+			infMes = resultados0.dequeue();
+			System.out.println("Infracciones Mes " + (i+1)+": " + infMes);
+			totalInfracciones += infMes;
+		}
+		System.out.println("Total Infracciones Cuatrisemetre: " + totalInfracciones);
+		
+	}
+	
 	public void printMovingViolationsReq1(IQueue<VOMovingViolations> resultados1) {
 		if (resultados1.size() == 0) {
 			System.out.println("El objectId es �nico");
@@ -134,5 +148,4 @@ public class MovingViolationsManagerView
 		}
 		System.out.println("Cada X representa $" + vX + "USD");
 	}
-	
 }
