@@ -1,7 +1,7 @@
 /**
  * 
  */
-package data_structures;
+package model.data_structures;
 
 import static org.junit.Assert.*;
 

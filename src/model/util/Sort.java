@@ -18,7 +18,7 @@ public class Sort {
 	 * @param datos - conjunto de datos a ordenar (inicio) y conjunto de datos ordenados (final)
 	 */
 
-	public static void ordenarShellSort(ArregloDinamico datos, Comparator c) {
+	public static <T> void ordenarShellSort(ArregloDinamico<T> datos, Comparator<T> c) {
 		// Esta es una implementacion hecha con el proposito de entender shellsort, que permite
 		// el uso de diferentes secuencias con facilidad. La unica diferencia en uso de recursos
 		// de esta implementacion es la creacion de la secuencia y su guardado en memoria, algo minimo.
@@ -27,13 +27,13 @@ public class Sort {
 		for (int h : secuencia) hsort(datos, h, c);
 	}
 	
-	private static void hsort(ArregloDinamico datos, int h, Comparator c) {
+	private static <T> void hsort(ArregloDinamico<T> datos, int h, Comparator<T> c) {
 		int posOfInserting;
 		for (int i = 0; i < h; i += 1) {
 			// insertion-sort el h-subarray que empieza en i
 			for (int j = i + h; j < datos.darTamano() ; j += h) {
 				posOfInserting = j;
-				while ((posOfInserting - h)>= 0 && less(c, datos.darObjeto(posOfInserting), datos.darObjeto(posOfInserting-h))) {
+				while ((posOfInserting - h)>= 0 && less(datos.darObjeto(posOfInserting), datos.darObjeto(posOfInserting-h), c)) {
 					exchange(datos, posOfInserting, posOfInserting-h);
 					posOfInserting -= h;
 				}
@@ -51,12 +51,10 @@ public class Sort {
 		
 		return lista;
 	}
-	
-
-	
 	/*
 	 * **********************************************************************************************
 	 */
+	
 	
 	/*
 	 * **********************************************************************************************
@@ -67,63 +65,57 @@ public class Sort {
 	 * Ordenar datos aplicando el algoritmo MergeSort
 	 * @param movingViolationsQueue - conjunto de datos a ordenar (inicio) y conjunto de datos ordenados (final)
 	 */
-	public static void ordenarMergeSort(ArregloDinamico datos, Comparator comparator ) {
+	public static <T> void ordenarMergeSort(ArregloDinamico<T> datos, Comparator<T> comparator ) {
 		
 		//Bottom - Up
-		System.out.println(datos.darTamano());
 		int N = datos.darTamano();
 		//Se crea un arreglo auxiliar
-		Queue auxiliar = new Queue<VOMovingViolations>();
-		Queue auxiliar2 = new Queue<VOMovingViolations>();
+		Queue<T> auxiliar = new Queue<T>();
+		Queue<T> auxiliar2 = new Queue<T>();
 		for (int i = 1; i < N; i = i+i) {
 			for (int min = 0; min < N-i; min+=i+i) {
 				merge(datos, auxiliar,auxiliar2, min, min+i-1, Math.min(min+i+i-1, N-1), comparator);
 			}
 		}
-
-		// TODO implementar el algoritmo MergeSort
 	}
 
 	
-	private static void merge(ArregloDinamico datos, ArregloDinamico auxiliar, ArregloDinamico auxiliar2, int min, int med, int max, Comparator comparator){
+	private static <T> void merge(ArregloDinamico<T> datos, Queue<T> auxiliar, Queue<T> auxiliar2, int min, int med, int max, Comparator<T> comparator){
 		//Se copia el arreglo
 		for( int k = min; k<=med; k++){
-			auxiliar.enqueue(datos.dequeue());
+			auxiliar.enqueue(datos.darObjeto(datos.darTamano()-1));
 		}
 		for( int k = med+1; k<=max; k++){
-			auxiliar2.enqueue(datos.dequeue());
+			auxiliar2.enqueue(datos.darObjeto(datos.darTamano()-1));
 		}
 		
-		VOMovingViolations i = (VOMovingViolations) auxiliar.dequeue();
-		VOMovingViolations j = (VOMovingViolations)auxiliar2.dequeue();
+		T i = auxiliar.dequeue();
+		T j = auxiliar2.dequeue();
 		
 		for(int k = min; k<= max;k++){
 			
 			if (i == null) {
-				datos.enqueue(j);
+				datos.cambiarEnPos(k, j);
 				j = auxiliar2.dequeue();
 			}
 			else if(j == null){
-				datos.enqueue(i);
+				datos.cambiarEnPos(k, i);
 				i = auxiliar.dequeue();
 			}
-			else if(less(comparator,i,j)){
-				datos.enqueue(i);
+			else if(less(i,j, comparator)){
+				datos.cambiarEnPos(k, i);
 				i = auxiliar.dequeue();
 			}
 			else{
-				datos.enqueue(j);
+				datos.cambiarEnPos(k, j);
 				j = auxiliar2.dequeue();
 			}
 		}
-		
-		
-		
-		
 	}
 	/*
 	 * **********************************************************************************************
 	 */
+	
 	
 	/*
 	 * **********************************************************************************************
@@ -134,28 +126,27 @@ public class Sort {
 	 * Ordenar datos aplicando el algoritmo QuickSort
 	 * @param datos - conjunto de datos a ordenar (inicio) y conjunto de datos ordenados (final)
 	 */
-	public static void ordenarQuickSort( ArregloDinamico datos, Comparator c ) {
+	public static <T> void ordenarQuickSort(ArregloDinamico<T> datos, Comparator<T> c) {
 		// Desordenar
-		
 		//StdRandom.shuffle(datos);
 		ordenarQuickSort(datos, 0, datos.darTamano()-1, c);
 	}
 	
-	private static void ordenarQuickSort( ArregloDinamico datos, int min, int max, Comparator c ) {
+	private static <T> void ordenarQuickSort(ArregloDinamico<T> datos, int min, int max, Comparator<T> c) {
 		if (min >= max) return;
 		
-		Comparable ref = datos.darObjeto(min);
+		T ref = datos.darObjeto(min);
 		
 		// Partir array en dato de referencia, datos menores o iguales, y datos mayores
 		int indLastLeq = min;
 		int indFirstGr = max + 1;
 		while (true) {
 			// Encontrar la posicion actual donde termina la particion de numeros menores o iguales
-			while (indLastLeq < max && datos.darObjeto(indLastLeq + 1).compareTo(ref) <= 0) indLastLeq += 1;
+			while (indLastLeq < max && !less(ref, datos.darObjeto(indLastLeq + 1), c)) indLastLeq += 1;
 			if (indLastLeq + 1 == indFirstGr) break;
 			
 			// Encontrar la posicion actual donde empieza la particion de numeros mayores
-			while (indFirstGr > (min+1) && datos.darObjeto(indFirstGr - 1).compareTo(ref) > 0) indFirstGr -= 1;
+			while (indFirstGr > (min+1) && less(ref, datos.darObjeto(indFirstGr - 1), c)) indFirstGr -= 1;
 			if (indLastLeq + 1 == indFirstGr) break;
 			
 			// En caso de no cruzarse las dos partes del array, hacer el intercambio de los
@@ -181,7 +172,7 @@ public class Sort {
 	 * @param w segundo objeto de comparacion
 	 * @return true si v es menor que w usando el metodo compareTo. false en caso contrario.
 	 */
-	private static boolean less(Comparator c, Object v, Object w)
+	private static <T> boolean less(T v, T w, Comparator<T> c)
 	{
 		return c.compare(v, w) < 0;
 	}
@@ -192,16 +183,16 @@ public class Sort {
 	 * @param i posicion del 1er elemento a intercambiar
 	 * @param j posicion del 2o elemento a intercambiar
 	 */
-	private static void exchange(ArregloDinamico datos, int i, int j)
+	private static <T> void exchange(ArregloDinamico<T> datos, int i, int j)
 	{
-		Object temp = datos.darObjeto(i);
+		T temp = datos.darObjeto(i);
 		datos.cambiarEnPos(i, datos.darObjeto(j));
 		datos.cambiarEnPos(j, temp);
 	}
 	
-	public static boolean isSorted(Comparator c, ArregloDinamico datos) {
+	public static <T> boolean isSorted(Comparator<T> c, ArregloDinamico<T> datos) {
 		for (int i = 0; i < datos.darTamano()-1; i++)
-			if (less(c, datos.darObjeto(i+1), datos.darObjeto(i))) return false;
+			if (less(datos.darObjeto(i+1), datos.darObjeto(i), c)) return false;
 		return true;
 	}
 

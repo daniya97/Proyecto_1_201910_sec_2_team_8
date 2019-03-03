@@ -401,7 +401,6 @@ public class Controller {
 				respuesta.agregar(s);
 			}
 		}
-		// TODO Auto-generated method stub
 		
 		Sort.ordenarShellSort(respuesta,new VOMovingViolations.StreetsgeIDDateOrder());
 	

@@ -1,8 +1,10 @@
 package model.util;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 import junit.framework.TestCase;
+import model.data_structures.ArregloDinamico;
 
 public class SortTest extends TestCase{
 	/*
@@ -17,7 +19,8 @@ public class SortTest extends TestCase{
 	 * Atributos
 	 */
 	// Muestra de datos a ordenar
-	Comparable[] datos;
+	private ArregloDinamico<Double> datos;
+	private Comparator<Double> comparador = Comparator.<Double>naturalOrder();
 	
 	/**
 	 * Establece los escenarios de prueba
@@ -25,18 +28,18 @@ public class SortTest extends TestCase{
 	 */
 	private void setUpEscenario(int n) {
 		if (n >= totalEscenarios) throw new IllegalArgumentException("No hay tantos escenarios");
-		datos = new Comparable[N];
+		datos = new ArregloDinamico<Double>(N);
 		switch(n) {
 		// Escenario: muestra ya ordenada
 		case 0:
-			for(int i = 0; i < N; i++) datos[i] = (Comparable) i;
+			for(int i = 0; i < N; i++) datos.agregar((double) i);
 			break;
 		// Escenarios: muestra totalmente desordenada
 		case 1:
-			for(int i = 0; i < N; i++) datos[i] = (Comparable) (N-1-i);
+			for(int i = 0; i < N; i++) datos.agregar(N-1.-i);
 		// Escenario: muestra aleatoria
 		case 2:
-			for(int i = 0; i < N; i++) datos[i] = (Comparable) Math.random();
+			for(int i = 0; i < N; i++) datos.agregar(Math.random());
 		}
 	}
 	
@@ -44,18 +47,11 @@ public class SortTest extends TestCase{
 	 * Prueba de ShellSort
 	 */
 	public void testShellSort() {
-		Comparable[] datosOrdenados;
-				
 		for (int n = 0; n < totalEscenarios; n++) {
 			setUpEscenario(n);
 				
-			datosOrdenados = Arrays.copyOf(datos, datos.length);
-			Arrays.sort(datosOrdenados);
-			Sort.ordenarShellSort(datos);
-			
-			for (int i = 0; i < datos.length; i++) {
-				assertTrue(datos[i].equals(datosOrdenados[i]));
-			}
+			Sort.ordenarShellSort(datos, comparador);
+			assertTrue(Sort.isSorted(comparador, datos));
 		}
 	}
 	
@@ -63,18 +59,11 @@ public class SortTest extends TestCase{
 	 * Prueba de MergeSort
 	 */
 	public void testMergeSort() {
-		Comparable[] datosOrdenados;
-				
 		for (int n = 0; n < totalEscenarios; n++) {
 			setUpEscenario(n);
 				
-			datosOrdenados = Arrays.copyOf(datos, datos.length);
-			Arrays.sort(datosOrdenados);
-			Sort.ordenarMergeSort(datos);
-			
-			for (int i = 0; i < datos.length; i++) {
-				assertTrue(datos[i].equals(datosOrdenados[i]));
-			}
+			Sort.ordenarMergeSort(datos, comparador);
+			assertTrue(Sort.isSorted(comparador, datos));
 		}
 	}
 	
@@ -82,18 +71,11 @@ public class SortTest extends TestCase{
 	 * Prueba de QuickSort
 	 */
 	public void testQuickSort() {
-		Comparable[] datosOrdenados;
-				
 		for (int n = 0; n < totalEscenarios; n++) {
 			setUpEscenario(n);
 				
-			datosOrdenados = Arrays.copyOf(datos, datos.length);
-			Arrays.sort(datosOrdenados);
-			Sort.ordenarQuickSort(datos);
-			
-			for (int i = 0; i < datos.length; i++) {
-				assertTrue(datos[i].equals(datosOrdenados[i]));
-			}
+			Sort.ordenarQuickSort(datos, comparador);
+			assertTrue(Sort.isSorted(comparador, datos));
 		}
 	}
 }
