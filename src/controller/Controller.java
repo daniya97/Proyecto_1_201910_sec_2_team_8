@@ -219,7 +219,7 @@ public class Controller {
 				sc.close();
 				break;
 			}
-			} catch(Exception e) {
+			} catch(Exception e) { // Si ocurrio un error al ejecutar algun metodo
 				e.printStackTrace(); System.out.println("Ocurrio un error. Se recomienda reiniciar el programa.");}
 		}
 	}
@@ -318,7 +318,7 @@ public class Controller {
 	public IQueue<VOMovingViolations> verifyObjectIDIsUnique() {
 
 		//Se ordena el arreglo din�mico por ObjectID
-		Sort.ordenarQuickSort(movingVOLista, new VOMovingViolations.ObjectIDOrder());
+		Sort.ordenarShellSort(movingVOLista, new VOMovingViolations.ObjectIDOrder());
 		String actual = null;
 		String anterior = null;
 		boolean yaIncluido = false;
@@ -354,7 +354,7 @@ public class Controller {
 		IQueue<VOMovingViolations> respuesta = new Queue<>();
 		
 		//Se ordenan las infracciones de acuerdo a la fecha en la que fueron impuestas
-		Sort.ordenarQuickSort(movingVOLista, new VOMovingViolations.TicketIssueOrder());
+		Sort.ordenarShellSort(movingVOLista, new VOMovingViolations.TicketIssueOrder());
 
 
 		//Para todas las infracciones, en caso de encontrarse entre la fechaInicial y fechaFinal
@@ -413,7 +413,7 @@ public class Controller {
 		}
 		
 		//Se ordena el arreglo ascendentemente
-		Sort.ordenarQuickSort(respuesta,new VOMovingViolations.StreetsgeIDDateOrder());
+		Sort.ordenarShellSort(respuesta,new VOMovingViolations.StreetsgeIDDateOrder());
 		
 		//Se agregan los elementos del arreglo a una pila
 		//Se logra el orden descentemente por StreetseIdDate
@@ -426,7 +426,7 @@ public class Controller {
 
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
 		// Ordena los datos por codigo de violacion
-		Sort.ordenarQuickSort(movingVOLista, new VOMovingViolations.ViolationCodeOrder());
+		Sort.ordenarShellSort(movingVOLista, new VOMovingViolations.ViolationCodeOrder());
 
 		// Cola de tuplas a retornar
 		Queue<VOViolationCode> colaTuplas = new Queue<VOViolationCode>(); 
@@ -484,9 +484,9 @@ public class Controller {
 		}
 		// Ordena los datos a devolver
 		if (ascendente6) {
-			Sort.ordenarQuickSort(listaResp, new VOMovingViolations.TicketIssueOrder());
+			Sort.ordenarShellSort(listaResp, new VOMovingViolations.TicketIssueOrder());
 		} else {
-			Sort.ordenarQuickSort(listaResp, new VOMovingViolations.TicketIssueOrder().reversed());
+			Sort.ordenarShellSort(listaResp, new VOMovingViolations.TicketIssueOrder().reversed());
 		}
 		
 		// Copiar datos ordenados empezando en el final para transferir el orden actual a la pila
@@ -516,7 +516,7 @@ public class Controller {
 		}
 
 		// Order resultados (~12 veces menos datos)
-		Sort.ordenarQuickSort(arregloInf, new VOMovingViolations.ViolationDescOrder());
+		Sort.ordenarShellSort(arregloInf, new VOMovingViolations.ViolationDescOrder());
 
 		// Pasar datos a una cola
 		Queue<VOMovingViolations> colaInf = new Queue<>();
