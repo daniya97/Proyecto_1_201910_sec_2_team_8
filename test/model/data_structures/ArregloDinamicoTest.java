@@ -3,8 +3,6 @@
  */
 package model.data_structures;
 
-import static org.junit.Assert.*;
-
 import java.util.Iterator;
 
 
@@ -20,6 +18,8 @@ public class ArregloDinamicoTest extends TestCase{
 	 * Atributos 
 	 */
 	private ArregloDinamico<String> arreglo;
+	private final int numeroEscenarios = 10;
+	private final int tamanoMax = 100;
 
 	/*
 	 * Escenarios
@@ -42,10 +42,10 @@ public class ArregloDinamicoTest extends TestCase{
 	 * Prueba el constructor
 	 */
 	public void testArregloDinamico() {
-		for (int n = 0; n < 10; n++) {
+		for (int n = 0; n < numeroEscenarios; n++) {
 			setUpEscenario(n, 0);
 			assertTrue("El arreglo deberia tener tamano " + n, arreglo.darTamano() == n);
-			setUpEscenario(n, 10);
+			setUpEscenario(n, tamanoMax);
 			assertTrue("El arreglo deberia tener tamano " + n, arreglo.darTamano() == n);
 		}
 	}
@@ -54,14 +54,15 @@ public class ArregloDinamicoTest extends TestCase{
 	 * Prueba el metodo iterator()
 	 */
 	public void testIterator() {
-		setUpEscenario(20, 0);
+		int n = 20;
+		setUpEscenario(n, 0);
 
 		int i = 0;
 		for(String dato: arreglo) {
-			assertTrue("El elemento siguiente no es identificado correctamente", dato.equals("Elemento " + i));
+			assertTrue("Escenario: " +  n + ". El elemento siguiente no es identificado correctamente", dato.equals("Elemento " + i));
 			i += 1;
 		}
-		assertTrue("El iterador deberia identificar y devolver " + 20 + " elementos", i == 20);
+		assertTrue("El iterador deberia identificar y devolver " + n + " elementos", i == n);
 	}
 
 	/**
@@ -78,31 +79,29 @@ public class ArregloDinamicoTest extends TestCase{
 	 * Prueba el metodo agregar
 	 */
 	public void testAgregar() {
-		for (int n = 0; n <= 1; n++) {
-			if 		(n == 0) {
-				setUpEscenario(0, 0);
-				arreglo.agregar("Nuevo elemento");
-				Iterator<String> it = arreglo.iterator();
-				assertTrue("Deberia tener elementos sobre los cuales iterar.", it.hasNext());
-				String dato = it.next();
-				assertTrue("El primero dato deberia ser el recien anadido", dato.equals("Nuevo elemento"));
-				assertTrue("NO deberia tener elementos sobre los cuales iterar.", !it.hasNext());
-			}
-			else if (n == 5) {
-				setUpEscenario(5, 0);
-				arreglo.agregar("Nuevo elemento");
-				assertTrue("El arreglo deberia tener " + (n+1) + " elementos.", arreglo.darTamano() == (n+1));
-				
-				Iterator<String> it = arreglo.iterator();				
-				String dato = it.next();
-				for (int j = 0; j < n; j++) {
-					assertTrue("El " + j + "-esimo elemento deberia ser: Elemento " + j, arreglo.darObjeto(j).equals("Elemento " + j));
-					dato = it.next();
+		int nAgregados = 3;
+		
+		for (int n = 0; n <= numeroEscenarios; n++) {
+			setUpEscenario(n, 0);
+			for (int i = 0; i < nAgregados; i++) arreglo.agregar("Nuevo elemento " + i);
+			assertTrue("Escenario: " + n + ". El arreglo deberia tener " + (n + nAgregados) + " elementos.", arreglo.darTamano() == (n + nAgregados));
+			
+			//assertTrue("Deberia tener elementos sobre los cuales iterar.", it.hasNext());
+			
+			int i = 0;
+			for (String dato : arreglo) {
+				if (i < n) {
+					assertTrue("Escenario: " + n + ". El " + i + "-esimo elemento deberia ser: Elemento " + i
+							+ ", pero se obtuvo " + dato, arreglo.darObjeto(i).equals("Elemento " + i));
+					i++;
 				}
-				assertTrue("El ultimo dato deberia ser el recien anadido", dato.equals("Nuevo elemento"));				
-				
+				else if (n <= i &&  i < n + nAgregados) {
+					assertTrue("Escenario: " + n + ". El dato esperado era: " + "Nuevo elemento " + (i-n)
+							+ ", pero se obtuvo " + dato, dato.equals("Nuevo elemento " + (i-n)));
+					i++;
+				}
 			}
-
+			
 		}
 	}
 

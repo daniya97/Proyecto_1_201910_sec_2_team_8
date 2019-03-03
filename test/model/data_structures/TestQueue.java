@@ -1,8 +1,5 @@
 package model.data_structures;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.Iterator;
 
 import junit.framework.TestCase;
@@ -137,7 +134,7 @@ public class TestQueue extends TestCase{
 	 * Prueba el metodo dequeue
 	 */
 	public void testDequeue() {
-		for (int i = 0; i <2; i++) {
+		for (int i = 0; i < 2; i++) {
 			if 		(i == 0) {
 				setUpEscenario0();
 				assertEquals("La pila deberia seguir de tamano 0.",0,cola.size());
