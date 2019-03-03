@@ -459,23 +459,30 @@ public class Controller {
 
 	public IStack<VOMovingViolations> getMovingViolationsByTotalPaid(double limiteInf6, double limiteSup6,
 			boolean ascendente6) {
-		// Ordena los datos por codigo de violacion
-		if (ascendente6) { // OJO: como los datos se quieren meter a una cola, se ordenan al contrario para que en el stack tengan el orden deseado
-			Sort.ordenarQuickSort(movingVOLista, new VOMovingViolations.TicketIssueOrder().reversed());
-		} else {
-			Sort.ordenarQuickSort(movingVOLista, new VOMovingViolations.TicketIssueOrder());
-		}
-
-		// Pila de infracciones a retornar
-		Stack<VOMovingViolations> pilaInfr = new Stack<VOMovingViolations>();
+		// Lista ordenable con la respuesta (que tendra menos datos que la lista total)
+		IArregloDinamico<VOMovingViolations> listaResp = new ArregloDinamico<VOMovingViolations>();
 
 		for (VOMovingViolations infraccion : movingVOLista) {
 			if (limiteInf6 <= infraccion.getTotalPaid() && infraccion.getTotalPaid() <= limiteSup6) {
-				pilaInfr.push(infraccion);
+				listaResp.agregar(infraccion);
 			}
 		}
+		// Ordena los datos a devolver
+		if (ascendente6) {
+			Sort.ordenarQuickSort(listaResp, new VOMovingViolations.TicketIssueOrder());
+		} else {
+			Sort.ordenarQuickSort(listaResp, new VOMovingViolations.TicketIssueOrder().reversed());
+		}
+		
+		// Copiar datos ordenados empezando en el final para transferir el orden actual a la pila
+		// Y para minimizar el costo de la operacion de borrado dada la implementacion de borrar
+		IStack<VOMovingViolations> pilaResp = new Stack<>();
+		int n = listaResp.darTamano();
+		for (int i = n - 1; i >= 0; i--) {
+			pilaResp.push(listaResp.eliminarEnPos(i));
+		}
 
-		return pilaInfr;
+		return pilaResp;
 	}
 
 	public IQueue<VOMovingViolations> getMovingViolationsByHour(int horaInicial7, int horaFinal7) {
