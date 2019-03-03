@@ -44,7 +44,7 @@ public class MovingViolationsManagerView
 	}
 	
 	public void printMovingViolationsReq1(IQueue<VOMovingViolations> resultados1) {
-		if (resultados1 == null) {
+		if (resultados1.size() == 0) {
 			System.out.println("El objectId es �nico");
 			return;
 		}
