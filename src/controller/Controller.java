@@ -506,25 +506,28 @@ public class Controller {
 
 	public double[] avgAndStdDevFineAmtOfMovingViolation(String violationCode8) {
 		// Extraccion de datos necesarios
-		double suma = 0;
-		int contador = 0;
-		ArregloDinamico<Integer> valores = new ArregloDinamico<>();
-
+		double sumaFA = 0;
+		int contadorFA = 0;
+		// (Este arreglo no es necesario. Se hace de esta manera para usar herramientas del curso 
+		// Puede simplemente iterarse una vez la lista y un contador adicional para la suma de los
+		// cuadrados de los fineamounts
+		ArregloDinamico<Integer> valoresFA = new ArregloDinamico<>();
+		
 		for (VOMovingViolations infraccion : movingViolationsQueue) {
 			if (infraccion.getViolationCode().equals(violationCode8)) {
-				suma += 1;
-				contador += 1;
-				valores.agregar(infraccion.getFineAmount());
+				sumaFA += infraccion.getFineAmount();
+				contadorFA += 1;
+				valoresFA.agregar(infraccion.getFineAmount());
 			}
 		}
 		// Calculos
-		double promedio = suma/contador;
+		if (contadorFA == 0) return new double [] {0.0, 0.0};
+		
+		double promedio = sumaFA/contadorFA;
 		double var = 0;
-		for (double fa : valores) {
-			var += (fa - promedio)*(fa - promedio)/contador;
+		for (double fa : valoresFA) {
+			var += (fa - promedio)*(fa - promedio)/contadorFA;
 		}
-
-		if (contador == 0) return new double [] {0.0, 0.0};
 
 		return new double [] {promedio , Math.sqrt(var)};
 	}
