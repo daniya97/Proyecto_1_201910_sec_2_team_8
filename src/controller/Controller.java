@@ -45,7 +45,8 @@ public class Controller {
 		
 		while(!fin)
 		{
-			try {
+			try { // Este try se usa para no tener que reiniciar el programa en caso de que 
+				  // ocurra un error pequenio, como ingresar mal la fecha  
 			view.printMenu();
 
 			int option = sc.nextInt();
@@ -192,7 +193,8 @@ public class Controller {
 				sc.close();
 				break;
 			}
-			} catch(Exception e) {}
+			} catch(Exception e) {
+				e.printStackTrace(); System.out.println("Ocurrio un error. Se recomienda reiniciar el programa.");}
 		}
 	}
 
@@ -279,17 +281,6 @@ public class Controller {
 
 		}
 		return numeroDeCargas;
-	}
-
-
-	private int buscarArray(String[] array, String string) {
-		int i = 0;
-
-		while (i < array.length) {
-			if (array[i].equalsIgnoreCase(string)) return i;
-			i += 1;
-		}
-		return -1;
 	}
 
 	public IQueue <VODaylyStatistic> getDailyStatistics () {
@@ -543,7 +534,7 @@ public class Controller {
 		for(VOMovingViolations s: movingVOLista){
 			if(s.getTicketIssueDate().getHour()>=horaInicial9 && s.getTicketIssueDate().getHour()<=horaFinal9 ) contador++;
 		}
-		// TODO Auto-generated method stub
+		
 		return contador;
 	}
 
@@ -574,7 +565,6 @@ public class Controller {
 			accidentesByHour[i] = accidentesByHour[i]/movingVOLista.darTamano()*100;
 		}
 		
-		// TODO Auto-generated method stub
 		return accidentesByHour;
 	}
 	
@@ -600,7 +590,25 @@ public class Controller {
 		
 		return deudasByMonth;
 	}
+	
+	/**
+	 * Metodo para buscar strings en un array de strings, usado para deducir la posicion
+	 * de las columnas esperadas en cada archivo.
+	 * @param array
+	 * @param string
+	 * @return
+	 */
+	private int buscarArray(String[] array, String string) {
+		int i = 0;
 
+		while (i < array.length) {
+			if (array[i].equalsIgnoreCase(string)) return i;
+			i += 1;
+		}
+		return -1;
+	}
+
+	
 	/**
 	 * Convertir fecha a un objeto LocalDate
 	 * @param fecha fecha en formato dd/mm/aaaa con dd para dia, mm para mes y aaaa para agno

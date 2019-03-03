@@ -53,11 +53,12 @@ public class VOMovingViolations {
 	public VOMovingViolations(int[] headerPositions, String[] linea){
 		String campo;
 		
-		iD = linea[0]; //linea[headerPositions[OBJECTID]];
+		iD = linea[0];  //linea[headerPositions[OBJECTID]];
 		
 		location = linea[headerPositions[LOCATION]];
 		
 		/*
+		 * Si se considera ADDRESS_ID como int:
 		campo = linea[headerPositions[ADDRESS_ID]];
 		if (!campo.equals("")) addressID = Integer.parseInt(campo);
 		else addressID = -1;
@@ -83,8 +84,6 @@ public class VOMovingViolations {
 		else if (campo.equalsIgnoreCase("No"))	accidentIndicator = false;
 		else throw new IllegalArgumentException("El indicador de accidente no tiene un valor reconocible.");
 		
-		//ticketIssueDate = Calendar.getInstance();
-		//ticketIssueDate.set(Integer.parseInt(campo.substring(0, 4)), Integer.parseInt(campo.substring(5, 7)), Integer.parseInt(campo.substring(8,10)),Integer.parseInt(campo.substring(11,13)),Integer.parseInt(campo.substring(14,16)));
 		campo = linea[headerPositions[TICKETISSUEDATE]];
 		ticketIssueDate = LocalDateTime.parse(campo, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'.000Z'"));
 		
@@ -231,18 +230,7 @@ public class VOMovingViolations {
 		}
 		
 	}
-	
-	
-	public static class TotalPaidOrder implements Comparator<VOMovingViolations> {
 
-		@Override
-		public int compare(VOMovingViolations arg0, VOMovingViolations arg1) {
-			
-			return 0;
-		}
-		
-	}
-	
 	public static class ViolationDescOrder implements Comparator<VOMovingViolations> {
 
 		@Override
