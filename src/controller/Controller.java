@@ -48,9 +48,10 @@ public class Controller {
 		Scanner sc = new Scanner(System.in);
 		boolean fin = false;
 		Controller controller = new Controller();
-
+		
 		while(!fin)
 		{
+			try {
 			view.printMenu();
 
 			int option = sc.nextInt();
@@ -70,10 +71,10 @@ public class Controller {
 
 			case 2:
 
-				view.printMessage("Ingrese la fecha con hora inicial (Ej : 28/03/2018T15:30:20)");
+				view.printMessage("Ingrese la fecha con hora inicial (Ej : 01/04/2018T04:40:00)");
 				LocalDateTime fechaInicialReq2A = convertirFecha_Hora_LDT(sc.next());
 
-				view.printMessage("Ingrese la fecha con hora final (Ej : 28/03/2087T15:30:20)");
+				view.printMessage("Ingrese la fecha con hora final (Ej : 01/04/2018T04:40:00)");
 				LocalDateTime fechaFinalReq2A = convertirFecha_Hora_LDT(sc.next());
 
 				IQueue<VOMovingViolations> resultados2 = controller.getMovingViolationsInRange(fechaInicialReq2A, fechaFinalReq2A);
@@ -197,6 +198,7 @@ public class Controller {
 				sc.close();
 				break;
 			}
+			} catch(Exception e) {}
 		}
 	}
 
