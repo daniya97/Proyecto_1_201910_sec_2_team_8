@@ -104,7 +104,7 @@ public class MovingViolationsManagerView
 	}
 	
 	public void printMovingViolationsByHourReq10(double[] resultados10) {
-		
+		double pX = 0.1; // Porcentaje que representa cada X
 		System.out.println("Porcentaje de infracciones que tuvieron accidentes por hora. 2018");
 		System.out.println("Hora| % de accidentes");
 		for (int i = 0; i < resultados10.length; i++) {
@@ -112,12 +112,12 @@ public class MovingViolationsManagerView
 			if(i<10)System.out.print("0"+i+"  |  ");
 			else System.out.print(i+"  |  ");
 			
-				for(double j = 0.5; j<resultados10[i];j+=0.5){
+				for(double j = pX; j<resultados10[i];j+=pX){
 					System.out.print("X");
 				}
 			System.out.println("");
 		}
-		System.out.println("Cada X representa 0.5%");
+		System.out.println("Cada X representa " + pX +"%");
 	}
 	
 	public void printTotalDebtbyMonthReq12(double[] resultados12) {

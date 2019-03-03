@@ -6,7 +6,7 @@ import com.opencsv.CSVReader;
 
 import java.time.*;
 import java.time.format.*;
-
+import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Scanner;
 import model.util.Sort;
@@ -56,15 +56,27 @@ public class Controller {
 		Scanner sc = new Scanner(System.in);
 		boolean fin = false;
 		Controller controller = new Controller();
+		int option = -1;
+		boolean numeroEncontrado = false;
 		
 		while(!fin)
 		{
-			try { // Este try se usa para no tener que reiniciar el programa en caso de que 
-				  // ocurra un error pequenio, como ingresar mal la fecha  
 			view.printMenu();
-
-			int option = sc.nextInt();
-
+			// Para tener que reiniciar el programa si no se da una opcion valida
+			while (!numeroEncontrado){
+				try {
+					option = sc.nextInt();
+					numeroEncontrado = true;
+				} catch (InputMismatchException e) {
+					System.out.println("Esa no es una opcion valida");
+					view.printMenu();
+					sc = new Scanner(System.in);
+				}
+			} numeroEncontrado = false;
+					
+			try { // Este try se usa para no tener que reiniciar el programa en caso de que 
+				  // ocurra un error pequenio al ejecutar como ingresar mal la fecha  
+			
 			switch(option)
 			{
 			case 0:
@@ -566,15 +578,20 @@ public class Controller {
 	
 	private double[] percentWithAccidentsByHour() {
 		
+		double[] infraccionesByHour = new double[24]; // Se inicializan en 0's
 		double[] accidentesByHour = new double[24];
 		int horaActual;
 		for (VOMovingViolations infraccion : movingVOLista) {
 			horaActual = infraccion.getTicketIssueDate().getHour();
-			accidentesByHour[horaActual]+=1;
+			
+			infraccionesByHour[horaActual] += 1;
+			
+			if (infraccion.getAccidentIndicator()) accidentesByHour[horaActual] += 1;
 		}
 		
+		// Convertir accidentes por hora en porcentajes
 		for (int i = 0; i < accidentesByHour.length; i++) {
-			accidentesByHour[i] = accidentesByHour[i]/movingVOLista.darTamano()*100;
+			accidentesByHour[i] = (100.*accidentesByHour[i]) / infraccionesByHour[i];
 		}
 		
 		return accidentesByHour;
