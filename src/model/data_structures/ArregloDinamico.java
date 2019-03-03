@@ -2,7 +2,9 @@ package model.data_structures;
 
 import java.util.Iterator;
 
+@SuppressWarnings("unchecked")
 public class ArregloDinamico<T> implements IArregloDinamico<T> {
+		
 		/**
 		 * Capacidad maxima del arreglo
 		 */

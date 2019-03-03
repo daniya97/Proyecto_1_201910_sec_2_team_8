@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.Random;
 
 import model.data_structures.*;
-import model.vo.VOMovingViolations;
 
 public class Sort {
 	

@@ -1,6 +1,5 @@
 package model.data_structures;
 
-import java.util.Comparator;
 import java.util.Iterator;
 
 public class Stack <T> implements IStack<T> { // Sebastian: creo que es necesario agregar <I> luego de Stack. Edit: al corregir push, si se vuelve necesario
@@ -98,14 +97,4 @@ public class Stack <T> implements IStack<T> { // Sebastian: creo que es necesari
 			return auxiliar.darObjeto();
 		}
 	}
-
-	public void sort(Stack<T> pila, Comparator<T> comparador, boolean descendente) {
-		
-	}
-	
-	private static <T> void merge(Stack<T> q1, Stack<T> q2, Stack<T> result, Comparator<T> comparador, boolean descendente) {
-		
-	}
-
-
 }

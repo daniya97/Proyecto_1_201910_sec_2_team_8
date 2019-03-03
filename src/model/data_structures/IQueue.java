@@ -1,7 +1,5 @@
 package model.data_structures;
 
-import java.util.Comparator;
-
 public interface IQueue<T> extends Iterable<T>{
 
 	/**
@@ -27,8 +25,4 @@ public interface IQueue<T> extends Iterable<T>{
 	 * @return el elemento agregado menos recientemente
 	 */
 	public T dequeue();
-	
-	
-	public void sort(Queue<T> cola, Comparator<T> comparador, boolean descendente);
-	
 }

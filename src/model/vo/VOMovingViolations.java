@@ -1,11 +1,8 @@
 package model.vo;
 
-import java.util.Calendar;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Date;
 
 /**
  * Representation of a Trip object
@@ -32,7 +29,6 @@ public class VOMovingViolations {
 		public static final int VIOLATIONCODE = 15;
 		public static final int VIOLATIONDESC = 16;	
 		public static final int ROW_ID = 17;
-		public static final Comparator TicketIssueOrder = null;
 	
 	/**
 	 * Atributos de la infracci�n

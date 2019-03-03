@@ -1,7 +1,5 @@
 package model.data_structures;
 
-import java.util.Comparator;
-
 public interface IStack<T> extends Iterable<T>{
 	
 	/**
@@ -26,7 +24,5 @@ public interface IStack<T> extends Iterable<T>{
 	 * Quita y retorna el elemento agregado más recientemente
 	 * @return el elemento agregado más recientemente
 	 */
-	public T pop();	
-	
-	public void sort(Stack<T> pila, Comparator<T> comparador, boolean descendente);
+	public T pop();
 }
