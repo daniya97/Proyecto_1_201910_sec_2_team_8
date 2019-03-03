@@ -29,16 +29,10 @@ public class Controller {
 	private MovingViolationsManagerView view;
 
 	/**
-	 * Cola donde se van a cargar los datos de los archivos
+	 * Lista donde se van a cargar los datos de los archivos
 	 */
-	private static IArregloDinamico<VOMovingViolations> movingViolationsQueue;
+	private static IArregloDinamico<VOMovingViolations> movingVOLista;
 	private static int cuatrimestreCargado = -1;
-
-	/**
-	 * Pila donde se van a cargar los datos de los archivos
-	 */
-	//private IStack<VOMovingViolations> movingViolationsStack;
-
 
 	public Controller() {
 		view = new MovingViolationsManagerView();
@@ -249,7 +243,7 @@ public class Controller {
 		
 		int contadorInf; // Cuenta numero de infracciones en cada archivo
 		try {
-			movingViolationsQueue = new ArregloDinamico<VOMovingViolations>(500000);
+			movingVOLista = new ArregloDinamico<VOMovingViolations>(500000);
 
 			for (String filePath : movingViolationsFilePaths) {
 				reader = new CSVReader(new FileReader("data/"+filePath));
@@ -264,7 +258,7 @@ public class Controller {
 				
 				// Lee linea a linea el archivo para crear las infracciones y cargarlas a la lista
 				for (String[] row : reader) {
-					movingViolationsQueue.agregar(new VOMovingViolations(posiciones, row));
+					movingVOLista.agregar(new VOMovingViolations(posiciones, row));
 					contadorInf += 1;
 				}
 				// Se agrega el numero de infracciones cargadas en este archivo al resultado 
@@ -308,24 +302,34 @@ public class Controller {
 
 	public IQueue<VOMovingViolations> verifyObjectIDIsUnique() {
 
-		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.ObjectIDOrder());
+		//Se ordena el arreglo din�mico por ObjectID
+		Sort.ordenarQuickSort(movingVOLista, new VOMovingViolations.ObjectIDOrder());
 		String actual = null;
 		String anterior = null;
+		boolean yaIncluido = false;
 		Queue<VOMovingViolations> repetidos = new Queue<>();
-		Queue<VOMovingViolations> Norepetidos = new Queue<>();
-
-		for(VOMovingViolations s: movingViolationsQueue){
+		
+		//Se recorren las infracciones
+		for(VOMovingViolations s: movingVOLista){
+			
+			//Se toma el objeto actual
 			actual = s.objectId();
+			//En caso de que se repita el ObjID y no se haya incluido, se agrega a la cola
 			if(actual.equals(anterior)){
+				if(!yaIncluido){
 				repetidos.enqueue(s);
+				yaIncluido = true;
+				}
 			}
-			else
-			{
-				Norepetidos.enqueue(s);
+			else{
+				yaIncluido = false;
 			}
+			
+			//El actual queda como anterior
 			anterior = actual;
 		}
 
+		//Se devuelve una cola con los repetidos
 		return repetidos;
 
 	}
@@ -333,11 +337,16 @@ public class Controller {
 	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
 
 		IQueue<VOMovingViolations> respuesta = new Queue<>();
-		Sort.ordenarQuickSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder());
+		
+		//Se ordenan las infracciones de acuerdo a la fecha en la que fueron impuestas
+		Sort.ordenarQuickSort(movingVOLista, new VOMovingViolations.TicketIssueOrder());
 
-		for(VOMovingViolations s: movingViolationsQueue){
-			if(s.getTicketIssueDate().isAfter(fechaInicial)){
-				if(s.getTicketIssueDate().isBefore(fechaFinal)){
+
+		//Para todas las infracciones, en caso de encontrarse entre la fechaInicial y fechaFinal
+		//se agregan a la Cola
+		for(VOMovingViolations s: movingVOLista){
+			if(s.getTicketIssueDate().compareTo(fechaInicial)>=0){
+				if(s.getTicketIssueDate().compareTo(fechaFinal)<=0){
 					respuesta.enqueue(s);
 				}
 				else{
@@ -345,6 +354,7 @@ public class Controller {
 				}
 			}
 		}
+		//Se retorna la cola con las infracciones en el rango (inclusivo)
 		return respuesta;
 	}
 
@@ -353,19 +363,24 @@ public class Controller {
 		int suma2 = 0;
 		int contador1 = 0;
 		int contador2 = 0;
-
-		for(VOMovingViolations s: movingViolationsQueue){
+		
+		//Se recorren todas las infracciones del cuatrimestre
+		for(VOMovingViolations s: movingVOLista){
 			if(s.getViolationCode().equals(violationCode3)){
-				if(s.getAccidentIndicator()){
+				
+				//En caso de que no hubo accidente
+				if(!s.getAccidentIndicator()){
 					suma1 += s.getFineAmount();
 					contador1++;
 				}
+				//en caso de que s� hubo accidente
 				else{
 					suma2+=s.getFineAmount();
 					contador2++;
 				}
 			}
 		}
+		//Se devuellve el promedio
 		return new double [] {suma1 != 0? suma1/contador1:0 , suma2 != 0? suma2/contador2:0};
 	}
 
@@ -375,15 +390,18 @@ public class Controller {
 		ArregloDinamico<VOMovingViolations> respuesta = new ArregloDinamico<>();
 		IStack<VOMovingViolations> resultado = new Stack<>();
 		
-		for(VOMovingViolations s: movingViolationsQueue){
-			
-			if(s.getAddressID().equals(addressId) && s.getTicketIssueDate().toLocalDate().isAfter(fechaInicial) && s.getTicketIssueDate().toLocalDate().isBefore(fechaFinal)){
+		//En caso de que la infracci�n coincida con el addressID y este en el rango solicitado se agrega al arreglo din�mico
+		for(VOMovingViolations s: movingVOLista){
+			if(s.getAddressID().equals(addressId) && s.getTicketIssueDate().toLocalDate().compareTo(fechaInicial)>=0 && s.getTicketIssueDate().toLocalDate().compareTo(fechaFinal)<=0){
 				respuesta.agregar(s);
 			}
 		}
 		
-		Sort.ordenarShellSort(respuesta, new VOMovingViolations.StreetsgeIDDateOrder());
-	
+		//Se ordena el arreglo ascendentemente
+		Sort.ordenarQuickSort(respuesta,new VOMovingViolations.StreetsgeIDDateOrder());
+		
+		//Se agregan los elementos del arreglo a una pila
+		//Se logra el orden descentemente por StreetseIdDate
 		for(VOMovingViolations s: respuesta){
 			resultado.push(s);
 		}
@@ -393,11 +411,11 @@ public class Controller {
 
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
 		// Ordena los datos por codigo de violacion
-		Sort.ordenarQuickSort(movingViolationsQueue, new VOMovingViolations.ViolationCodeOrder());
+		Sort.ordenarQuickSort(movingVOLista, new VOMovingViolations.ViolationCodeOrder());
 
 		// Cola de tuplas a retornar
 		Queue<VOViolationCode> colaTuplas = new Queue<VOViolationCode>(); 
-		Iterator<VOMovingViolations> iterador = movingViolationsQueue.iterator();
+		Iterator<VOMovingViolations> iterador = movingVOLista.iterator();
 
 		// Si no hay datos, entonces retorna una cola vacia
 		if (!iterador.hasNext()) return colaTuplas;
@@ -443,15 +461,15 @@ public class Controller {
 			boolean ascendente6) {
 		// Ordena los datos por codigo de violacion
 		if (ascendente6) { // OJO: como los datos se quieren meter a una cola, se ordenan al contrario para que en el stack tengan el orden deseado
-			Sort.ordenarQuickSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder().reversed());
+			Sort.ordenarQuickSort(movingVOLista, new VOMovingViolations.TicketIssueOrder().reversed());
 		} else {
-			Sort.ordenarQuickSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder());
+			Sort.ordenarQuickSort(movingVOLista, new VOMovingViolations.TicketIssueOrder());
 		}
 
 		// Pila de infracciones a retornar
 		Stack<VOMovingViolations> pilaInfr = new Stack<VOMovingViolations>();
 
-		for (VOMovingViolations infraccion : movingViolationsQueue) {
+		for (VOMovingViolations infraccion : movingVOLista) {
 			if (limiteInf6 <= infraccion.getTotalPaid() && infraccion.getTotalPaid() <= limiteSup6) {
 				pilaInfr.push(infraccion);
 			}
@@ -468,7 +486,7 @@ public class Controller {
 		ArregloDinamico<VOMovingViolations> arregloInf = new ArregloDinamico<>();
 
 		LocalTime hora;
-		for (VOMovingViolations infraccion : movingViolationsQueue) {
+		for (VOMovingViolations infraccion : movingVOLista) {
 			hora = infraccion.getTicketIssueDate().toLocalTime();
 			if (horaIn.compareTo(hora) <= 0 && hora.compareTo(horaFin) <= 0) {
 				arregloInf.agregar(infraccion);
@@ -493,7 +511,7 @@ public class Controller {
 		// cuadrados de los fineamounts
 		ArregloDinamico<Integer> valoresFA = new ArregloDinamico<>();
 		
-		for (VOMovingViolations infraccion : movingViolationsQueue) {
+		for (VOMovingViolations infraccion : movingVOLista) {
 			if (infraccion.getViolationCode().equals(violationCode8)) {
 				sumaFA += infraccion.getFineAmount();
 				contadorFA += 1;
@@ -515,7 +533,7 @@ public class Controller {
 	public int countMovingViolationsInHourRange(int horaInicial9, int horaFinal9) {
 
 		int contador = 0;
-		for(VOMovingViolations s: movingViolationsQueue){
+		for(VOMovingViolations s: movingVOLista){
 			if(s.getTicketIssueDate().getHour()>=horaInicial9 && s.getTicketIssueDate().getHour()<=horaFinal9 ) contador++;
 		}
 		// TODO Auto-generated method stub
@@ -525,7 +543,7 @@ public class Controller {
 	public double totalDebt(LocalDate fechaInicial11, LocalDate fechaFinal11) {
 		double deudaAcum = 0;
 		LocalDate fechaAct;
-		for (VOMovingViolations infraccion : movingViolationsQueue) {
+		for (VOMovingViolations infraccion : movingVOLista) {
 			fechaAct = infraccion.getTicketIssueDate().toLocalDate();
 			if (fechaInicial11.compareTo(fechaAct) <= 0 && fechaAct.compareTo(fechaFinal11) <= 0) {
 				deudaAcum += (infraccion.getTotalPaid() - infraccion.getFineAmount() - 
@@ -540,13 +558,13 @@ public class Controller {
 		
 		double[] accidentesByHour = new double[24];
 		int horaActual;
-		for (VOMovingViolations infraccion : movingViolationsQueue) {
+		for (VOMovingViolations infraccion : movingVOLista) {
 			horaActual = infraccion.getTicketIssueDate().getHour();
 			accidentesByHour[horaActual]+=1;
 		}
 		
 		for (int i = 0; i < accidentesByHour.length; i++) {
-			accidentesByHour[i] = accidentesByHour[i]/movingViolationsQueue.darTamano()*100;
+			accidentesByHour[i] = accidentesByHour[i]/movingVOLista.darTamano()*100;
 		}
 		
 		// TODO Auto-generated method stub
@@ -560,7 +578,7 @@ public class Controller {
 		double deudaAdicional = 0;
 		
 		// Agregar la deuda de cada infraccion a la deuda total de cada mes
-		for (VOMovingViolations infraccion : movingViolationsQueue) {
+		for (VOMovingViolations infraccion : movingVOLista) {
 			mesAct = infraccion.getTicketIssueDate().getMonthValue() - (cuatrimestreCargado-1)*4;
 			deudaAdicional = (infraccion.getTotalPaid() - infraccion.getFineAmount() - 
 					infraccion.getPenalty1() - infraccion.getPenalty2());
