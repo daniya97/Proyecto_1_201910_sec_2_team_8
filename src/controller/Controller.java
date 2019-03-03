@@ -25,19 +25,33 @@ import model.vo.VOViolationCode;
 import view.MovingViolationsManagerView;
 
 public class Controller {
-
+	/*
+	 * Atributos
+	 */
+	/**
+	 * Objeto de la Vista
+	 */
 	private MovingViolationsManagerView view;
-
+	
 	/**
 	 * Lista donde se van a cargar los datos de los archivos
 	 */
 	private static IArregloDinamico<VOMovingViolations> movingVOLista;
+	/**
+	 * Numero actual del cuatrimestre cargado
+	 */
 	private static int cuatrimestreCargado = -1;
-
+	
+	/*
+	 * Constructor
+	 */
 	public Controller() {
 		view = new MovingViolationsManagerView();
 	}
 
+	/*
+	 * Metodos
+	 */
 	public void run() {
 		Scanner sc = new Scanner(System.in);
 		boolean fin = false;
@@ -233,8 +247,6 @@ public class Controller {
 		}
 		return numeroDeCargas;
 	}
-
-
 
 	/**
 	 * Carga la informacion sobre infracciones de los archivos a una pila y una cola ordenadas por fecha.
@@ -570,7 +582,6 @@ public class Controller {
 	
 	private double[] accumulatedDebtByMonth() {
 		double[] deudasByMonth = new double[] {0., 0., 0., 0.};
-		//int mes1 = (cuatrimestreCargado-1)*4 + 1;
 		int mesAct;
 		double deudaAdicional = 0;
 		
