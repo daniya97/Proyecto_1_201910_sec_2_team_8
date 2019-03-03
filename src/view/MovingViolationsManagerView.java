@@ -39,10 +39,19 @@ public class MovingViolationsManagerView
 		
 	}
 	
+	
+	/**
+	 *Envia un mensaje a consola
+	 * @param Mensaje a enviar a consola
+	 */
 	public void printMessage(String mensaje) {
 		System.out.println(mensaje);
 	}
 	
+	/**
+	 *Imprime la información sobre la carga de datos
+	 * @param Cola con los datos cargados
+	 */
 	public void printMovingViolationsLoadInfo(IQueue<Integer> resultados0) {
 		int totalInfracciones = 0;
 		int totalMeses = resultados0.size();
@@ -56,7 +65,10 @@ public class MovingViolationsManagerView
 		System.out.println("Total Infracciones Cuatrisemetre: " + totalInfracciones);
 		
 	}
-	
+	/**
+	 *Imprime el requerimiento 1A - Verifique Unique ID
+	 * @param Cola con los ObjectID repetidos
+	 */
 	public void printMovingViolationsReq1(IQueue<VOMovingViolations> resultados1) {
 		if (resultados1.size() == 0) {
 			System.out.println("El objectId es ï¿½nico");
@@ -67,12 +79,21 @@ public class MovingViolationsManagerView
 		}
 	}
 	
+	/**
+	 * Imprime el requerimiento 2A - Consultar Infracciones por rango de horas
+	 * @param Una cola con las infracciones en el rango
+	 */
 	public void printMovingViolationsReq2(IQueue<VOMovingViolations> resultados2) {
 		for(VOMovingViolations v: resultados2) {
 			System.out.println("ObjectID: " + v.objectId() + ", issued: " + v.getTicketIssueDate());
 		}
 	}
 	
+	
+	/**
+	 *Imprime el requerimiento 4A - Consultar infraciones en una dirección en un rango de fecha
+	 * @param Las infracciones ordenadas descendentemente por STREETSEGID y fecha
+	 */
 	public void printMovingViolationsReq4(IStack<VOMovingViolations> resultados4) {
 		System.out.println("OBJECTID\t TICKETISSUEDAT\t STREETSEGID\t ADDRESS_ID");
 
@@ -80,7 +101,10 @@ public class MovingViolationsManagerView
 			System.out.println( v.objectId() + "\t" + v.getTicketIssueDate() + "\t" + v.getStreetsegID() + "\t" + v.getAddressID());
 		}
 	}
-	
+	/**
+	 *Imprime el requerimiento 1B - Consultar tipos de infracciones con su fineAmt promedio
+	 * @param Cola con los tipos de infracciones y su respeectivo FINEAMT
+	 */
 	public void printViolationCodesReq5(IQueue<VOViolationCode> violationCodes) {
 		System.out.println("VIOLATIONCODE\t FINEAMT promedio");
 
@@ -89,6 +113,10 @@ public class MovingViolationsManagerView
 		}
 	}
 	
+	/**
+	 *Imprime el requerimiento 2B - Consultar infracciones que TOTALPAID este en un rango
+	 * @param Una pila con las infracciones
+	 */
 	public void printMovingViolationReq6(IStack<VOMovingViolations> resultados6) {
 		System.out.println("OBJECTID\t TICKETISSUEDAT\t TOTALPAID");
 		for(VOMovingViolations v: resultados6) {
@@ -96,6 +124,10 @@ public class MovingViolationsManagerView
 		}
 	}
 	
+	/**
+	 *Imprime el requerimiento 3B - Consultar infracciones por hora inicial y hora final
+	 * @param Cola con las infracciones en el rango ordenadas ascendentemente por VIOLATIONDESC
+	 */
 	public void printMovingViolationsReq7(IQueue<VOMovingViolations> resultados7) {
 		System.out.println("OBJECTID\t TICKETISSUEDAT\t VIOLATIONDESC");
 		for(VOMovingViolations v: resultados7) {
@@ -103,6 +135,10 @@ public class MovingViolationsManagerView
 		}
 	}
 	
+	/**
+	 *Imprime el requerimiento 2C - Gráfica de infracciones que tuvieron accidentees por hora
+	 * @param Porcentajes de infracciones que tuvieron accidentes en cada hora [0,23]
+	 */
 	public void printMovingViolationsByHourReq10(double[] resultados10) {
 		double pX = 0.1; // Porcentaje que representa cada X
 		System.out.println("Porcentaje de infracciones que tuvieron accidentes por hora. 2018");
@@ -120,6 +156,11 @@ public class MovingViolationsManagerView
 		System.out.println("Cada X representa " + pX +"%");
 	}
 	
+	
+	/**
+	 *Imprime el requerimiento 4C  - Gráfica de la deuda por mes
+	 * @param Deuda acumulada por mes de infracciones
+	 */
 	public void printTotalDebtbyMonthReq12(double[] resultados12) {
 		double vX = 600000; 
 		
