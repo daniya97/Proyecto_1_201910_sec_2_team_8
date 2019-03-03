@@ -536,8 +536,20 @@ public class Controller {
 	}
 	
 	private double[] percentWithAccidentsByHour() {
+		
+		double[] accidentesByHour = new double[24];
+		int horaActual;
+		for (VOMovingViolations infraccion : movingViolationsQueue) {
+			horaActual = infraccion.getTicketIssueDate().getHour();
+			accidentesByHour[horaActual]+=1;
+		}
+		
+		for (int i = 0; i < accidentesByHour.length; i++) {
+			accidentesByHour[i] = accidentesByHour[i]/movingViolationsQueue.darTamano()*100;
+		}
+		
 		// TODO Auto-generated method stub
-		return null;
+		return accidentesByHour;
 	}
 	
 	private double[] accumulatedDebtByMonth() {
