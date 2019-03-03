@@ -49,7 +49,79 @@ public class ArregloDinamicoTest extends TestCase{
 			assertTrue("El arreglo deberia tener tamano " + n, arreglo.darTamano() == n);
 		}
 	}
-
+	
+	/**
+	 * Prueba el metodo agregar
+	 */
+	public void testAgregar() {
+		int nAgregados = 3;
+		
+		for (int n = 0; n <= numeroEscenarios; n++) {
+			setUpEscenario(n, 0);
+			// Agrega nAgregados elementos
+			for (int i = 0; i < nAgregados; i++) arreglo.agregar("Nuevo elemento " + i);
+			assertTrue("Escenario: " + n + ". El arreglo deberia tener " + (n + nAgregados) + " elementos."
+					+ " Pero tiene " + arreglo.darTamano(), arreglo.darTamano() == (n + nAgregados));
+			
+			int i = 0;
+			for (String dato : arreglo) {
+				// Verifica que los primeros n elementos sean los esperados
+				if (i < n) {
+					assertTrue("Escenario: " + n + ". El " + i + "-esimo elemento deberia ser: Elemento " + i
+							+ ", pero se obtuvo " + dato, arreglo.darObjeto(i).equals("Elemento " + i));
+					i++;
+				}
+				// Verifica que los nAgregados elementos siguientes
+				else if (n <= i &&  i < n + nAgregados) {
+					assertTrue("Escenario: " + n + ". El dato esperado era: " + "Nuevo elemento " + (i-n)
+							+ ", pero se obtuvo " + dato, dato.equals("Nuevo elemento " + (i-n)));
+					i++;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Prueba el metodo cambiarEnPos()
+	 */
+	public void testCambiarEnPos() {
+		int nCambiar = 100; // Maximo numero de elementos a cambiar
+		int nc; // Numero de elementos a cambiar en cada escenario
+		int[] posicionesCambiar; // Posiciones a cambiar en cada escenario
+		for (int n = 0; n < numeroEscenarios; n++) {
+			setUpEscenario(n, 0);
+			
+			// Reducir nPosicionesEliminar si no hay suficientes elementos
+			nc = nCambiar;
+			while (n < nc) {			
+				nc  = (int)(nc/1.5);
+			}
+			
+			// Elegir las posiciones a cambiar
+			posicionesCambiar = new int[nc];
+			int i;
+			for (int k = 0; k < nc; k++) {
+				i = (n-1) - k*(n/nc); // Orden descendente necesario para esta implementacion
+				posicionesCambiar[k]= i;
+			}
+			
+			// Eliminar los elementos desde el mas grande
+			String dato;
+			for (int k = 0; k < nc; k++) {
+				i = posicionesCambiar[k];
+				
+				dato = "Nuevo dato " + k;
+				arreglo.cambiarEnPos(i, dato);
+				// Verificar que se agrego correctamente el dato
+				assertTrue("Escenario: " + n + ". El dato esperado era: " + "Nuevo dato " + k
+							+ ", pero se obtuvo " + dato, dato.equals("Nuevo dato " + k));
+				// Verificar que no ha cambiado el tamano del arreglo
+				assertTrue("Escenario: " + n + ". El arreglo deberia tener " + n + " elementos."
+							+ " Pero tiene " + arreglo.darTamano(), arreglo.darTamano() == n);
+			}
+		}
+	}
+	
 	/**
 	 * Prueba el metodo iterator()
 	 */
@@ -74,42 +146,11 @@ public class ArregloDinamicoTest extends TestCase{
 	/**
 	 * Prueba el metodo darTamano()
 	 */
-	public void testSize() {
+	public void testDarTamano() {
 		for (int n = 0; n <= numeroEscenarios; n++) {
 				setUpEscenario(n, 0);
 				assertTrue("Escenario: " + n + ". El arreglo deberia tener " + n + " elementos."
 						+ " Pero tiene " + arreglo.darTamano(), arreglo.darTamano() == n);
-		}
-	}
-
-	/**
-	 * Prueba el metodo agregar
-	 */
-	public void testAgregar() {
-		int nAgregados = 3;
-		
-		for (int n = 0; n <= numeroEscenarios; n++) {
-			setUpEscenario(n, 0);
-			// Agrega nAgreagdos elementos
-			for (int i = 0; i < nAgregados; i++) arreglo.agregar("Nuevo elemento " + i);
-			assertTrue("Escenario: " + n + ". El arreglo deberia tener " + (n + nAgregados) + " elementos."
-					+ " Pero tiene " + arreglo.darTamano(), arreglo.darTamano() == (n + nAgregados));
-			
-			int i = 0;
-			for (String dato : arreglo) {
-				// Verifica que los primeros n elementos sean los esperados
-				if (i < n) {
-					assertTrue("Escenario: " + n + ". El " + i + "-esimo elemento deberia ser: Elemento " + i
-							+ ", pero se obtuvo " + dato, arreglo.darObjeto(i).equals("Elemento " + i));
-					i++;
-				}
-				// Verifica que los nAgregados elementos siguientes
-				else if (n <= i &&  i < n + nAgregados) {
-					assertTrue("Escenario: " + n + ". El dato esperado era: " + "Nuevo elemento " + (i-n)
-							+ ", pero se obtuvo " + dato, dato.equals("Nuevo elemento " + (i-n)));
-					i++;
-				}
-			}
 		}
 	}
 
@@ -131,9 +172,9 @@ public class ArregloDinamicoTest extends TestCase{
 				//System.out.println(npe);
 				npe  = (int)(npe/1.5);
 			}
-			posicionesEliminar = new int[npe];
-			
+						
 			// Elegir las posiciones a eliminar
+			posicionesEliminar = new int[npe];
 			int i;
 			for (int k = 0; k < npe; k++) {
 				i = (n-1) - k*(n/npe); // Orden descendente necesario para esta implementacion
