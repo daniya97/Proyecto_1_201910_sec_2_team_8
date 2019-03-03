@@ -1,17 +1,10 @@
 package controller;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
 import java.time.*;
 import java.time.format.*;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -20,7 +13,6 @@ import com.opencsv.CSVReader;
 import model.data_structures.IQueue;
 import model.data_structures.IStack;
 import model.data_structures.IArregloDinamico;
-import model.data_structures.Nodo;
 import model.data_structures.Queue;
 import model.data_structures.Stack;
 import model.data_structures.ArregloDinamico;
@@ -40,7 +32,7 @@ public class Controller {
 	/**
 	 * Cola donde se van a cargar los datos de los archivos
 	 */
-	private static ArregloDinamico<VOMovingViolations> movingViolationsQueue;
+	private static IArregloDinamico<VOMovingViolations> movingViolationsQueue;
 	private static int cuatrimestreCargado = -1;
 
 	/**
@@ -253,7 +245,7 @@ public class Controller {
 		int[] contadores = new int[movingViolationsFilePaths.length];
 		int fileCounter = 0;
 		try {
-			this.movingViolationsQueue = new ArregloDinamico<VOMovingViolations>(500000);
+			movingViolationsQueue = new ArregloDinamico<VOMovingViolations>(500000);
 
 			for (String filePath : movingViolationsFilePaths) {
 				reader = new CSVReader(new FileReader("data/"+filePath));
@@ -281,7 +273,7 @@ public class Controller {
 			for (int i = 0; i < contadores.length; i++) {
 				System.out.println("Infracciones Mes " + (i+1)+": " + contadores[i]);
 			}
-			System.out.println("Total Infracciones Cuatrisemetre: " + this.movingViolationsQueue.darTamano());
+			System.out.println("Total Infracciones Cuatrisemetre: " + movingViolationsQueue.darTamano());
 			 */
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -302,15 +294,9 @@ public class Controller {
 		int i = 0;
 
 		while (i < array.length) {
-			if (array[i].equalsIgnoreCase(string)) {
-				//System.out.println(i);
-				//System.out.println(array[i] + "  " + string );
-				return i;
-			}
+			if (array[i].equalsIgnoreCase(string)) return i;
 			i += 1;
 		}
-		//System.out.println("."+string+".");
-		//System.out.println(-1);
 		return -1;
 	}
 
@@ -324,8 +310,6 @@ public class Controller {
 
 	public IQueue<VOMovingViolations> verifyObjectIDIsUnique() {
 
-		int contador = 0;
-		boolean respuesta = true;	
 		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.ObjectIDOrder());
 		String actual = null;
 		String anterior = null;
@@ -336,7 +320,6 @@ public class Controller {
 			actual = s.objectId();
 			if(actual.equals(anterior)){
 				repetidos.enqueue(s);
-				respuesta = false;
 			}
 			else
 			{
@@ -368,7 +351,6 @@ public class Controller {
 	}
 
 	public double[] avgFineAmountByViolationCode(String violationCode3) {
-		boolean encontrado = false;
 		int suma1 = 0;
 		int suma2 = 0;
 		int contador1 = 0;
@@ -413,7 +395,7 @@ public class Controller {
 
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
 		// Ordena los datos por codigo de violacion
-		Sort.ordenarShellSort(this.movingViolationsQueue, new VOMovingViolations.ViolationCodeOrder());
+		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.ViolationCodeOrder());
 
 		// Cola de tuplas a retornar
 		Queue<VOViolationCode> colaTuplas = new Queue<VOViolationCode>(); 
@@ -462,9 +444,9 @@ public class Controller {
 			boolean ascendente6) {
 		// Ordena los datos por codigo de violacion
 		if (ascendente6) { // OJO: como los datos se quieren meter a una cola, se ordenan al contrario para que en el stack tengan el orden deseado
-			Sort.ordenarShellSort(this.movingViolationsQueue, new VOMovingViolations.TicketIssueOrder().reversed());
+			Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder().reversed());
 		} else {
-			Sort.ordenarShellSort(this.movingViolationsQueue, new VOMovingViolations.TicketIssueOrder());
+			Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder());
 		}
 
 		// Pila de infracciones a retornar
@@ -567,7 +549,6 @@ public class Controller {
 		double deudaAdicional = 0;
 		
 		// Agregar la deuda de cada infraccion a la deuda total de cada mes
-		LocalDate fechaAct;
 		for (VOMovingViolations infraccion : movingViolationsQueue) {
 			mesAct = infraccion.getTicketIssueDate().getMonthValue() - (cuatrimestreCargado-1)*4;
 			deudaAdicional = (infraccion.getTotalPaid() - infraccion.getFineAmount() - 

@@ -17,7 +17,7 @@ public class Sort {
 	 * @param datos - conjunto de datos a ordenar (inicio) y conjunto de datos ordenados (final)
 	 */
 
-	public static <T> void ordenarShellSort(ArregloDinamico<T> datos, Comparator<T> c) {
+	public static <T> void ordenarShellSort(IArregloDinamico<T> datos, Comparator<T> c) {
 		// Esta es una implementacion hecha con el proposito de entender shellsort, que permite
 		// el uso de diferentes secuencias con facilidad. La unica diferencia en uso de recursos
 		// de esta implementacion es la creacion de la secuencia y su guardado en memoria, algo minimo.
@@ -26,7 +26,7 @@ public class Sort {
 		for (int h : secuencia) hsort(datos, h, c);
 	}
 	
-	private static <T> void hsort(ArregloDinamico<T> datos, int h, Comparator<T> c) {
+	private static <T> void hsort(IArregloDinamico<T> datos, int h, Comparator<T> c) {
 		int posOfInserting;
 		for (int i = 0; i < h; i += 1) {
 			// insertion-sort el h-subarray que empieza en i
@@ -64,7 +64,7 @@ public class Sort {
 	 * Ordenar datos aplicando el algoritmo MergeSort
 	 * @param movingViolationsQueue - conjunto de datos a ordenar (inicio) y conjunto de datos ordenados (final)
 	 */
-	public static <T> void ordenarMergeSort(ArregloDinamico<T> datos, Comparator<T> comparator ) {
+	public static <T> void ordenarMergeSort(IArregloDinamico<T> datos, Comparator<T> comparator ) {
 		
 		//Bottom - Up
 		int N = datos.darTamano();
@@ -79,7 +79,7 @@ public class Sort {
 	}
 
 	
-	private static <T> void merge(ArregloDinamico<T> datos, Queue<T> auxiliar, Queue<T> auxiliar2, int min, int med, int max, Comparator<T> comparator){
+	private static <T> void merge(IArregloDinamico<T> datos, Queue<T> auxiliar, Queue<T> auxiliar2, int min, int med, int max, Comparator<T> comparator){
 		//Se copia el arreglo
 		for( int k = min; k<=med; k++){
 			auxiliar.enqueue(datos.darObjeto(datos.darTamano()-1));
@@ -125,7 +125,7 @@ public class Sort {
 	 * Ordenar datos aplicando el algoritmo QuickSort
 	 * @param datos - conjunto de datos a ordenar (inicio) y conjunto de datos ordenados (final)
 	 */
-	public static <T> void ordenarQuickSort(ArregloDinamico<T> datos, Comparator<T> c) {
+	public static <T> void ordenarQuickSort(IArregloDinamico<T> datos, Comparator<T> c) {
 		// Desordenar: basado shuffle() de la libreria StdRandom del libro
 		int n = datos.darTamano();
 		int r;
@@ -137,7 +137,7 @@ public class Sort {
 		ordenarQuickSort(datos, 0, datos.darTamano()-1, c);
 	}
 	
-	private static <T> void ordenarQuickSort(ArregloDinamico<T> datos, int min, int max, Comparator<T> c) {
+	private static <T> void ordenarQuickSort(IArregloDinamico<T> datos, int min, int max, Comparator<T> c) {
 		if (min >= max) return;
 		
 		T ref = datos.darObjeto(min);
@@ -188,14 +188,14 @@ public class Sort {
 	 * @param i posicion del 1er elemento a intercambiar
 	 * @param j posicion del 2o elemento a intercambiar
 	 */
-	private static <T> void exchange(ArregloDinamico<T> datos, int i, int j)
+	private static <T> void exchange(IArregloDinamico<T> datos, int i, int j)
 	{
 		T temp = datos.darObjeto(i);
 		datos.cambiarEnPos(i, datos.darObjeto(j));
 		datos.cambiarEnPos(j, temp);
 	}
 	
-	public static <T> boolean isSorted(Comparator<T> c, ArregloDinamico<T> datos) {
+	public static <T> boolean isSorted(Comparator<T> c, IArregloDinamico<T> datos) {
 		for (int i = 0; i < datos.darTamano()-1; i++)
 			if (less(datos.darObjeto(i+1), datos.darObjeto(i), c)) return false;
 		return true;
