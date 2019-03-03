@@ -2,13 +2,14 @@ package controller;
 
 import java.io.FileReader;
 import java.io.IOException;
+import com.opencsv.CSVReader;
 
 import java.time.*;
 import java.time.format.*;
+
 import java.util.Iterator;
 import java.util.Scanner;
-
-import com.opencsv.CSVReader;
+import model.util.Sort;
 
 import model.data_structures.IQueue;
 import model.data_structures.IStack;
@@ -20,8 +21,6 @@ import model.data_structures.ArregloDinamico;
 import model.vo.VOMovingViolations;
 import model.vo.VODaylyStatistic;
 import model.vo.VOViolationCode;
-
-import model.util.Sort;
 
 import view.MovingViolationsManagerView;
 

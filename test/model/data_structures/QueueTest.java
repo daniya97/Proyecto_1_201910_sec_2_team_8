@@ -1,4 +1,4 @@
-package model.util;
+package model.data_structures;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -156,6 +156,10 @@ public class QueueTest extends TestCase{
 				String dato = cola.dequeue();
 				assertTrue("La pila deberia deberia tener 1 elementos.", cola.size() == 1);
 				assertTrue("El elemento eliminado no es el esperado.", dato.equals("Elemento 1"));
+				
+				dato = cola.dequeue();
+				assertTrue("La pila deberia deberia tener 0 elementos.", cola.size() == 0);
+				assertTrue("El elemento eliminado no es el esperado.", dato.equals("Elemento 2"));
 			}
 
 		}

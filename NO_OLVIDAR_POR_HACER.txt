@@ -1,10 +1,13 @@
- - Implementar el Shuffle de quicksort sin la libreria del libro
-# - Hacer cambios en la Linked List para hacer uso de la clase Nodo ya existente
- - DOCUMENTACION GENERICS ARREGLO DINAMICO
+ - Implementar el Shuffle de quicksort sin la libreria del libro : DONE
+ - DOCUMENTACION GENERICS ARREGLO DINAMICO : DONE
 	 - Comparator<T>
- - Terminar tests de arreglo dinamico
- - IArregloDinamico en Controller? Por que?
- - Arreglar MergeSort
- - Mejorar Sort.java para no dejar las clases genericas ocmo Raw
- - Nodo en controller
+ - Terminar tests de arreglo dinamico : DONE
+ - IArregloDinamico en Controller? Por que? DONE
+ - Arreglar MergeSort : DONE
+ - Mejorar Sort.java para no dejar las clases genericas ocmo Raw : DONE
+
+
  - REVISAR QUE EL VIEW IMPRIME LO QUE SE PIDE EN CADA REQUERIMIENTO
+ - cambiar nombre a movingQueue
+ - Remover comentarios para pruebas
+ - Mejorar tests Queue y Stack
