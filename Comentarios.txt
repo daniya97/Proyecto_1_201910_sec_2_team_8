@@ -5,4 +5,13 @@ Comentarios:
 	- El metodo no imprime el primer elemento cuyo codigo se encuentra repetido, solo del segundo para adelante. Yo creeria que es mejor imprimir tambien el primero, pero usted dira
 
 2A: 
-	- 
+	- No reconoce las infracciones que hayan sucedido en la fecha inicial exactamente o en la fecha final exactamente. Lo probe con las infraccion que ocurren (son 2) a las 01/04/2018T04:40:00. Para encontrarlas tuve que restar y sumar 1 segundo.
+
+3A:
+	- Lo probe con un codigo existente y uno no existente, y parece funcionar y los resultados parecen tener sentido.
+
+4A:
+	- Si una infraccion con un codigo dado ocurrio en la fecha inicial o final, no la reconoce. Esto si me parece necesario que se tenga. Lo probe con el ADDRESID 246, para el cual ocurrren 3 infracciones entre el 11 y el 26 de abril, pero para encontrarlas debo poner por ejemplo 10 y 27 de abril en las fechas.
+	- Si ordena descendentemente, como deberia.
+
+
