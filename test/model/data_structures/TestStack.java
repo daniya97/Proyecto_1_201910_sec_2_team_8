@@ -3,10 +3,7 @@
  */
 package model.data_structures;
 
-import static org.junit.Assert.*;
-
 import java.util.Iterator;
-
 
 import junit.framework.TestCase;
 
@@ -162,6 +159,10 @@ public class TestStack extends TestCase{
 				String dato = pila.pop();
 				assertTrue("La pila deberia deberia tener 1 elementos.", pila.size() == 1);
 				assertTrue("El elemento eliminado no es el esperado.", dato.equals("Elemento 2"));
+				
+				dato = pila.pop();
+				assertTrue("La pila deberia deberia tener 1 elementos.", pila.size() == 0);
+				assertTrue("El elemento eliminado no es el esperado.", dato.equals("Elemento 1"));
 			}
 
 		}
