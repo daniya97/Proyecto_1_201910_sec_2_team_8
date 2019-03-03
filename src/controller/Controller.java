@@ -333,7 +333,7 @@ public class Controller {
 	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
 
 		IQueue<VOMovingViolations> respuesta = new Queue<>();
-		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder());
+		Sort.ordenarQuickSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder());
 
 		for(VOMovingViolations s: movingViolationsQueue){
 			if(s.getTicketIssueDate().isAfter(fechaInicial)){
@@ -382,7 +382,7 @@ public class Controller {
 			}
 		}
 		
-		Sort.ordenarShellSort(respuesta,new VOMovingViolations.StreetsgeIDDateOrder());
+		Sort.ordenarShellSort(respuesta, new VOMovingViolations.StreetsgeIDDateOrder());
 	
 		for(VOMovingViolations s: respuesta){
 			resultado.push(s);
@@ -393,7 +393,7 @@ public class Controller {
 
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
 		// Ordena los datos por codigo de violacion
-		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.ViolationCodeOrder());
+		Sort.ordenarQuickSort(movingViolationsQueue, new VOMovingViolations.ViolationCodeOrder());
 
 		// Cola de tuplas a retornar
 		Queue<VOViolationCode> colaTuplas = new Queue<VOViolationCode>(); 
@@ -402,7 +402,8 @@ public class Controller {
 		// Si no hay datos, entonces retorna una cola vacia
 		if (!iterador.hasNext()) return colaTuplas;
 
-		// Como los datos estan ordenados, tomo una infraccion de referencia par 
+		// Como los datos estan ordenados, tomamos una infraccion de referencia para comparar con
+		// los datos inmediatamente siguientes
 		VOMovingViolations infrRevisar = iterador.next();
 		String codigoRef = infrRevisar.getViolationCode();
 		// variables para hallar el promedio
@@ -442,9 +443,9 @@ public class Controller {
 			boolean ascendente6) {
 		// Ordena los datos por codigo de violacion
 		if (ascendente6) { // OJO: como los datos se quieren meter a una cola, se ordenan al contrario para que en el stack tengan el orden deseado
-			Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder().reversed());
+			Sort.ordenarQuickSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder().reversed());
 		} else {
-			Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder());
+			Sort.ordenarQuickSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder());
 		}
 
 		// Pila de infracciones a retornar
@@ -475,7 +476,7 @@ public class Controller {
 		}
 
 		// Order resultados (~12 veces menos datos)
-		Sort.ordenarShellSort(arregloInf, new VOMovingViolations.ViolationDescOrder());
+		Sort.ordenarQuickSort(arregloInf, new VOMovingViolations.ViolationDescOrder());
 
 		// Pasar datos a una cola
 		Queue<VOMovingViolations> colaInf = new Queue<>();
