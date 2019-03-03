@@ -306,15 +306,19 @@ public class Controller {
 
 	public IQueue<VOMovingViolations> verifyObjectIDIsUnique() {
 
+		//Se ordena el arreglo dinámico por ObjectID
 		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.ObjectIDOrder());
 		String actual = null;
 		String anterior = null;
 		boolean yaIncluido = false;
 		Queue<VOMovingViolations> repetidos = new Queue<>();
 		
+		//Se recorren las infracciones
 		for(VOMovingViolations s: movingViolationsQueue){
 			
+			//Se toma el objeto actual
 			actual = s.objectId();
+			//En caso de que se repita el ObjID y no se haya incluido, se agrega a la cola
 			if(actual.equals(anterior)){
 				if(!yaIncluido){
 				repetidos.enqueue(s);
@@ -325,9 +329,11 @@ public class Controller {
 				yaIncluido = false;
 			}
 			
+			//El actual queda como anterior
 			anterior = actual;
 		}
 
+		//Se devuelve una cola con los repetidos
 		return repetidos;
 
 	}
