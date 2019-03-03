@@ -309,18 +309,22 @@ public class Controller {
 		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.ObjectIDOrder());
 		String actual = null;
 		String anterior = null;
+		boolean yaIncluido = false;
 		Queue<VOMovingViolations> repetidos = new Queue<>();
-		Queue<VOMovingViolations> Norepetidos = new Queue<>();
-
+		
 		for(VOMovingViolations s: movingViolationsQueue){
+			
 			actual = s.objectId();
 			if(actual.equals(anterior)){
+				if(!yaIncluido){
 				repetidos.enqueue(s);
+				yaIncluido = true;
+				}
 			}
-			else
-			{
-				Norepetidos.enqueue(s);
+			else{
+				yaIncluido = false;
 			}
+			
 			anterior = actual;
 		}
 
@@ -331,11 +335,14 @@ public class Controller {
 	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
 
 		IQueue<VOMovingViolations> respuesta = new Queue<>();
+		//Se ordenan las infracciones de acuerdo a la fecha en la que fueron impuestas
 		Sort.ordenarShellSort(movingViolationsQueue, new VOMovingViolations.TicketIssueOrder());
 
+		//Para todas las infracciones, en caso de encontrarse entre la fechaInicial y fechaFinal
+		//se agregan a la Cola
 		for(VOMovingViolations s: movingViolationsQueue){
-			if(s.getTicketIssueDate().isAfter(fechaInicial)){
-				if(s.getTicketIssueDate().isBefore(fechaFinal)){
+			if(s.getTicketIssueDate().compareTo(fechaInicial)>=0){
+				if(s.getTicketIssueDate().compareTo(fechaFinal)<=0){
 					respuesta.enqueue(s);
 				}
 				else{
@@ -343,6 +350,7 @@ public class Controller {
 				}
 			}
 		}
+		//Se retorna la cola con las infracciones en el rango (inclusivo)
 		return respuesta;
 	}
 
@@ -351,19 +359,24 @@ public class Controller {
 		int suma2 = 0;
 		int contador1 = 0;
 		int contador2 = 0;
-
+		
+		//Se recorren todas las infracciones del cuatrimestre
 		for(VOMovingViolations s: movingViolationsQueue){
 			if(s.getViolationCode().equals(violationCode3)){
-				if(s.getAccidentIndicator()){
+				
+				//En caso de que no hubo accidente
+				if(!s.getAccidentIndicator()){
 					suma1 += s.getFineAmount();
 					contador1++;
 				}
+				//en caso de que sí hubo accidente
 				else{
 					suma2+=s.getFineAmount();
 					contador2++;
 				}
 			}
 		}
+		//Se devuellve el promedio
 		return new double [] {suma1 != 0? suma1/contador1:0 , suma2 != 0? suma2/contador2:0};
 	}
 
@@ -373,15 +386,18 @@ public class Controller {
 		ArregloDinamico<VOMovingViolations> respuesta = new ArregloDinamico<>();
 		IStack<VOMovingViolations> resultado = new Stack<>();
 		
+		//En caso de que la infracción coincida con el addressID y este en el rango solicitado se agrega al arreglo dinámico
 		for(VOMovingViolations s: movingViolationsQueue){
-			
-			if(s.getAddressID().equals(addressId) && s.getTicketIssueDate().toLocalDate().isAfter(fechaInicial) && s.getTicketIssueDate().toLocalDate().isBefore(fechaFinal)){
+			if(s.getAddressID().equals(addressId) && s.getTicketIssueDate().toLocalDate().compareTo(fechaInicial)>=0 && s.getTicketIssueDate().toLocalDate().compareTo(fechaFinal)<=0){
 				respuesta.agregar(s);
 			}
 		}
 		
+		//Se ordena el arreglo ascendentemente
 		Sort.ordenarShellSort(respuesta,new VOMovingViolations.StreetsgeIDDateOrder());
-	
+		
+		//Se agregan los elementos del arreglo a una pila
+		//Se logra el orden descentemente por StreetseIdDate
 		for(VOMovingViolations s: respuesta){
 			resultado.push(s);
 		}
