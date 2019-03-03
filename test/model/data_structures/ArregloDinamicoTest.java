@@ -3,7 +3,6 @@
  */
 package model.data_structures;
 
-import java.util.Iterator;
 import java.util.Random;
 
 import junit.framework.TestCase;

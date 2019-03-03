@@ -1,5 +1,8 @@
 package model.data_structures;
-
+/**
+ * Basado en el codigo dado por el profesor De la Rosa, Universidad de los Andes, 
+ * en el curso Estructuras de Datos en el periodo 201910.
+ */
 public interface IArregloDinamico<T> extends Iterable<T>{
 
 	/**
@@ -16,10 +19,9 @@ public interface IArregloDinamico<T> extends Iterable<T>{
 	T darObjeto( int i );
 
 	/**
-	 * Agregar un dato de forma compacta (en la primera casilla disponible) 
+	 * Agregar un dato de forma compacta (en la primera casilla disponible).
 	 * Caso Especial: Si el arreglo esta lleno debe aumentarse su capacidad, agregar el nuevo dato y deben quedar multiples casillas disponibles para futuros nuevos datos.
 	 * @param dato nuevo elemento
-	 * @throws IllegalArgumentException si el dato es nulo
 	 */
 	public void agregar( T dato );
 	
@@ -28,21 +30,6 @@ public interface IArregloDinamico<T> extends Iterable<T>{
 	 * @param i posicion del arreglo a modificar
 	 */
 	public void cambiarEnPos( int i , T dato);
-		
-	/**
-	 * Buscar un dato en el arreglo.
-	 * @param dato Objeto de busqueda en el arreglo
-	 * @return elemento encontrado en el arreglo (si existe). -1 si no se encontro el dato.
-	 */
-	int buscar(T dato);
-	
-	/**
-	 * Eliminar la primera instancia de un dato en el arreglo.
-	 * Los datos restantes quedan "compactos" desde la posicion 0.
-	 * @param dato Objeto de eliminacion en el arreglo
-	 * @return dato eliminado. Null si no se encontro el elemento
-	 */
-	T eliminar( T dato );
 	
 	/**
 	 * Eliminar el dato en la posicion i del arreglo.
