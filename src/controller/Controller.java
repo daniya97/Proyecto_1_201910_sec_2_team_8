@@ -61,11 +61,11 @@ public class Controller {
 				view.printMessage("Ingrese el cuatrimestre (1, 2 o 3)");
 				int numeroCuatrimestre = sc.nextInt();
 				IQueue<Integer> resultados0 = loadMovingViolations(numeroCuatrimestre);
-				view.printMovingViolationsLoad(resultados0);
+				view.printMovingViolationsLoadInfo(resultados0);
 				break;
 			case 1:
 				IQueue<VOMovingViolations> resultados1 = verifyObjectIDIsUnique();
-				view.printMovingViolationsReq2(resultados1);
+				view.printMovingViolationsReq1(resultados1);
 				break;
 
 			case 2:

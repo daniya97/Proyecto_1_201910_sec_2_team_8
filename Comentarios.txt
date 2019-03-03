@@ -1,0 +1,8 @@
+Comentarios:
+
+1A:
+	- No creo que sea necesario hacer una lista con los elementos no repetidos, pues si ocupa memoria y no la estamos usando
+	- El metodo no imprime el primer elemento cuyo codigo se encuentra repetido, solo del segundo para adelante. Yo creeria que es mejor imprimir tambien el primero, pero usted dira
+
+2A: 
+	- 

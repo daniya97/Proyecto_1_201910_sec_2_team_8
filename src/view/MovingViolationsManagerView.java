@@ -43,7 +43,7 @@ public class MovingViolationsManagerView
 		System.out.println(mensaje);
 	}
 	
-	public void printMovingViolationsLoad(IQueue<Integer> resultados0) {
+	public void printMovingViolationsLoadInfo(IQueue<Integer> resultados0) {
 		int totalInfracciones = 0;
 		int totalMeses = resultados0.size();
 		int infMes;
