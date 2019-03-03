@@ -127,8 +127,14 @@ public class Sort {
 	 * @param datos - conjunto de datos a ordenar (inicio) y conjunto de datos ordenados (final)
 	 */
 	public static <T> void ordenarQuickSort(ArregloDinamico<T> datos, Comparator<T> c) {
-		// Desordenar
-		//StdRandom.shuffle(datos);
+		// Desordenar: basado shuffle() de la libreria StdRandom del libro
+		int n = datos.darTamano();
+		int r;
+		Random random = new Random(System.currentTimeMillis());
+        for (int i = 0; i < n; i++) {
+            r = i + random.nextInt(n-i);
+            exchange(datos, i, r);
+        }
 		ordenarQuickSort(datos, 0, datos.darTamano()-1, c);
 	}
 	

@@ -1,6 +1,5 @@
 package model.util;
 
-import java.util.Arrays;
 import java.util.Comparator;
 
 import junit.framework.TestCase;
