@@ -122,7 +122,7 @@ public class MovingViolationsManagerView
 	
 	public void printTotalDebtbyMonthReq12(double[] resultados12) {
 		double vX = 600000; 
-		System.out.println(resultados12[0]);
+		
 		System.out.println("Deuda acumulada por mes de infracciones. 2018");
 		System.out.println("Mes| Dinero");
 		for (int m = 1; m <= 4; m++) {
