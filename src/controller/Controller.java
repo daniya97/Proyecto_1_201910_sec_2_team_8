@@ -223,7 +223,12 @@ public class Controller {
 				e.printStackTrace(); System.out.println("Ocurrio un error. Se recomienda reiniciar el programa.");}
 		}
 	}
-
+	
+	/**
+	 * Carga los datos del cuatrimestre indicado
+	 * @param n Numero de cuatrimestre del anio (entre 1 y 3)
+	 * @return Cola con el numero de datos cargados por mes del cuatrimestre
+	 */
 	public IQueue<Integer> loadMovingViolations(int n)
 	{
 		IQueue<Integer> numeroDeCargas = new Queue<>();
@@ -261,7 +266,10 @@ public class Controller {
 	}
 
 	/**
+	 * Metodo ayudante
 	 * Carga la informacion sobre infracciones de los archivos a una pila y una cola ordenadas por fecha.
+	 * Dado un arreglo con los nombres de los archivos a cargar
+	 * @returns Cola con el numero de datos cargados por mes del cuatrimestre
 	 */
 	private IQueue<Integer> loadMovingViolations(String[] movingViolationsFilePaths){
 		CSVReader reader = null;
@@ -314,7 +322,11 @@ public class Controller {
 	public IStack <VOMovingViolations> nLastAccidents(int n) {
 		return null;
 	}
-
+	
+	/**
+	 * Verificar que el identificador de las infracciones (ID) sea único
+	 * @return Cola con infracciones cuyos ObjectID se encuentran repetidos. 
+	 */
 	public IQueue<VOMovingViolations> verifyObjectIDIsUnique() {
 
 		//Se ordena el arreglo din�mico por ObjectID
@@ -348,7 +360,13 @@ public class Controller {
 		return repetidos;
 
 	}
-
+	
+	/**
+	 * Consultar todas las infracciones que se encuentren en un rango de fechas determinado.
+	 * @param fechaInicial
+	 * @param fechaFinal
+	 * @return Cola con las infracciones que satisfacen la condicion
+	 */
 	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
 
 		IQueue<VOMovingViolations> respuesta = new Queue<>();
@@ -373,6 +391,11 @@ public class Controller {
 		return respuesta;
 	}
 
+	/**
+	 * Consultar el valor promedio de las infracciones dado un tipo de infracción cuando hubo accidente y cuando no hubo.
+	 * @param violationCode3 Violation Code de las infracciones a consultar
+	 * @return Arreglo con los promedios si hubo y si no hubo accidente.
+	 */
 	public double[] avgFineAmountByViolationCode(String violationCode3) {
 		int suma1 = 0;
 		int suma2 = 0;
@@ -399,6 +422,13 @@ public class Controller {
 		return new double [] {suma1 != 0? suma1/contador1:0 , suma2 != 0? suma2/contador2:0};
 	}
 
+	/**
+	 * Consultar las infracciones en una dirección dada en un rango de fechas dado.
+	 * @param addressId Direccion
+	 * @param fechaInicial Fecha inicial de consulta
+	 * @param fechaFinal Fecha maxima de consulta
+	 * @return Pila con las infracciones deseadas ordenadas descendentemetne por StreetsegID y fecha
+	 */
 	public IStack<VOMovingViolations> getMovingViolationsAtAddressInRange(String addressId,
 			LocalDate fechaInicial, LocalDate fechaFinal) {
 		
@@ -424,6 +454,12 @@ public class Controller {
 		return resultado;
 	}
 
+	/**
+	 * Consultar los tipos de infracciones con su valor promedio de fine amount en un rango dado.
+	 * @param limiteInf5 Valor minimo para el promedio de fine amount
+	 * @param limiteSup5 Valor maximo para el promedio de fine amount
+	 * @return Cola de VOviolationCode (escencialmente tuplas de codigo y promedio) deseadas
+	 */
 	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
 		// Ordena los datos por codigo de violacion
 		Sort.ordenarShellSort(movingVOLista, new VOMovingViolations.ViolationCodeOrder());
@@ -471,7 +507,15 @@ public class Controller {
 
 		return colaTuplas;
 	}
-
+	
+	/**
+	 * Consultar infracciones donde la cantidad pagada está en un rango dado 
+	 * ordenadas por fecha de infracción.
+	 * @param limiteInf6 Valor minimo para cantidad pagada
+	 * @param limiteSup6 Valor maximo para cantidad pagada
+	 * @param ascendente6 true si se desea un orden ascendente, false si descendente
+	 * @return Cola deseada en el orden deseado por fecha de infraccion
+	 */
 	public IStack<VOMovingViolations> getMovingViolationsByTotalPaid(double limiteInf6, double limiteSup6,
 			boolean ascendente6) {
 		// Lista ordenable con la respuesta (que tendra menos datos que la lista total)
@@ -500,6 +544,12 @@ public class Controller {
 		return pilaResp;
 	}
 
+	/**
+	 * Consultar infracciones por hora inicial y hora final
+	 * @param horaInicial7 Hora inicial
+	 * @param horaFinal7 Hora final
+	 * @return Cola con infracciones ordenadas por descripcion de la infraccion.
+	 */
 	public IQueue<VOMovingViolations> getMovingViolationsByHour(int horaInicial7, int horaFinal7) {
 		// Conversion de horas a formato util
 		LocalTime horaIn = LocalTime.of(horaInicial7, 0);
@@ -524,6 +574,11 @@ public class Controller {
 		return colaInf;
 	}
 
+	/**
+	 * Valor promedio y su desviación estándar para un tipo de infracción.
+	 * @param violationCode8 Tipo de infraccion a consultar
+	 * @return Arreglo con el promedio y la desviacion estandar del fine amount para esta infraccion
+	 */
 	public double[] avgAndStdDevFineAmtOfMovingViolation(String violationCode8) {
 		// Extraccion de datos necesarios
 		double sumaFA = 0;
@@ -551,7 +606,13 @@ public class Controller {
 
 		return new double [] {promedio , Math.sqrt(var)};
 	}
-
+	
+	/**
+	 * Número de infracciones que ocurrieron en un rango de horas del día
+	 * @param horaInicial9 Hora inicial de consulta
+	 * @param horaFinal9 Hora final de consulta
+	 * @return Numero de infracciones en el rango 
+	 */
 	public int countMovingViolationsInHourRange(int horaInicial9, int horaFinal9) {
 
 		int contador = 0;
@@ -561,7 +622,13 @@ public class Controller {
 		
 		return contador;
 	}
-
+	
+	/**
+	 * Calcular la deuda total por infracciones que se dieron en un rango de fechas
+	 * @param fechaInicial11 Fecha inicial de consulta
+	 * @param fechaFinal11 Fecha final de consulta
+	 * @return Deuda total acumulada en este rango
+	 */
 	public double totalDebt(LocalDate fechaInicial11, LocalDate fechaFinal11) {
 		double deudaAcum = 0;
 		LocalDate fechaAct;
@@ -576,6 +643,10 @@ public class Controller {
 		return deudaAcum;
 	}
 	
+	/**
+	 * Calcula el porcentaje de infracciones que tuvieron accidentes por hora del día
+	 * @return Arreglo con la informacion deseada por cada mes del cuatrimestre
+	 */
 	private double[] percentWithAccidentsByHour() {
 		
 		double[] infraccionesByHour = new double[24]; // Se inicializan en 0's
@@ -597,6 +668,10 @@ public class Controller {
 		return accidentesByHour;
 	}
 	
+	/**
+	 * Calcula la deuda acumulada por infracciones diferenciado por mes.
+	 * @return Arreglo con la informacion deseada por cada mes del cuatrimestre
+	 */
 	private double[] accumulatedDebtByMonth() {
 		double[] deudasByMonth = new double[] {0., 0., 0., 0.};
 		int mesAct;
